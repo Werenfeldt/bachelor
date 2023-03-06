@@ -124,39 +124,39 @@
         }
       },
       {
-        "HashCode": -2047373251,
+        "HashCode": -1733019700,
         "Kind": "Components.Component",
-        "Name": "Presentation.App",
+        "Name": "Presentation.Shared.NavMenu",
         "AssemblyName": "Presentation",
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "App"
+            "TagName": "NavMenu"
           }
         ],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Presentation.App",
-          "Common.TypeNamespace": "Presentation",
-          "Common.TypeNameIdentifier": "App"
+          "Common.TypeName": "Presentation.Shared.NavMenu",
+          "Common.TypeNamespace": "Presentation.Shared",
+          "Common.TypeNameIdentifier": "NavMenu"
         }
       },
       {
-        "HashCode": -1393163069,
+        "HashCode": 48598595,
         "Kind": "Components.Component",
-        "Name": "Presentation.App",
+        "Name": "Presentation.Shared.NavMenu",
         "AssemblyName": "Presentation",
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "Presentation.App"
+            "TagName": "Presentation.Shared.NavMenu"
           }
         ],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Presentation.App",
-          "Common.TypeNamespace": "Presentation",
-          "Common.TypeNameIdentifier": "App",
+          "Common.TypeName": "Presentation.Shared.NavMenu",
+          "Common.TypeNamespace": "Presentation.Shared",
+          "Common.TypeNameIdentifier": "NavMenu",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -326,39 +326,39 @@
         }
       },
       {
-        "HashCode": -1733019700,
+        "HashCode": -2047373251,
         "Kind": "Components.Component",
-        "Name": "Presentation.Shared.NavMenu",
+        "Name": "Presentation.App",
         "AssemblyName": "Presentation",
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "NavMenu"
+            "TagName": "App"
           }
         ],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Presentation.Shared.NavMenu",
-          "Common.TypeNamespace": "Presentation.Shared",
-          "Common.TypeNameIdentifier": "NavMenu"
+          "Common.TypeName": "Presentation.App",
+          "Common.TypeNamespace": "Presentation",
+          "Common.TypeNameIdentifier": "App"
         }
       },
       {
-        "HashCode": 48598595,
+        "HashCode": -1393163069,
         "Kind": "Components.Component",
-        "Name": "Presentation.Shared.NavMenu",
+        "Name": "Presentation.App",
         "AssemblyName": "Presentation",
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "Presentation.Shared.NavMenu"
+            "TagName": "Presentation.App"
           }
         ],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "Presentation.Shared.NavMenu",
-          "Common.TypeNamespace": "Presentation.Shared",
-          "Common.TypeNameIdentifier": "NavMenu",
+          "Common.TypeName": "Presentation.App",
+          "Common.TypeNamespace": "Presentation",
+          "Common.TypeNameIdentifier": "App",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
