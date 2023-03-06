@@ -23,8 +23,8 @@ services:
     ports:
       - 5077:5077
       - 7207:7207
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
       #- storage
     # secrets:
     #   - source: connection_string
