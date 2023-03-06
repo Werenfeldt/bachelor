@@ -3,21 +3,21 @@
 version: "3.9"
 
 services:
-#   db:
-#     image: mcr.microsoft.com/azure-sql-edge
-#     environment:
-#       ACCEPT_EULA: "Y"
-#       MSSQL_SA_PASSWORD_FILE: /run/secrets/db_password
-#     ports:
-#       - 1433:1433
-    # secrets:
-    #   - db_password
+  #   db:
+  #     image: mcr.microsoft.com/azure-sql-edge
+  #     environment:
+  #       ACCEPT_EULA: "Y"
+  #       MSSQL_SA_PASSWORD_FILE: /run/secrets/db_password
+  #     ports:
+  #       - 1433:1433
+  # secrets:
+  #   - db_password
 
   server:
     image: server
     build:
       context: .
-      dockerfile: ./Web/Dockerfile
+      dockerfile: ./Presentation/Dockerfile
     # environment:
     #   ConnectionStrings__Chore:
     ports:
@@ -25,11 +25,10 @@ services:
       - 7207:7207
     # depends_on:
     #   - db
-      #- storage
+    #- storage
     # secrets:
     #   - source: connection_string
     #     target: ConnectionStrings__Chore
-
 # secrets:
 #   db_password:
 #     file: ./.local/db_password.txt
