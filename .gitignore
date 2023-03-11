@@ -10,6 +10,9 @@
 # Icon must end with two \r
 Icon
 
+## API ##
+.openai
+
 
 # Thumbnails
 ._*
@@ -444,6 +447,30 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Docker #
+.vagrant*
+bin
+docker/docker
+.*.swp
+a.out
+*.orig
+build_src
+.flymake*
+.idea
+.DS_Store
+docs/_build
+docs/_static
+docs/_templates
+.gopath/
+.dotcloud
+*.test
+bundles/
+.hg/
+.git/
+vendor/pkg/
+pyenv
+Vagrantfile
 
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
