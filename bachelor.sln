@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentatio
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9CC58B8D-7730-4B8D-A926-52F58602CF52}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{A67A40C7-A195-424C-911A-DE101291A25A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "service", "Services\Service\service.csproj", "{C7AD2E37-FC71-454E-A5AD-20C079E16A22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Services\Interfaces\Interfaces.csproj", "{60FB2C2E-11EF-4EBA-81AE-5A4345FAB57D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +30,17 @@ Global
 		{9CC58B8D-7730-4B8D-A926-52F58602CF52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CC58B8D-7730-4B8D-A926-52F58602CF52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CC58B8D-7730-4B8D-A926-52F58602CF52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7AD2E37-FC71-454E-A5AD-20C079E16A22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7AD2E37-FC71-454E-A5AD-20C079E16A22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7AD2E37-FC71-454E-A5AD-20C079E16A22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7AD2E37-FC71-454E-A5AD-20C079E16A22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60FB2C2E-11EF-4EBA-81AE-5A4345FAB57D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60FB2C2E-11EF-4EBA-81AE-5A4345FAB57D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60FB2C2E-11EF-4EBA-81AE-5A4345FAB57D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60FB2C2E-11EF-4EBA-81AE-5A4345FAB57D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C7AD2E37-FC71-454E-A5AD-20C079E16A22} = {A67A40C7-A195-424C-911A-DE101291A25A}
+		{60FB2C2E-11EF-4EBA-81AE-5A4345FAB57D} = {A67A40C7-A195-424C-911A-DE101291A25A}
 	EndGlobalSection
 EndGlobal
