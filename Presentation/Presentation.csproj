@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Betalgo.OpenAI.GPT3" Version="6.7.3" />
+    <PackageReference Include="MudBlazor" Version="6.1.9" />
   </ItemGroup>
 
 </Project>
