@@ -1,8 +1,14 @@
+using Domain.Repositories;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using OpenAI.GPT3.Extensions;
 using OpenAI.GPT3.Interfaces;
 using Presentation.Data;
+using Services;
+using Services.Interfaces;
+using Infrastructure.Repositories;
+using Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +16,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddOpenAIService().BuildServiceProvider().GetRequiredService<IOpenAIService>();
+builder.Services.AddScoped<IServiceManager, ServiceManager>();
+builder.Services.AddScoped<IRepoManager, RepoManager>();
+
+builder.Services.AddDbContext<RepoDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BachelorDB")));
+//builder.Services.AddOpenAIService().BuildServiceProvider().GetRequiredService<IOpenAIService>();
 
 var app = builder.Build();
 

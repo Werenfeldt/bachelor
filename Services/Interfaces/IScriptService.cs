@@ -15,4 +15,6 @@ public interface IScriptService
 
     Task DeleteAsync(Guid ownerId, Guid scriptId, CancellationToken cancellationToken = default);
 
+    Task<string> Translate(string s);
+
 }

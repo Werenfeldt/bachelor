@@ -1,8 +1,10 @@
-
+@* 
 @using OpenAI.GPT3.Interfaces;
 @using OpenAI.GPT3.ObjectModels;
 @using OpenAI.GPT3.ObjectModels.RequestModels;
-@inject IOpenAIService openAiService;
+@inject IOpenAIService openAiService; *@
+@using Services.Interfaces;
+@inject IServiceManager serviceManager;
 
 @page "/gpt" 
 
@@ -25,7 +27,9 @@
     {
         generatedText = "Translating...";
 
-        var completionResult = await openAiService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest
+        generatedText = await serviceManager.ScriptService.Translate(message);
+
+        @* var completionResult = await openAiService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest
         {
             Messages = new List<ChatMessage>
             {
@@ -38,7 +42,7 @@
         if (completionResult.Successful)
         {
                 generatedText = completionResult.Choices.First().Message.Content;
-        }
+        } *@
         StateHasChanged();
     }
 

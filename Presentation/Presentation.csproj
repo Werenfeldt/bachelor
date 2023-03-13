@@ -10,10 +10,13 @@
 
   <ItemGroup>
     <PackageReference Include="Betalgo.OpenAI.GPT3" Version="6.7.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Services\Interfaces\Interfaces.csproj" />
+    <ProjectReference Include="..\Services\Service\Service.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 
