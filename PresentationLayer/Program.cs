@@ -17,9 +17,12 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<IRepoManager, RepoManager>();
+builder.Services.AddOpenAIService();
 
 builder.Services.AddDbContext<BachelorDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BachelorDB")));
-builder.Services.AddOpenAIService().BuildServiceProvider().GetRequiredService<IOpenAIService>();
+// TODO remember to delete or use
+//Save for later
+//builder.Services.AddOpenAIService().BuildServiceProvider().GetRequiredService<IOpenAIService>();
 
 var app = builder.Build();
 
