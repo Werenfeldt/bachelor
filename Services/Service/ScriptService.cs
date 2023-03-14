@@ -10,10 +10,12 @@ internal sealed class ScriptService : IScriptService
 {
     private readonly IRepoManager _repoManager;
 
-    private IOpenAIService _openAiService;
+    private readonly IOpenAIService _openAiService;
 
 
-    public ScriptService(IRepoManager repoManager) => _repoManager = repoManager;
+    public ScriptService(IRepoManager repoManager, IOpenAIService openAiService) { 
+        _repoManager = repoManager;
+        _openAiService = openAiService;}
     
     public Task<ScriptDto> CreateAsync(Guid ownerId, CreateScriptDto scriptForCreationDto, CancellationToken cancellationToken = default)
     {

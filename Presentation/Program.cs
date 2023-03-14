@@ -23,7 +23,7 @@ builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<IRepoManager, RepoManager>();
 
 builder.Services.AddDbContext<RepoDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BachelorDB")));
-//builder.Services.AddOpenAIService().BuildServiceProvider().GetRequiredService<IOpenAIService>();
+builder.Services.AddOpenAIService().BuildServiceProvider().GetRequiredService<IOpenAIService>();
 
 var app = builder.Build();
 
