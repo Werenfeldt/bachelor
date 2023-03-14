@@ -1,8 +1,3 @@
-@* 
-@using OpenAI.GPT3.Interfaces;
-@using OpenAI.GPT3.ObjectModels;
-@using OpenAI.GPT3.ObjectModels.RequestModels;
-@inject IOpenAIService openAiService; *@
 @using ServiceLayer;
 @inject IServiceManager serviceManager;
 
@@ -29,20 +24,6 @@
 
         generatedText = await serviceManager.ScriptService.Translate(message);
 
-        @* var completionResult = await openAiService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest
-        {
-            Messages = new List<ChatMessage>
-            {
-                ChatMessage.FromUser(message)
-            },
-            Model = Models.ChatGpt3_5Turbo,
-            MaxTokens = 50//optional
-        });
-
-        if (completionResult.Successful)
-        {
-                generatedText = completionResult.Choices.First().Message.Content;
-        } *@
         StateHasChanged();
     }
 

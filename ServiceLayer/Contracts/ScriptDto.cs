@@ -1,4 +1,3 @@
-
 namespace ServiceLayer;
 
 public record ScriptDto(Guid Id, Guid OwnerId, DateTime DateCreated, string FileName, string Translation, string Github);

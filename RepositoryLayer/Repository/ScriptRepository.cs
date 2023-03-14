@@ -1,11 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using DomainLayer;
 using Microsoft.EntityFrameworkCore;
-
 namespace RepositoryLayer;
 
 internal sealed class ScriptRepository : IScriptRepository
