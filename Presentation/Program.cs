@@ -9,10 +9,13 @@ using Services.Interfaces;
 using Infrastructure.Repositories;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddMudServices();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
