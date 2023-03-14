@@ -6,7 +6,7 @@
     <ProjectGuid>{9CC58B8D-7730-4B8D-A926-52F58602CF52}</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>presentation</DockerServiceName>
+    <DockerServiceName>presentationlayer</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
