@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Components.Web;
 using OpenAI.GPT3.Extensions;
 using OpenAI.GPT3.Interfaces;
 using Presentation.Data;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddMudServices();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
