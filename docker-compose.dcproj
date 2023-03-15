@@ -1,4 +1,4 @@
-﻿
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk" DefaultTargets="Build">
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
@@ -6,8 +6,7 @@
     <ProjectGuid>{9CC58B8D-7730-4B8D-A926-52F58602CF52}</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>presentation</DockerServiceName>
-    <UserSecretsId>4119b5bd-5dd2-48bf-9721-80cf735e5c1e</UserSecretsId>
+    <DockerServiceName>presentationlayer</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

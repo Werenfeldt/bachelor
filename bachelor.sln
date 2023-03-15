@@ -7,6 +7,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentatio
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{9CC58B8D-7730-4B8D-A926-52F58602CF52}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{500EDC0A-7757-41F1-A814-4217D423E4A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLayer", "ServiceLayer\ServiceLayer.csproj", "{28410471-C024-40A6-B1BF-5273369F72EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryLayer", "RepositoryLayer\RepositoryLayer.csproj", "{F2C0170E-EDCC-4449-AD8D-AB9C397F3924}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainLayer", "DomainLayer\DomainLayer.csproj", "{49E733DE-17DB-4D1C-932A-65CBD8CB582E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +32,23 @@ Global
 		{9CC58B8D-7730-4B8D-A926-52F58602CF52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CC58B8D-7730-4B8D-A926-52F58602CF52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CC58B8D-7730-4B8D-A926-52F58602CF52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{500EDC0A-7757-41F1-A814-4217D423E4A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{500EDC0A-7757-41F1-A814-4217D423E4A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{500EDC0A-7757-41F1-A814-4217D423E4A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{500EDC0A-7757-41F1-A814-4217D423E4A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28410471-C024-40A6-B1BF-5273369F72EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28410471-C024-40A6-B1BF-5273369F72EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28410471-C024-40A6-B1BF-5273369F72EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28410471-C024-40A6-B1BF-5273369F72EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2C0170E-EDCC-4449-AD8D-AB9C397F3924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2C0170E-EDCC-4449-AD8D-AB9C397F3924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2C0170E-EDCC-4449-AD8D-AB9C397F3924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2C0170E-EDCC-4449-AD8D-AB9C397F3924}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49E733DE-17DB-4D1C-932A-65CBD8CB582E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49E733DE-17DB-4D1C-932A-65CBD8CB582E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49E733DE-17DB-4D1C-932A-65CBD8CB582E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49E733DE-17DB-4D1C-932A-65CBD8CB582E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal
