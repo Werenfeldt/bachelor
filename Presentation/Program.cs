@@ -20,8 +20,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 }
 
-GithubAPIController.AddToGithubActions("https://github.com/JeppeKorgaard98/bachelortest", "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");
-
 app.UseStaticFiles();
 
 app.UseRouting();

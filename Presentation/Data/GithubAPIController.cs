@@ -28,7 +28,7 @@ public static class GithubAPIController
     public static async Task<GithubRepository> GetRepositoryFromURLAsync(string url, string tokenAuth)
     {
         var gitHub = new GitHubClient(new ProductHeaderValue("Client"));
-        gitHub.Credentials = new Credentials(tokenAuth); //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
+        gitHub.Credentials = new Credentials(tokenAuth);
 
         var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
         var repositoryOwner = splittedString[0];
@@ -91,7 +91,7 @@ public static class GithubAPIController
     public static async Task<GithubRepository> GetRepositoryAsync(string repositoryName, string repositoryOwner, string tokenAuth)
     {
         var gitHub = new GitHubClient(new ProductHeaderValue("Client"));
-        gitHub.Credentials = new Credentials(tokenAuth); //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
+        gitHub.Credentials = new Credentials(tokenAuth);
 
         RepositoryCollection repos = new RepositoryCollection();
         repos.Add(repositoryOwner, repositoryName);
@@ -127,7 +127,7 @@ public static class GithubAPIController
     public static async void AddToGithubActions(string url, string tokenAuth)
     {
         var gitHub = new GitHubClient(new ProductHeaderValue("Client"));
-        gitHub.Credentials = new Credentials(tokenAuth); //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
+        gitHub.Credentials = new Credentials(tokenAuth);
 
         var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
         var repositoryOwner = splittedString[0];
