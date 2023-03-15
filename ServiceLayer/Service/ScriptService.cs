@@ -1,6 +1,7 @@
 using OpenAI.GPT3.Interfaces;
 using OpenAI.GPT3.ObjectModels;
 using OpenAI.GPT3.ObjectModels.RequestModels;
+using Mapster;
 
 namespace ServiceLayer;
 
@@ -15,9 +16,9 @@ internal sealed class ScriptService : IScriptService
         _repoManager = repoManager;
         _openAiService = openAiService;}
     
-    public Task<ScriptDto> CreateAsync(Guid ownerId, CreateScriptDto scriptForCreationDto, CancellationToken cancellationToken = default)
+    public async Task<ScriptFileDTO> CreateAsync(Guid ownerId, CreateScriptFileDTO scriptForCreationDto, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _repoManager.ScriptFileRepository.Insert(scriptForCreationDto);
     }
 
     public Task DeleteAsync(Guid ownerId, Guid scriptId, CancellationToken cancellationToken = default)
@@ -25,12 +26,12 @@ internal sealed class ScriptService : IScriptService
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<ScriptDto>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default)
+    public Task<IEnumerable<ScriptFileDTO>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<ScriptDto> GetByIdAsync(Guid ownerId, Guid scriptId, CancellationToken cancellationToken)
+    public Task<ScriptFileDTO> GetByIdAsync(Guid ownerId, Guid scriptId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

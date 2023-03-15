@@ -9,7 +9,9 @@ public sealed class BachelorDbContext : DbContext
     {
     }
 
-    public DbSet<Script> Scripts { get; set; }
+    public DbSet<ScriptFile> ScriptFiles { get; set; }
+
+    public DbSet<GitFolder> GitFolder { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) =>
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(BachelorDbContext).Assembly);

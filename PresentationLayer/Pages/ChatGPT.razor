@@ -6,7 +6,7 @@
 <PageTitle>Chat GPT</PageTitle>
 <div class="h1 mb-4 text-center"> Input your script</div>
 <div class="form-group text-center">
-  <input class="form-control my-4 text-center py-2 m-auto" style="max-width:600px;" type="text" @bind="@message" placeholder="Type your message here" />
+  <input class="form-control my-4 text-center py-2 m-auto" style="max-width:600px;" type="text" @bind="@gitUrl" placeholder="Type your message here" />
   <button class="btn btn-success mb-4 px-2" style="max-width:200px;" onclick="@GetResponseFromGPT3">Translate</button>
 </div>
 <div class="d-flex justify-content-center text-center">
@@ -15,14 +15,22 @@
 
 @code{
 
-    public string message { get; set; }
+    public string gitUrl { get; set; }
     public string generatedText { get; set; } = "Answer will be displayed here.";
+
+    
 
     private async Task GetResponseFromGPT3()
     {
         generatedText = "Translating...";
 
-        generatedText = await serviceManager.ScriptService.Translate(message);
+        var hej = await serviceManager.GithubService.CreateGitRepositoryFromURLAsync(gitUrl, "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");
+
+        Console.WriteLine(hej.scriptFileDTOs[0].Content);
+
+        var prompt = hej.scriptFileDTOs[0].Content;
+
+        generatedText = await serviceManager.ScriptService.Translate("Translate this cypress script into steps: " + prompt);
 
         StateHasChanged();
     }

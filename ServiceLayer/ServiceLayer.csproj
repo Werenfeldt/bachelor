@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <PackageReference Include="Betalgo.OpenAI.GPT3" Version="6.7.3" />
+    <PackageReference Include="Octokit" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>

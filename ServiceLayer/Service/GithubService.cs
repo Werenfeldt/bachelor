@@ -1,9 +1,15 @@
-namespace Presentation.Data;
+namespace ServiceLayer;
 using Octokit;
-public static class GithubAPIController
+internal sealed class GithubService : IGithubService
 {
+    private readonly IRepoManager _repoManager;
 
-    public static async Task<GithubRepository> GetRepositoryFromURLAsync(string url)
+    public GithubService(IRepoManager repoManager)
+    {
+        _repoManager = repoManager;
+    }
+
+    public async Task<GitFolderDTO> CreateGitRepositoryFromURLAsync(string url)
     {
         var gitHub = new GitHubClient(new ProductHeaderValue("Client"));
 
@@ -21,11 +27,18 @@ public static class GithubAPIController
 
         var repositoryContents = await gitHub.Search.SearchCode(request);
 
-
-        return new GithubRepository(repositoryName, repositoryOwner, await getFilesAsync(gitHub, repositoryOwner, repositoryName, repositoryContents.Items));
+        var gitFolderDTO = new CreateGitFolderDTO
+        {
+            Id = Guid.NewGuid(),
+            Name = repositoryName,
+            Owner = repositoryOwner,
+            scriptFileDTOs = await getFilesAsync(gitHub, repositoryOwner, repositoryName, repositoryContents.Items)
+        };
+    
+        return await _repoManager.GitFolderRepository.Insert(gitFolderDTO);
     }
 
-    public static async Task<GithubRepository> GetRepositoryFromURLAsync(string url, string tokenAuth)
+    public async Task<GitFolderDTO> CreateGitRepositoryFromURLAsync(string url, string tokenAuth)
     {
         var gitHub = new GitHubClient(new ProductHeaderValue("Client"));
         gitHub.Credentials = new Credentials(tokenAuth);
@@ -41,14 +54,21 @@ public static class GithubAPIController
         {
             Repos = repos
         };
-
         var repositoryContents = await gitHub.Search.SearchCode(request);
+        var gitFolderDTO = new CreateGitFolderDTO
+        {
+            Id = Guid.NewGuid(),
+            Name = repositoryName,
+            Owner = repositoryOwner,
+            scriptFileDTOs = await getFilesAsync(gitHub, repositoryOwner, repositoryName, repositoryContents.Items)
+        };
 
-        return new GithubRepository(repositoryName, repositoryOwner, await getFilesAsync(gitHub, repositoryOwner, repositoryName, repositoryContents.Items));
-
+        // TODO ændre tilbage til DB
+        return new GitFolderDTO(gitFolderDTO.Id, gitFolderDTO.Owner, gitFolderDTO.Name, gitFolderDTO.scriptFileDTOs);
+        //return await _repoManager.GitFolderRepository.Insert(gitFolderDTO);
     }
 
-    public static async Task<GithubRepository> GetRepositoryFromURLAsync(string url, string username, string password)
+    public async Task<GitFolderDTO> CreateGitRepositoryFromURLAsync(string url, string username, string password)
     {
         var gitHub = new GitHubClient(new ProductHeaderValue("Client"));
         gitHub.Credentials = new Credentials(username, password);
@@ -67,11 +87,17 @@ public static class GithubAPIController
 
         var repositoryContents = await gitHub.Search.SearchCode(request);
 
-        return new GithubRepository(repositoryName, repositoryOwner, await getFilesAsync(gitHub, repositoryOwner, repositoryName, repositoryContents.Items));
-
+        var gitFolderDTO = new CreateGitFolderDTO
+        {
+            Id = Guid.NewGuid(),
+            Name = repositoryName,
+            Owner = repositoryOwner,
+            scriptFileDTOs = await getFilesAsync(gitHub, repositoryOwner, repositoryName, repositoryContents.Items)
+        };
+        return await _repoManager.GitFolderRepository.Insert(gitFolderDTO);
     }
 
-    public static async Task<GithubRepository> GetRepositoryAsync(string repositoryName, string repositoryOwner)
+    public async Task<GitFolderDTO> CreateGitRepositoryAsync(string repositoryName, string repositoryOwner)
     {
         var gitHub = new GitHubClient(new ProductHeaderValue("Client"));
 
@@ -85,10 +111,17 @@ public static class GithubAPIController
 
         var repositoryContents = await gitHub.Search.SearchCode(request);
 
-        return new GithubRepository(repositoryName, repositoryOwner, await getFilesAsync(gitHub, repositoryOwner, repositoryName, repositoryContents.Items));
+        var gitFolderDTO = new CreateGitFolderDTO
+        {
+            Id = Guid.NewGuid(),
+            Name = repositoryName,
+            Owner = repositoryOwner,
+            scriptFileDTOs = await getFilesAsync(gitHub, repositoryOwner, repositoryName, repositoryContents.Items)
+        };
+        return await _repoManager.GitFolderRepository.Insert(gitFolderDTO);
     }
 
-    public static async Task<GithubRepository> GetRepositoryAsync(string repositoryName, string repositoryOwner, string tokenAuth)
+    public async Task<GitFolderDTO> CreateGitRepositoryAsync(string repositoryName, string repositoryOwner, string tokenAuth)
     {
         var gitHub = new GitHubClient(new ProductHeaderValue("Client"));
         gitHub.Credentials = new Credentials(tokenAuth);
@@ -103,10 +136,17 @@ public static class GithubAPIController
 
         var repositoryContents = await gitHub.Search.SearchCode(request);
 
-        return new GithubRepository(repositoryName, repositoryOwner, await getFilesAsync(gitHub, repositoryOwner, repositoryName, repositoryContents.Items));
+        var gitFolderDTO = new CreateGitFolderDTO
+        {
+            Id = Guid.NewGuid(),
+            Name = repositoryName,
+            Owner = repositoryOwner,
+            scriptFileDTOs = await getFilesAsync(gitHub, repositoryOwner, repositoryName, repositoryContents.Items)
+        };
+        return await _repoManager.GitFolderRepository.Insert(gitFolderDTO);
     }
 
-    public static async Task<GithubRepository> GetRepositoryAsync(string repositoryName, string repositoryOwner, string username, string password)
+    public async Task<GitFolderDTO> CreateGitRepositoryAsync(string repositoryName, string repositoryOwner, string username, string password)
     {
         var gitHub = new GitHubClient(new ProductHeaderValue("Client"));
         gitHub.Credentials = new Credentials(username, password);
@@ -121,10 +161,17 @@ public static class GithubAPIController
 
         var repositoryContents = await gitHub.Search.SearchCode(request);
 
-        return new GithubRepository(repositoryName, repositoryOwner, await getFilesAsync(gitHub, repositoryOwner, repositoryName, repositoryContents.Items));
+        var gitFolderDTO = new CreateGitFolderDTO
+        {
+            Id = Guid.NewGuid(),
+            Name = repositoryName,
+            Owner = repositoryOwner,
+            scriptFileDTOs = await getFilesAsync(gitHub, repositoryOwner, repositoryName, repositoryContents.Items)
+        };
+        return await _repoManager.GitFolderRepository.Insert(gitFolderDTO);
     }
 
-    public static async void AddToGithubActions(string url, string tokenAuth)
+    public async void AddToGithubActions(string url, string tokenAuth)
     {
         var gitHub = new GitHubClient(new ProductHeaderValue("Client"));
         gitHub.Credentials = new Credentials(tokenAuth);
@@ -146,15 +193,17 @@ public static class GithubAPIController
         return text.StartsWith(prefix) ? text.Substring(prefix.Length) : text;
     }
 
-    private static async Task<List<ScriptFile>> getFilesAsync(GitHubClient gitHub, string owner, string name, IReadOnlyList<SearchCode> githubRepository)
+    private async Task<List<ScriptFileDTO>> getFilesAsync(GitHubClient gitHub, string owner, string name, IReadOnlyList<SearchCode> GitFolderDTO)
     {
-        List<ScriptFile> result = new List<ScriptFile>();
+        List<ScriptFileDTO> result = new List<ScriptFileDTO>();
 
-        foreach (var scriptFile in githubRepository)
+        foreach (var scriptFile in GitFolderDTO)
         {
             var fileContent = await gitHub.Repository.Content.GetAllContents(owner, name, scriptFile.Path);
 
-            ScriptFile file = new ScriptFile(
+            ScriptFileDTO file = new ScriptFileDTO(
+                Guid.NewGuid(),
+                DateTime.UtcNow,
                 scriptFile.GitUrl,
                 scriptFile.HtmlUrl,
                 scriptFile.Url,
@@ -163,11 +212,18 @@ public static class GithubAPIController
                 scriptFile.Sha,
                 fileContent[0].Content
             );
-
             result.Add(file);
         }
 
         return result;
+    }
+
+    public void printFiles(List<ScriptFileDTO> scriptFiles)
+    {
+        foreach (var item in scriptFiles)
+        {
+            Console.WriteLine(item.ToString());
+        }
     }
 
 }
