@@ -20,9 +20,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 }
 
-var s = await GithubAPIController.GetRepositoryFromURLAsync("https://github.com/JeppeKorgaard98/bachelortest", "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");
-s.printFiles();
-
+GithubAPIController.AddToGithubActions("https://github.com/JeppeKorgaard98/bachelortest", "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");
 
 app.UseStaticFiles();
 
