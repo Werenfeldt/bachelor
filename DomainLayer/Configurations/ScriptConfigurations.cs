@@ -7,8 +7,11 @@ internal sealed class ScriptConfiguration : IEntityTypeConfiguration<ScriptFile>
 {
     public void Configure(EntityTypeBuilder<ScriptFile> builder)
     {
-        builder.Property(script => script.OwnerId).IsRequired();
+        //TODO Reintroduce
+        //builder.Property(script => script.OwnerId).IsRequired();
 
         builder.Property(script => script.Name).HasMaxLength(60);
+
+        builder.HasOne(script => script.Gitfolder).WithMany(gitfolder => gitfolder.ScriptFiles);
     }
 }

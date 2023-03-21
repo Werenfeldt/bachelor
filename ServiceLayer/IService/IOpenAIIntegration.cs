@@ -1,6 +1,6 @@
 namespace ServiceLayer;
 
-public interface IScriptService
+public interface IOpenAIIntegration
 {
     Task<IEnumerable<ScriptFileDTO>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default);
 

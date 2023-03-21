@@ -1,18 +1,17 @@
 using OpenAI.GPT3.Interfaces;
 using OpenAI.GPT3.ObjectModels;
 using OpenAI.GPT3.ObjectModels.RequestModels;
-using Mapster;
 
 namespace ServiceLayer;
 
-internal sealed class ScriptService : IScriptService
+internal sealed class OpenAIIntegration : IOpenAIIntegration
 {
     private readonly IRepoManager _repoManager;
 
     private readonly IOpenAIService _openAiService;
 
 
-    public ScriptService(IRepoManager repoManager, IOpenAIService openAiService) { 
+    public OpenAIIntegration(IRepoManager repoManager, IOpenAIService openAiService) { 
         _repoManager = repoManager;
         _openAiService = openAiService;}
     

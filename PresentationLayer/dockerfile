@@ -4,11 +4,12 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-
-
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["PresentationLayer/PresentationLayer.csproj", "PresentationLayer/"]
+COPY ["RepositoryLayer/RepositoryLayer.csproj", "RepositoryLayer/"]
+COPY ["DomainLayer/DomainLayer.csproj", "DomainLayer/"]
+COPY ["ServiceLayer/ServiceLayer.csproj", "ServiceLayer/"]
 RUN dotnet restore "PresentationLayer/PresentationLayer.csproj"
 COPY . .
 WORKDIR "/src/PresentationLayer"

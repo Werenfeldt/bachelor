@@ -1,25 +1,28 @@
-version: "3.4"
+version: '3.4'
 
 services:
-  presentation:
+  presentationlayer:
     image: ${DOCKER_REGISTRY-}presentationlayer
     build:
       context: .
       dockerfile: PresentationLayer/Dockerfile
     environment:
-      ConnectionStrings__Bachelor:
+      ConnectionStrings:BachelorDB:
+      OpenAIServiceOptions:ApiKey:
     depends_on:
       - db
     secrets:
       - source: connection_string
-        target: ConnectionStrings__Bachelor
+        target: ConnectionStrings:BachelorDB
+      - source: openAIServiceOptions
+        target: OpenAIServiceOptions:ApiKey
   db:
-    image: mcr.microsoft.com/azure-sql-edge
+    image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD_FILE: /run/secrets/db_password
     ports:
-      - 3306:3306
+      - "1433:1433"
     secrets:
       - db_password
 secrets:
@@ -27,3 +30,5 @@ secrets:
     file: ./.local/db_password.txt
   connection_string:
     file: ./.local/connection_string.txt
+  openAIServiceOptions:
+    file: ./.local/openAIServiceOptions.txt
