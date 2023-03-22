@@ -6,8 +6,9 @@ internal sealed class ScriptFileRepository : IScriptFileRepository
 
     public ScriptFileRepository(BachelorDbContext dbContext) => _dbContext = dbContext;
 
-    public async Task<IEnumerable<ScriptFile>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default) =>
-        await _dbContext.ScriptFiles.Where(x => x.OwnerId == ownerId).ToListAsync(cancellationToken);
+    //TODO reintroduce
+    // public async Task<IEnumerable<ScriptFile>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default) =>
+    //     await _dbContext.ScriptFiles.Where(x => x.OwnerId == ownerId).ToListAsync(cancellationToken);
 
     public async Task<ScriptFile> GetByIdAsync(Guid scriptId, CancellationToken cancellationToken = default) =>
         await _dbContext.ScriptFiles.FirstOrDefaultAsync(x => x.Id == scriptId, cancellationToken);

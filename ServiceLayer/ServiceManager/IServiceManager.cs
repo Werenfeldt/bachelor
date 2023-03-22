@@ -2,7 +2,7 @@ namespace ServiceLayer;
 
 public interface IServiceManager
 {
-    IScriptService ScriptService { get; }
+    IOpenAIIntegration OpenAIIntegration { get; }
 
-    IGithubService GithubService { get; }
+    IGithubIntegration GithubIntegration { get; }
 }

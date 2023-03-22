@@ -1,5 +1,5 @@
 namespace ServiceLayer;
-public interface IGithubService
+public interface IGithubIntegration
 {
     Task<GitFolderDTO> CreateGitRepositoryFromURLAsync(string url);
 
