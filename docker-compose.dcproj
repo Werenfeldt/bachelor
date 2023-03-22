@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>{9CC58B8D-7730-4B8D-A926-52F58602CF52}</ProjectGuid>
+    <ProjectGuid>{CA6E6A20-4399-45C4-80B9-0DD2C72AD93A}</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>presentationlayer</DockerServiceName>

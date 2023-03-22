@@ -1,10 +1,11 @@
 @using ServiceLayer;
 @inject IServiceManager serviceManager;
+@inject IConfiguration _config;
 
 @page "/gpt" 
 
 <PageTitle>Chat GPT</PageTitle>
-<div class="h1 mb-4 text-center"> Input your script</div>
+<div class="h1 mb-4 text-center"> Input your script or url</div>
 <div class="form-group text-center">
   <input class="form-control my-4 text-center py-2 m-auto" style="max-width:600px;" type="text" @bind="@gitUrl" placeholder="Type your message here" />
   <button class="btn btn-success mb-4 px-2" style="max-width:200px;" onclick="@GetResponseFromGPT3">Translate</button>
@@ -18,19 +19,17 @@
     public string gitUrl { get; set; }
     public string generatedText { get; set; } = "Answer will be displayed here.";
 
-    
-
     private async Task GetResponseFromGPT3()
     {
         generatedText = "Translating...";
 
-        var hej = await serviceManager.GithubService.CreateGitRepositoryFromURLAsync(gitUrl, "**");
+        var hej = await serviceManager.GithubIntegration.CreateGitRepositoryFromURLAsync(gitUrl, "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");
 
         Console.WriteLine(hej.scriptFileDTOs[0].Content);
 
         var prompt = hej.scriptFileDTOs[0].Content;
 
-        generatedText = await serviceManager.ScriptService.Translate("Translate this cypress script into steps: " + prompt);
+        generatedText = await serviceManager.OpenAIIntegration.Translate("Translate this cypress script into steps: " + prompt);
 
         StateHasChanged();
     }

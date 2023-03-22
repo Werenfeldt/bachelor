@@ -7,19 +7,25 @@ using OpenAI.GPT3.Extensions;
 using OpenAI.GPT3.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
-
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddKeyPerFile("/run/secrets", optional: true);
 
 // Add services to the container.
 builder.Services.AddMudServices();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
+builder.Services.AddDbContext<BachelorDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BachelorDB")));
+Console.WriteLine(builder.Configuration.GetConnectionString("BachelorDB"));
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddScoped<IBachelorDbContext, BachelorDbContext>();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<IRepoManager, RepoManager>();
 builder.Services.AddOpenAIService();
 
-builder.Services.AddDbContext<BachelorDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BachelorDB")));
 // TODO remember to delete or use
 //Save for later
 //builder.Services.AddOpenAIService().BuildServiceProvider().GetRequiredService<IOpenAIService>();

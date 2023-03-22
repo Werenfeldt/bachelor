@@ -1,13 +1,18 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace DomainLayer;
 public class ScriptFile
 {
+    [Key]
     public Guid Id { get; set; }
 
-    public Guid OwnerId { get; set; }
-
+    //TODO Reintroduce
+    //public Guid OwnerId { get; set; }
+    [DataType(DataType.Date)]
     public DateTime DateCreated { get; set; }
 
-    public string Translation { get; set; }
+    public string? Translation { get; set; }
 
     public string GitUrl { get; set; }
     public string HtmlUrl { get; set; }
@@ -16,6 +21,11 @@ public class ScriptFile
     public string Name { get; set; }
     public string Sha { get; set; }
     public string RawContent { get; set; }
+
+    public Guid GitfolderId { get; set; }
+    
+    [ForeignKey("GitfolderId")]
+    public GitFolder? Gitfolder { get; set; }
 
     public ScriptFile(string gitUrl, string htmlUrl, string apiUrl, string filePath, string name, string sha, string rawContent)
     {
