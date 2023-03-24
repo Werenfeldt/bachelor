@@ -1,21 +1,28 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace DomainLayer;
 
 public class Project
 {
     [Key]
     public Guid Id { get; set; }
-    public string Name { get; set; }
-    // TODO introduce this again
-    //public Guid OwnerId { get; set; }
+    public string Title { get; set; }
 
-    public string OwnerName { get; set; }
-    public List<TestFile>? TestFiles { get; set; }
+    public string GitRepoName { get; set; }
 
-    public Project(string name, string ownerName)
+    public string GitRepoOwner { get; set; }
+
+    public string? Description { get; set; }
+
+    [DataType(DataType.Date)]
+    public DateTime CreatedDate { get; set; }
+
+    //public string User { get; set; }
+    public ICollection<TestFile>? TestFiles { get; set; }
+
+    public Project(string title, string gitRepoName, string gitRepoOwner, DateTime createdDate)
     {
-        Name = name;
-        OwnerName = ownerName;
+        Title = title;
+        GitRepoName = gitRepoName;
+        GitRepoOwner = gitRepoOwner;
+        CreatedDate = createdDate;
     }
 }

@@ -6,36 +6,30 @@ public class TestFile
 {
     [Key]
     public Guid Id { get; set; }
-
-    //TODO Reintroduce
-    //public Guid OwnerId { get; set; }
-    [DataType(DataType.Date)]
-    public DateTime DateCreated { get; set; }
-
-    public string? Translation { get; set; }
-
-    public string GitUrl { get; set; }
-    public string HtmlUrl { get; set; }
-    public string ApiUrl { get; set; }
-    public string FilePath { get; set; }
     public string Name { get; set; }
-    public string Sha { get; set; }
-    public string RawContent { get; set; }
+
+    public string Path { get; set; }
+    public string Content { get; set; }
+    [DataType(DataType.Date)]
+    public DateTime CreatedDate { get; set; }
+
+    [DataType(DataType.Date)]
+    public DateTime? UpdatedDate { get; set; }
 
     public Guid ProjectId { get; set; }
     
-    [ForeignKey("ProjectId")]
+    [Required]
     public Project? Project { get; set; }
 
-    public TestFile(string gitUrl, string htmlUrl, string apiUrl, string filePath, string name, string sha, string rawContent)
+    
+
+    public TestFile(string name, string path, string content, DateTime createdDate )
     {
-        GitUrl = gitUrl;
-        HtmlUrl = htmlUrl;
-        ApiUrl = apiUrl;
-        FilePath = filePath;
         Name = name;
-        Sha = sha;
-        RawContent = rawContent;
+        Path = path;
+        Content = content;
+        CreatedDate = createdDate;
+
     }
 
     public override string ToString()
