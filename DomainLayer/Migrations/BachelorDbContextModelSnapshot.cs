@@ -22,7 +22,7 @@ namespace DomainLayer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DomainLayer.GitFolder", b =>
+            modelBuilder.Entity("DomainLayer.Project", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,10 +38,10 @@ namespace DomainLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GitFolders");
+                    b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("DomainLayer.ScriptFile", b =>
+            modelBuilder.Entity("DomainLayer.TestFile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -62,7 +62,7 @@ namespace DomainLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("GitfolderId")
+                    b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("HtmlUrl")
@@ -87,25 +87,25 @@ namespace DomainLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GitfolderId");
+                    b.HasIndex("ProjectId");
 
-                    b.ToTable("ScriptFiles");
+                    b.ToTable("TestFiles");
                 });
 
-            modelBuilder.Entity("DomainLayer.ScriptFile", b =>
+            modelBuilder.Entity("DomainLayer.TestFile", b =>
                 {
-                    b.HasOne("DomainLayer.GitFolder", "Gitfolder")
-                        .WithMany("ScriptFiles")
-                        .HasForeignKey("GitfolderId")
+                    b.HasOne("DomainLayer.Project", "Project")
+                        .WithMany("TestFiles")
+                        .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Gitfolder");
+                    b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("DomainLayer.GitFolder", b =>
+            modelBuilder.Entity("DomainLayer.Project", b =>
                 {
-                    b.Navigation("ScriptFiles");
+                    b.Navigation("TestFiles");
                 });
 #pragma warning restore 612, 618
         }

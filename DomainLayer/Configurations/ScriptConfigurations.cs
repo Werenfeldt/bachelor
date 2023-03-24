@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DomainLayer.Configurations;
 
-internal sealed class ScriptConfiguration : IEntityTypeConfiguration<ScriptFile>
+internal sealed class ScriptConfiguration : IEntityTypeConfiguration<TestFile>
 {
-    public void Configure(EntityTypeBuilder<ScriptFile> builder)
+    public void Configure(EntityTypeBuilder<TestFile> builder)
     {
         //TODO Reintroduce
         //builder.Property(script => script.OwnerId).IsRequired();
 
         builder.Property(script => script.Name).HasMaxLength(60);
 
-        builder.HasOne(script => script.Gitfolder).WithMany(gitfolder => gitfolder.ScriptFiles);
+        builder.HasOne(script => script.Project).WithMany(gitfolder => gitfolder.TestFiles);
     }
 }

@@ -12,34 +12,34 @@ internal sealed class GithubIntegration : IGithubIntegration
         gitHub = new GitHubClient(new ProductHeaderValue("Client"));
     }
 
-    public async Task<GitFolderDTO> CreateGitRepositoryFromURLAsync(string url) =>
+    public async Task<ProjectDTO> CreateGitRepositoryFromURLAsync(string url) =>
         await CreateGitRepositoryFromUrl(url);
 
-    public async Task<GitFolderDTO> CreateGitRepositoryFromURLAsync(string url, string tokenAuth)
+    public async Task<ProjectDTO> CreateGitRepositoryFromURLAsync(string url, string tokenAuth)
     {
         gitHub.Credentials = new Credentials(tokenAuth);
 
         return await CreateGitRepositoryFromUrl(url);
     }
 
-    public async Task<GitFolderDTO> CreateGitRepositoryFromURLAsync(string url, string username, string password)
+    public async Task<ProjectDTO> CreateGitRepositoryFromURLAsync(string url, string username, string password)
     {
         gitHub.Credentials = new Credentials(username, password);
 
         return await CreateGitRepositoryFromUrl(url);
     }
 
-    public async Task<GitFolderDTO> CreateGitRepositoryAsync(string repositoryName, string repositoryOwner) =>
+    public async Task<ProjectDTO> CreateGitRepositoryAsync(string repositoryName, string repositoryOwner) =>
         await CreateGitRepository(repositoryName, repositoryOwner);
 
-    public async Task<GitFolderDTO> CreateGitRepositoryAsync(string repositoryName, string repositoryOwner, string tokenAuth)
+    public async Task<ProjectDTO> CreateGitRepositoryAsync(string repositoryName, string repositoryOwner, string tokenAuth)
     {
         gitHub.Credentials = new Credentials(tokenAuth);
 
         return await CreateGitRepository(repositoryName, repositoryOwner);
     }
 
-    public async Task<GitFolderDTO> CreateGitRepositoryAsync(string repositoryName, string repositoryOwner, string username, string password)
+    public async Task<ProjectDTO> CreateGitRepositoryAsync(string repositoryName, string repositoryOwner, string username, string password)
     {
         //var gitHub = new GitHubClient(new ProductHeaderValue("Client"));
         gitHub.Credentials = new Credentials(username, password);
@@ -65,7 +65,7 @@ internal sealed class GithubIntegration : IGithubIntegration
         await gitHub.Repository.Content.CreateFile(repositoryOwner, repositoryName, ".github/workflows/" + fileName, new CreateFileRequest(commitMessage, fileContent));
     }
 
-    private async Task<GitFolderDTO> CreateGitRepository(string repositoryName, string repositoryOwner)
+    private async Task<ProjectDTO> CreateGitRepository(string repositoryName, string repositoryOwner)
     {
         RepositoryCollection repos = new RepositoryCollection();
         repos.Add(repositoryOwner, repositoryName);
@@ -77,17 +77,17 @@ internal sealed class GithubIntegration : IGithubIntegration
 
         var repositoryContents = await gitHub.Search.SearchCode(request);
 
-        var gitFolderDTO = new CreateGitFolderDTO
+        var projectDTO = new CreateProjectDTO
         {
             Id = Guid.NewGuid(),
             Name = repositoryName,
             OwnerName = repositoryOwner,
-            scriptFileDTOs = await makeScriptFileDTO(repositoryOwner, repositoryName, repositoryContents.Items)
+            testFileDTOs = await makeTestFileDTO(repositoryOwner, repositoryName, repositoryContents.Items)
         };
-        return await _repoManager.GitFolderRepository.Insert(gitFolderDTO);
+        return await _repoManager.ProjectRepository.Insert(projectDTO);
     }
 
-    private async Task<GitFolderDTO> CreateGitRepositoryFromUrl(string url)
+    private async Task<ProjectDTO> CreateGitRepositoryFromUrl(string url)
     {
         var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
         var repositoryOwner = splittedString[0];
@@ -103,38 +103,38 @@ internal sealed class GithubIntegration : IGithubIntegration
 
         var repositoryContents = await gitHub.Search.SearchCode(request);
 
-        var gitFolderDTO = new CreateGitFolderDTO
+        var projectDTO = new CreateProjectDTO
         {
             Id = Guid.NewGuid(),
             Name = repositoryName,
             OwnerName = repositoryOwner,
-            scriptFileDTOs = await makeScriptFileDTO(repositoryOwner, repositoryName, repositoryContents.Items)
+            testFileDTOs = await makeTestFileDTO(repositoryOwner, repositoryName, repositoryContents.Items)
         };
 
-        return await _repoManager.GitFolderRepository.Insert(gitFolderDTO);
+        return await _repoManager.ProjectRepository.Insert(projectDTO);
     }
     private static string StripPrefix(string text, string prefix)
     {
         return text.StartsWith(prefix) ? text.Substring(prefix.Length) : text;
     }
 
-    private async Task<List<ScriptFileDTO>> makeScriptFileDTO(string owner, string name, IReadOnlyList<SearchCode> GitFolderDTO)
+    private async Task<List<TestFileDTO>> makeTestFileDTO(string owner, string name, IReadOnlyList<SearchCode> ProjectDTO)
     {
-        List<ScriptFileDTO> result = new List<ScriptFileDTO>();
+        List<TestFileDTO> result = new List<TestFileDTO>();
 
-        foreach (var scriptFile in GitFolderDTO)
+        foreach (var testFile in ProjectDTO)
         {
-            var fileContent = await gitHub.Repository.Content.GetAllContents(owner, name, scriptFile.Path);
+            var fileContent = await gitHub.Repository.Content.GetAllContents(owner, name, testFile.Path);
 
-            ScriptFileDTO file = new ScriptFileDTO(
+            TestFileDTO file = new TestFileDTO(
                 Guid.NewGuid(),
                 DateTime.UtcNow,
-                scriptFile.GitUrl,
-                scriptFile.HtmlUrl,
-                scriptFile.Url,
-                scriptFile.Path,
-                scriptFile.Name,
-                scriptFile.Sha,
+                testFile.GitUrl,
+                testFile.HtmlUrl,
+                testFile.Url,
+                testFile.Path,
+                testFile.Name,
+                testFile.Sha,
                 fileContent[0].Content
             );
             result.Add(file);
@@ -143,9 +143,9 @@ internal sealed class GithubIntegration : IGithubIntegration
         return result;
     }
 
-    public void printFiles(List<ScriptFileDTO> scriptFiles)
+    public void printFiles(List<TestFileDTO> testFiles)
     {
-        foreach (var item in scriptFiles)
+        foreach (var item in testFiles)
         {
             Console.WriteLine(item.ToString());
         }

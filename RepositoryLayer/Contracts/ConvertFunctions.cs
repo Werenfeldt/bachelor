@@ -3,44 +3,44 @@ namespace RepositoryLayer;
 public static class ConvertFunctions
 {
 
-    public static GitFolderDTO GitFolderMapToDTO(GitFolder gitFolder)
+    public static ProjectDTO ProjectMapToDTO(Project project)
     {
-        var scriptList = new List<ScriptFileDTO>();
+        var scriptList = new List<TestFileDTO>();
 
-        foreach (var script in gitFolder.ScriptFiles)
+        foreach (var script in project.TestFiles)
         {
-            scriptList.Add(ScriptFileMapToDTO(script));
+            scriptList.Add(TestFileMapToDTO(script));
         }
 
-        return new GitFolderDTO(gitFolder.Id, gitFolder.OwnerName, gitFolder.Name, scriptList);
+        return new ProjectDTO(project.Id, project.OwnerName, project.Name, scriptList);
     }
 
-    public static GitFolderDTO GitFolderMapToDTO(CreateGitFolderDTO gitFolder)
+    public static ProjectDTO ProjectMapToDTO(CreateProjectDTO project)
     {
-        return new GitFolderDTO(gitFolder.Id, gitFolder.OwnerName, gitFolder.Name, gitFolder.scriptFileDTOs);
+        return new ProjectDTO(project.Id, project.OwnerName, project.Name, project.testFileDTOs);
     }
 
-    public static GitFolder GitFolderMapToEntity(CreateGitFolderDTO gitFolder)
+    public static Project ProjectMapToEntity(CreateProjectDTO project)
     {
-        var scriptList = new List<ScriptFile>();
+        var scriptList = new List<TestFile>();
 
-        foreach (var script in gitFolder.scriptFileDTOs)
+        foreach (var script in project.testFileDTOs)
         {
-            scriptList.Add(ScriptFileMapToEntity(script));
+            scriptList.Add(TestFileMapToEntity(script));
         }
 
-        return new GitFolder(gitFolder.Name, gitFolder.OwnerName) { ScriptFiles = scriptList };
+        return new Project(project.Name, project.OwnerName) { TestFiles = scriptList };
 
     }
 
-    private static ScriptFile ScriptFileMapToEntity(ScriptFileDTO scriptFile)
+    private static TestFile TestFileMapToEntity(TestFileDTO testFile)
     {
-        return new ScriptFile(scriptFile.GitUrl, scriptFile.HtmlUrl, scriptFile.Url, scriptFile.Path, scriptFile.Name, scriptFile.Sha, scriptFile.Content);
+        return new TestFile(testFile.GitUrl, testFile.HtmlUrl, testFile.Url, testFile.Path, testFile.Name, testFile.Sha, testFile.Content);
     }
 
-    private static ScriptFileDTO ScriptFileMapToDTO(ScriptFile scriptFile)
+    private static TestFileDTO TestFileMapToDTO(TestFile testFile)
     {
-        return new ScriptFileDTO(scriptFile.Id, scriptFile.DateCreated, scriptFile.Name, scriptFile.GitUrl, scriptFile.HtmlUrl, scriptFile.ApiUrl, scriptFile.FilePath, scriptFile.Sha, scriptFile.RawContent);
+        return new TestFileDTO(testFile.Id, testFile.DateCreated, testFile.Name, testFile.GitUrl, testFile.HtmlUrl, testFile.ApiUrl, testFile.FilePath, testFile.Sha, testFile.RawContent);
     }
 
 

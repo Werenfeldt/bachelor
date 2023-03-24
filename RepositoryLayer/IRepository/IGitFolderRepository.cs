@@ -1,9 +1,9 @@
 namespace RepositoryLayer;
 
-public interface IGitFolderRepository{
+public interface IProjectRepository{
     //TODO introduce this again
-    //Task<IEnumerable<GitFolder>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default);
-    Task<GitFolder> GetByIdAsync(Guid gitFolderId, CancellationToken cancellationToken = default);
-    Task<GitFolderDTO> Insert(CreateGitFolderDTO gitFolder);
-    void Remove(GitFolder gitFolder);
+    //Task<IEnumerable<Project>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default);
+    Task<Project> GetByIdAsync(Guid projectId, CancellationToken cancellationToken = default);
+    Task<ProjectDTO> Insert(CreateProjectDTO project);
+    void Remove(Project project);
 }

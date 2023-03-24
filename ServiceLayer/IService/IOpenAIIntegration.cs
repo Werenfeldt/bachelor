@@ -2,11 +2,11 @@ namespace ServiceLayer;
 
 public interface IOpenAIIntegration
 {
-    Task<IEnumerable<ScriptFileDTO>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default);
+    Task<IEnumerable<TestFileDTO>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default);
 
-    Task<ScriptFileDTO> GetByIdAsync(Guid ownerId, Guid scriptId, CancellationToken cancellationToken);
+    Task<TestFileDTO> GetByIdAsync(Guid ownerId, Guid scriptId, CancellationToken cancellationToken);
 
-    Task<ScriptFileDTO> CreateAsync(Guid ownerId, CreateScriptFileDTO scriptForCreationDto, CancellationToken cancellationToken = default);
+    Task<TestFileDTO> CreateAsync(Guid ownerId, CreateTestFileDTO scriptForCreationDto, CancellationToken cancellationToken = default);
 
     Task DeleteAsync(Guid ownerId, Guid scriptId, CancellationToken cancellationToken = default);
 

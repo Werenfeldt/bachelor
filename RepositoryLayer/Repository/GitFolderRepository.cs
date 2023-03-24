@@ -1,25 +1,25 @@
 namespace RepositoryLayer;
 
-internal sealed class GitFolderRepository : IGitFolderRepository
+internal sealed class ProjectRepository : IProjectRepository
 {
     private readonly BachelorDbContext _dbContext;
 
-    public GitFolderRepository(BachelorDbContext dbContext) => _dbContext = dbContext;
+    public ProjectRepository(BachelorDbContext dbContext) => _dbContext = dbContext;
 
     //TODO introduce this again
-    // public async Task<IEnumerable<GitFolder>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default) =>
-    //     await _dbContext.GitFolder.Where(x => x.OwnerId == ownerId).ToListAsync(cancellationToken);
+    // public async Task<IEnumerable<Project>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default) =>
+    //     await _dbContext.Project.Where(x => x.OwnerId == ownerId).ToListAsync(cancellationToken);
 
-    public async Task<GitFolder> GetByIdAsync(Guid gitFolderId, CancellationToken cancellationToken = default) =>
-        await _dbContext.GitFolders.FindAsync(gitFolderId, cancellationToken);
+    public async Task<Project> GetByIdAsync(Guid projectId, CancellationToken cancellationToken = default) =>
+        await _dbContext.Projects.FindAsync(projectId, cancellationToken);
 
-    public async Task<GitFolderDTO> Insert(CreateGitFolderDTO gitFolder)
+    public async Task<ProjectDTO> Insert(CreateProjectDTO project)
     {
-        var result = ConvertFunctions.GitFolderMapToEntity(gitFolder);
-        _dbContext.GitFolders.Add(result);
+        var result = ConvertFunctions.ProjectMapToEntity(project);
+        _dbContext.Projects.Add(result);
         await _dbContext.SaveChangesAsync();
-        return ConvertFunctions.GitFolderMapToDTO(gitFolder);
+        return ConvertFunctions.ProjectMapToDTO(project);
     }
 
-    public void Remove(GitFolder gitFolder) => _dbContext.GitFolders.Remove(gitFolder);
+    public void Remove(Project project) => _dbContext.Projects.Remove(project);
 }

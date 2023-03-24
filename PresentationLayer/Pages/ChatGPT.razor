@@ -25,9 +25,9 @@
 
         var hej = await serviceManager.GithubIntegration.CreateGitRepositoryFromURLAsync(gitUrl, "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");
 
-        Console.WriteLine(hej.scriptFileDTOs[0].Content);
+        Console.WriteLine(hej.testFileDTOs[0].Content);
 
-        var prompt = hej.scriptFileDTOs[0].Content;
+        var prompt = hej.testFileDTOs[0].Content;
 
         generatedText = await serviceManager.OpenAIIntegration.Translate("Translate this cypress script into steps: " + prompt);
 

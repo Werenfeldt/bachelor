@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DomainLayer.Configurations;
 
-internal sealed class GitFolderConfiguration : IEntityTypeConfiguration<ScriptFile>
+internal sealed class ProjectConfiguration : IEntityTypeConfiguration<TestFile>
 {
-    public void Configure(EntityTypeBuilder<ScriptFile> builder)
+    public void Configure(EntityTypeBuilder<TestFile> builder)
     {
         //TODO Reintroduce
-        //builder.Property(gitFolder => gitFolder.OwnerId).IsRequired();
+        //builder.Property(project => project.OwnerId).IsRequired();
 
-        //builder.Property(gitFolder => gitFolder.Name).HasMaxLength(60);
+        //builder.Property(project => project.Name).HasMaxLength(60);
     }
 }

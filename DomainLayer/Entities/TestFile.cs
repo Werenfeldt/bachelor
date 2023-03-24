@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainLayer;
-public class ScriptFile
+public class TestFile
 {
     [Key]
     public Guid Id { get; set; }
@@ -22,12 +22,12 @@ public class ScriptFile
     public string Sha { get; set; }
     public string RawContent { get; set; }
 
-    public Guid GitfolderId { get; set; }
+    public Guid ProjectId { get; set; }
     
-    [ForeignKey("GitfolderId")]
-    public GitFolder? Gitfolder { get; set; }
+    [ForeignKey("ProjectId")]
+    public Project? Project { get; set; }
 
-    public ScriptFile(string gitUrl, string htmlUrl, string apiUrl, string filePath, string name, string sha, string rawContent)
+    public TestFile(string gitUrl, string htmlUrl, string apiUrl, string filePath, string name, string sha, string rawContent)
     {
         GitUrl = gitUrl;
         HtmlUrl = htmlUrl;

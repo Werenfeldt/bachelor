@@ -1,10 +1,10 @@
 namespace RepositoryLayer;
 
-public interface IScriptFileRepository
+public interface ITestFileRepository
 {
     //TODO reintroduce
-    //Task<IEnumerable<ScriptFile>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default);
-    Task<ScriptFile> GetByIdAsync(Guid scriptId, CancellationToken cancellationToken = default);
-    Task<ScriptFileDTO> Insert(CreateScriptFileDTO script);
-    void Remove(ScriptFile script);
+    //Task<IEnumerable<TestFile>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default);
+    Task<TestFile> GetByIdAsync(Guid scriptId, CancellationToken cancellationToken = default);
+    Task<TestFileDTO> Insert(CreateTestFileDTO script);
+    void Remove(TestFile script);
 }

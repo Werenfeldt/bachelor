@@ -1,8 +1,8 @@
 namespace RepositoryLayer;
 
-public record ScriptFileDTO(Guid Id, DateTime DateCreated, string Name, string GitUrl, string HtmlUrl, string Url, string Path, string Sha, string Content);
+public record TestFileDTO(Guid Id, DateTime DateCreated, string Name, string GitUrl, string HtmlUrl, string Url, string Path, string Sha, string Content);
 
-public record CreateScriptFileDTO
+public record CreateTestFileDTO
 {
     public Guid Id { get; set; }
 
@@ -26,7 +26,7 @@ public record CreateScriptFileDTO
 
 }
 
-public record UpdateScriptFileDTO : CreateScriptFileDTO
+public record UpdateTestFileDTO : CreateTestFileDTO
 {
     public Guid Id { get; set; }
 

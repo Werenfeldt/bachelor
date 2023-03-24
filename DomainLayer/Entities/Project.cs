@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DomainLayer;
 
-public class GitFolder
+public class Project
 {
     [Key]
     public Guid Id { get; set; }
@@ -11,9 +11,9 @@ public class GitFolder
     //public Guid OwnerId { get; set; }
 
     public string OwnerName { get; set; }
-    public List<ScriptFile>? ScriptFiles { get; set; }
+    public List<TestFile>? TestFiles { get; set; }
 
-    public GitFolder(string name, string ownerName)
+    public Project(string name, string ownerName)
     {
         Name = name;
         OwnerName = ownerName;

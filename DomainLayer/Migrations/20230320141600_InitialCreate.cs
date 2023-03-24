@@ -12,7 +12,7 @@ namespace DomainLayer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "GitFolders",
+                name: "Projects",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -21,11 +21,11 @@ namespace DomainLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GitFolders", x => x.Id);
+                    table.PrimaryKey("PK_Projects", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ScriptFiles",
+                name: "TestFiles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -38,33 +38,33 @@ namespace DomainLayer.Migrations
                     Name = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
                     Sha = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RawContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GitfolderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ScriptFiles", x => x.Id);
+                    table.PrimaryKey("PK_TestFiles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ScriptFiles_GitFolders_GitfolderId",
-                        column: x => x.GitfolderId,
-                        principalTable: "GitFolders",
+                        name: "FK_TestFiles_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ScriptFiles_GitfolderId",
-                table: "ScriptFiles",
-                column: "GitfolderId");
+                name: "IX_TestFiles_ProjectId",
+                table: "TestFiles",
+                column: "ProjectId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ScriptFiles");
+                name: "TestFiles");
 
             migrationBuilder.DropTable(
-                name: "GitFolders");
+                name: "Projects");
         }
     }
 }

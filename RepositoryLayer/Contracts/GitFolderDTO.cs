@@ -1,18 +1,18 @@
 namespace RepositoryLayer;
 
-public record GitFolderDTO(Guid Id, string OwnerName, string Name, List<ScriptFileDTO> scriptFileDTOs);
+public record ProjectDTO(Guid Id, string OwnerName, string Name, List<TestFileDTO> testFileDTOs);
 
-public record CreateGitFolderDTO
+public record CreateProjectDTO
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string OwnerName { get; set; }
-    public List<ScriptFileDTO> scriptFileDTOs {get; set;}
+    public List<TestFileDTO> testFileDTOs {get; set;}
 
     // TODO add scriptfiles 
 }
 
-public record UpdateGitFolderDTO : CreateGitFolderDTO
+public record UpdateProjectDTO : CreateProjectDTO
 {
     public string Name { get; set; }
     public string OwnerName { get; set; }
