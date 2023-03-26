@@ -1,28 +1,20 @@
 namespace RepositoryLayer;
 
-public record TestFileDTO(Guid Id, DateTime DateCreated, string Name, string GitUrl, string HtmlUrl, string Url, string Path, string Sha, string Content);
+//TODO add simple record if you dont need all information
+
+public record TestFileDTO(string Name, string Path, string Content, string CreatedDate, string UpdatedDate, ProjectDTO Project, DocumentationDTO Documentation);
 
 public record CreateTestFileDTO
 {
-    public Guid Id { get; set; }
+    public string? Name { get; set; }
 
-    //public Guid OwnerId { get; set; }
+    public string? Path { get; set; }
+    public string? Content { get; set; }
 
-    public DateTime DateCreated { get; set; }
-
-    public string Name { get; set; }
-
-    public string GitUrl { get; set; }
-
-    public string HtmlUrl { get; set; }
-
-    public string Url { get; set; }
-
-    public string Path { get; set; }
-
-    public string Sha { get; set; }
-
-    public string Content { get; set; }
+    [DataType(DataType.Date)]
+    public DateTime CreatedDate { get; set; }
+    
+    public ProjectDTO? Project { get; set; }
 
 }
 
@@ -30,9 +22,10 @@ public record UpdateTestFileDTO : CreateTestFileDTO
 {
     public Guid Id { get; set; }
 
-    public string Name { get; set; }
+    [DataType(DataType.Date)]
+    public DateTime? UpdatedDate { get; set; }
 
-    public string Url { get; set; }
+    public DocumentationDTO? Documentation { get; set; }
 
 }
 

@@ -2,6 +2,7 @@ namespace DomainLayer;
 
 public class User
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
     public Guid Id { get; set; }
 

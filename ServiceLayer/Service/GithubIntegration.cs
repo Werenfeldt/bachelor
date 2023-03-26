@@ -64,6 +64,14 @@ internal sealed class GithubIntegration : IGithubIntegration
 
         await gitHub.Repository.Content.CreateFile(repositoryOwner, repositoryName, ".github/workflows/" + fileName, new CreateFileRequest(commitMessage, fileContent));
     }
+    private async Task<ProjectDTO> CreateGitRepositoryFromUrl(string url)
+    {
+        var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
+        var repositoryOwner = splittedString[0];
+        var repositoryName = splittedString[1];
+
+        return await CreateGitRepository(repositoryName, repositoryOwner);
+    }
 
     private async Task<ProjectDTO> CreateGitRepository(string repositoryName, string repositoryOwner)
     {
@@ -79,64 +87,36 @@ internal sealed class GithubIntegration : IGithubIntegration
 
         var projectDTO = new CreateProjectDTO
         {
-            Id = Guid.NewGuid(),
-            Name = repositoryName,
-            OwnerName = repositoryOwner,
-            testFileDTOs = await makeTestFileDTO(repositoryOwner, repositoryName, repositoryContents.Items)
+            Title = repositoryName,
+            GitRepoOwner = repositoryOwner,
+            GitRepoName = repositoryName,
+            CreatedDate = DateTime.UtcNow
         };
         return await _repoManager.ProjectRepository.Insert(projectDTO);
     }
 
-    private async Task<ProjectDTO> CreateGitRepositoryFromUrl(string url)
-    {
-        var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
-        var repositoryOwner = splittedString[0];
-        var repositoryName = splittedString[1];
-
-        RepositoryCollection repos = new RepositoryCollection();
-        repos.Add(repositoryOwner, repositoryName);
-
-        var request = new SearchCodeRequest()
-        {
-            Repos = repos
-        };
-
-        var repositoryContents = await gitHub.Search.SearchCode(request);
-
-        var projectDTO = new CreateProjectDTO
-        {
-            Id = Guid.NewGuid(),
-            Name = repositoryName,
-            OwnerName = repositoryOwner,
-            testFileDTOs = await makeTestFileDTO(repositoryOwner, repositoryName, repositoryContents.Items)
-        };
-
-        return await _repoManager.ProjectRepository.Insert(projectDTO);
-    }
     private static string StripPrefix(string text, string prefix)
     {
         return text.StartsWith(prefix) ? text.Substring(prefix.Length) : text;
     }
 
-    private async Task<List<TestFileDTO>> makeTestFileDTO(string owner, string name, IReadOnlyList<SearchCode> ProjectDTO)
+    private async Task<List<CreateTestFileDTO>> makeTestFileDTO(string owner, string name, IReadOnlyList<SearchCode> project)
     {
-        List<TestFileDTO> result = new List<TestFileDTO>();
+        List<CreateTestFileDTO> result = new List<CreateTestFileDTO>();
 
-        foreach (var testFile in ProjectDTO)
+        foreach (var testFile in project)
         {
             var fileContent = await gitHub.Repository.Content.GetAllContents(owner, name, testFile.Path);
+            //TODO fix this project null
+            CreateTestFileDTO file  = new CreateTestFileDTO
+            {
+                Name = testFile.Name,
+                Path = testFile.Path,
+                Content = fileContent[0].Content,
+                CreatedDate = DateTime.UtcNow,
+                Project = null
+            };
 
-            TestFileDTO file = new TestFileDTO(
-                Guid.NewGuid(),
-                DateTime.UtcNow,
-                testFile.GitUrl,
-                testFile.HtmlUrl,
-                testFile.Url,
-                testFile.Path,
-                testFile.Name,
-                testFile.Sha,
-                fileContent[0].Content
-            );
             result.Add(file);
         }
 

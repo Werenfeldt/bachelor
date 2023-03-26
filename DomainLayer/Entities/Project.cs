@@ -1,7 +1,10 @@
-namespace DomainLayer;
 
+
+namespace DomainLayer;
+//TODO set up deletion cascade. 
 public class Project
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
     public Guid Id { get; set; }
     public string Title { get; set; }
@@ -15,7 +18,10 @@ public class Project
     [DataType(DataType.Date)]
     public DateTime CreatedDate { get; set; }
 
-    //public string User { get; set; }
+    [Required]
+    public ICollection<User>? Users { get; set; }
+
+    //Principal entity to TestFiles
     public ICollection<TestFile>? TestFiles { get; set; }
 
     public Project(string title, string gitRepoName, string gitRepoOwner, DateTime createdDate)

@@ -1,19 +1,28 @@
+
+
 namespace RepositoryLayer;
 
-public record ProjectDTO(Guid Id, string OwnerName, string Name, List<TestFileDTO> testFileDTOs);
+public record ProjectDTO(string title, string gitRepoName, string gitRepoOwner, string description, string createdDate, IReadOnlyCollection<UserDTO> users, IReadOnlyCollection<TestFileDTO> testFileDTOs);
 
 public record CreateProjectDTO
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public string OwnerName { get; set; }
-    public List<TestFileDTO> testFileDTOs {get; set;}
+    public string? Title { get; set; }
 
-    // TODO add scriptfiles 
+    public string? GitRepoName { get; set; }
+
+    public string? GitRepoOwner { get; set; }
+
+    public string? Description { get; set; }
+
+    [DataType(DataType.Date)]
+    public DateTime CreatedDate { get; set; }
+
+    public ICollection<UserDTO>? Users { get; set; }
+
+    public ICollection<CreateTestFileDTO>? testFileToBeCreatedDTOs { get; set; }
 }
 
 public record UpdateProjectDTO : CreateProjectDTO
 {
-    public string Name { get; set; }
-    public string OwnerName { get; set; }
+    public Guid Id { get; set; }
 }

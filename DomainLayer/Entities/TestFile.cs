@@ -1,9 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace DomainLayer;
 public class TestFile
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
     public Guid Id { get; set; }
     public string Name { get; set; }
@@ -16,12 +14,14 @@ public class TestFile
     [DataType(DataType.Date)]
     public DateTime? UpdatedDate { get; set; }
 
+    //Dependent entity therefore has id to principal entity
     public Guid ProjectId { get; set; }
     
     [Required]
     public Project? Project { get; set; }
 
-    
+    //Principal entity to documentation
+    public Documentation? Documentation { get; set; }
 
     public TestFile(string name, string path, string content, DateTime createdDate )
     {
@@ -31,15 +31,4 @@ public class TestFile
         CreatedDate = createdDate;
 
     }
-
-    public override string ToString()
-    {
-        return "File Name: " + Name + "\n"
-                + "File Path: " + FilePath + "\n"
-                + "Raw Content:" + "\n"
-                + "============================" + "\n"
-                + RawContent + "\n"
-                + "============================" + "\n";
-    }
-
 }

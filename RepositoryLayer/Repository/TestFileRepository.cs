@@ -13,13 +13,16 @@ internal sealed class TestFileRepository : ITestFileRepository
     public async Task<TestFile> GetByIdAsync(Guid scriptId, CancellationToken cancellationToken = default) =>
         await _dbContext.TestFiles.FirstOrDefaultAsync(x => x.Id == scriptId, cancellationToken);
 
-    public async Task<TestFileDTO> Insert(CreateTestFileDTO script)
+    public async Task<TestFileDTO> Insert(CreateTestFileDTO testFile)
     {
-        var result = script.Adapt<TestFile>();
+        var result = ConvertFunctions.TestFileMapToEntity(testFile);
 
         await _dbContext.TestFiles.AddAsync(result);
-        
-        return new TestFileDTO(script.Id, script.DateCreated, script.Name, script.GitUrl, script.HtmlUrl, script.Url, script.Path, script.Sha, script.Content);
+
+        await _dbContext.SaveChangesAsync();
+
+        //TODO change so we dont convert twice maybe?. 
+        return ConvertFunctions.TestFileMapToDTO(testFile);
     } 
 
     public void Remove(TestFile script) => _dbContext.TestFiles.Remove(script);

@@ -2,6 +2,7 @@ namespace DomainLayer;
 
 public class Documentation
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
     public Guid Id { get; set; }
 
@@ -15,6 +16,7 @@ public class Documentation
     [DataType(DataType.Date)]
     public DateTime? UpdatedDate { get; set; }
 
+    //Dependent entity therefore has id to principal entity
     public Guid TestFileId { get; set; }
 
     [Required]
