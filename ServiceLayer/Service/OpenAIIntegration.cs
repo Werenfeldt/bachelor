@@ -15,9 +15,9 @@ internal sealed class OpenAIIntegration : IOpenAIIntegration
         _repoManager = repoManager;
         _openAiService = openAiService;}
     
-    public async Task<ScriptFileDTO> CreateAsync(Guid ownerId, CreateScriptFileDTO scriptForCreationDto, CancellationToken cancellationToken = default)
+    public async Task<TestFileDTO> CreateAsync(Guid ownerId, CreateTestFileDTO scriptForCreationDto, CancellationToken cancellationToken = default)
     {
-        return await _repoManager.ScriptFileRepository.Insert(scriptForCreationDto);
+        return await _repoManager.TestFileRepository.Insert(scriptForCreationDto);
     }
 
     public Task DeleteAsync(Guid ownerId, Guid scriptId, CancellationToken cancellationToken = default)
@@ -25,12 +25,12 @@ internal sealed class OpenAIIntegration : IOpenAIIntegration
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<ScriptFileDTO>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default)
+    public Task<IEnumerable<TestFileDTO>> GetAllByOwnerIdAsync(Guid ownerId, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<ScriptFileDTO> GetByIdAsync(Guid ownerId, Guid scriptId, CancellationToken cancellationToken)
+    public Task<TestFileDTO> GetByIdAsync(Guid ownerId, Guid scriptId, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

@@ -2,17 +2,17 @@ namespace RepositoryLayer;
 
 public sealed class RepoManager : IRepoManager
 {
-    private readonly Lazy<IScriptFileRepository> _lazyScriptFileRepository;
+    private readonly Lazy<ITestFileRepository> _lazyTestFileRepository;
 
-    private readonly Lazy<IGitFolderRepository> _lazyGitFolderRepository;
+    private readonly Lazy<IProjectRepository> _lazyProjectRepository;
 
     public RepoManager(BachelorDbContext dbContext)
     {
-        _lazyScriptFileRepository = new Lazy<IScriptFileRepository>(() => new ScriptFileRepository(dbContext));
-        _lazyGitFolderRepository = new Lazy<IGitFolderRepository>(() => new GitFolderRepository(dbContext));
+        _lazyTestFileRepository = new Lazy<ITestFileRepository>(() => new TestFileRepository(dbContext));
+        _lazyProjectRepository = new Lazy<IProjectRepository>(() => new ProjectRepository(dbContext));
     }
 
-    public IScriptFileRepository ScriptFileRepository => _lazyScriptFileRepository.Value;
+    public ITestFileRepository TestFileRepository => _lazyTestFileRepository.Value;
 
-    public IGitFolderRepository GitFolderRepository => _lazyGitFolderRepository.Value;
+    public IProjectRepository ProjectRepository => _lazyProjectRepository.Value;
 }

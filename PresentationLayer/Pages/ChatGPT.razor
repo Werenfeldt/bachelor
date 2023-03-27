@@ -23,13 +23,9 @@
     {
         generatedText = "Translating...";
 
-        var hej = await serviceManager.GithubIntegration.CreateGitRepositoryFromURLAsync(gitUrl, "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");
+        var prompt = await serviceManager.GithubIntegration.CreateGitRepositoryFromURLAsync(gitUrl, "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");
 
-        Console.WriteLine(hej.scriptFileDTOs[0].Content);
-
-        var prompt = hej.scriptFileDTOs[0].Content;
-
-        generatedText = await serviceManager.OpenAIIntegration.Translate("Translate this cypress script into steps: " + prompt);
+        generatedText = await serviceManager.OpenAIIntegration.Translate("Translate this cypress script into steps: " + prompt.testFileDTOs.First());
 
         StateHasChanged();
     }
