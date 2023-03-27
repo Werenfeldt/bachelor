@@ -16,4 +16,8 @@ public sealed class BachelorDbContext : DbContext, IBachelorDbContext
     public DbSet<TestFile> TestFiles => Set<TestFile>();
 
     public DbSet<Project> Projects => Set<Project>();
+
+    public DbSet<User> Users => Set<User>();
+
+    public DbSet<Documentation> Documentation => Set<Documentation>();
 }

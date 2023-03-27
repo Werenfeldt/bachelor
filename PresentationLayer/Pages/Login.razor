@@ -1,17 +1,104 @@
 @page "/login"
+@layout MainLayout
+@attribute [AllowAnonymous]
+@inject IServiceManager serviceManager;
 
-<MudText Typo="Typo.h6">MudBlazor is @Text</MudText>
-<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="ButtonOnClick">@ButtonText</MudButton>
+<MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
+    <MudTabPanel Text="Login">
+        <MudText>Login coming soon</MudText>
+        @* <EditForm Model="@newUser" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator/>
+            <MudGrid>
+                <MudItem xs="12" sm="7">
+                    <MudCard>
+                        <MudCardContent>
+                            <MudTextField Label="First name" HelperText="Max. 8 characters"
+                                        @bind-Value="newUser.Name" For="@(() => newUser.Name)"/>
+                            <MudTextField Label="Email" Class="mt-3"
+                                        @bind-Value="newUser.Email" For="@(() => newUser.Email)"/>
+                            <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                                        @bind-Value="newUser.Password" For="@(() => newUser.Password)" InputType="InputType.Password"/>
+                            @* <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
+                                        @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password"/> 
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+                <MudItem xs="12" sm="5">
+                    <MudPaper Class="pa-4 mud-height-full">
+                        <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
+                        @if (success)
+                        {
+                            <MudText Color="Color.Success">Success</MudText>
+                        }
+                        else
+                        {
+                            <MudText Color="@Color.Error">
+                                <ValidationSummary />
+                            </MudText>
+                        }
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        </EditForm> *@
+    </MudTabPanel>
+
+    <MudTabPanel Text="Create New User">
+        <EditForm Model="@newUser" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator/>
+            <MudGrid>
+                <MudItem xs="12" sm="7">
+                    <MudCard>
+                        <MudCardContent>
+                            <MudTextField Label="First name" HelperText="Max. 8 characters"
+                                        @bind-Value="newUser.Name" For="@(() => newUser.Name)"/>
+                            <MudTextField Label="Email" Class="mt-3"
+                                        @bind-Value="newUser.Email" For="@(() => newUser.Email)"/>
+                            <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                                        @bind-Value="newUser.Password" For="@(() => newUser.Password)" InputType="InputType.Password"/>
+                            @* <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
+                                        @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password"/> *@
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+                <MudItem xs="12" sm="5">
+                    <MudPaper Class="pa-4 mud-height-full">
+                        <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
+                        @if (success)
+                        {
+                            <MudText Color="Color.Success">Success</MudText>
+                        }
+                        else
+                        {
+                            <MudText Color="@Color.Error">
+                                <ValidationSummary />
+                            </MudText>
+                        }
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </MudTabPanel>
+</MudTabs>
+
+
+
 
 @code {
-    public string Text { get; set; } = "????";
-    public string ButtonText { get; set; } = "Click Me";
-    public int ButtonClicked { get; set; }
+    private CreateUserDTO newUser = new();
+    bool success;
 
-    void ButtonOnClick()
+    private async void OnValidSubmit(EditContext context)
     {
-        ButtonClicked += 1;
-        Text = $"Awesome x {ButtonClicked}";
-        ButtonText = "Click Me Again";
+        success = true;
+
+        await serviceManager.UserService.CreateNewUser(newUser);
+        StateHasChanged();
     }
+
 }

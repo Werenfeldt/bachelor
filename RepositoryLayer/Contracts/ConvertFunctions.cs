@@ -33,6 +33,20 @@ public static class ConvertFunctions
     {
         return new TestFile(testFile.Name, testFile.Path, testFile.Content, testFile.CreatedDate);
     }
+
+    public static User UserMapToEntity(CreateUserDTO user)
+    {
+        return new User(user.Name, user.Email, user.Password, user.CreatedDate);
+    }
+
+    public static UserDTO UserMapToDTO(User user)
+    {
+        return new UserDTO(user.Name, user.Email, user.CreatedDate.ToString());
+    }
+    public static UserDTO UserMapToDTO(CreateUserDTO user)
+    {
+        return new UserDTO(user.Name, user.Email, user.CreatedDate.ToString());
+    }
     private static DocumentationDTO DocumentationMapToDTO(Documentation documentation)
     {
         return new DocumentationDTO(documentation.Summary, documentation.Translation, documentation.CreatedDate.ToString(), documentation.UpdatedDate.ToString());
@@ -47,10 +61,7 @@ public static class ConvertFunctions
     // }
 
 
-    private static UserDTO UserMapToDTO(User user)
-    {
-        return new UserDTO(user.Name, user.Email, user.CreatedDate.ToString());
-    }
+
 
     private static UserDTO UserMapToDTO(UserDTO user)
     {
