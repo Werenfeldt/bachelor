@@ -3,45 +3,111 @@ namespace RepositoryLayer;
 public static class ConvertFunctions
 {
 
-    public static GitFolderDTO GitFolderMapToDTO(GitFolder gitFolder)
+    public static ProjectDTO ProjectMapToDTO(Project project)
     {
-        var scriptList = new List<ScriptFileDTO>();
+        return new ProjectDTO(project.Title, project.GitRepoName, project.GitRepoOwner, project.Description, project.CreatedDate.ToString(), GetUserDTOs(project), GetTestFileDTOs(project));
+    }
 
-        foreach (var script in gitFolder.ScriptFiles)
+
+    //TODO fix TestFile DTOs (sidste parameter) 
+    public static ProjectDTO ProjectMapToDTO(CreateProjectDTO project)
+    {
+        return new ProjectDTO(project.Title, project.GitRepoName, project.GitRepoOwner, project.Description, project.CreatedDate.ToString(), project.Users.ToList().AsReadOnly(), GetTestFileDTOs(project).AsReadOnly());
+    }
+
+    public static Project ProjectMapToEntity(CreateProjectDTO project)
+    {
+        return new Project(project.Title, project.GitRepoName, project.GitRepoOwner, project.CreatedDate);
+    }
+    public static TestFileDTO TestFileMapToDTO(TestFile testFile)
+    {
+        return new TestFileDTO(testFile.Name, testFile.Path, testFile.Content, testFile.CreatedDate.ToString(), testFile.UpdatedDate.ToString(), ProjectMapToDTO(testFile.Project), DocumentationMapToDTO(testFile.Documentation));
+    }
+
+    public static TestFileDTO TestFileMapToDTO(CreateTestFileDTO testFile)
+    {
+        return new TestFileDTO(testFile.Name, testFile.Path, testFile.Content, testFile.CreatedDate.ToString(), null, testFile.Project, null);
+    }
+
+    public static TestFile TestFileMapToEntity(CreateTestFileDTO testFile)
+    {
+        return new TestFile(testFile.Name, testFile.Path, testFile.Content, testFile.CreatedDate);
+    }
+    private static DocumentationDTO DocumentationMapToDTO(Documentation documentation)
+    {
+        return new DocumentationDTO(documentation.Summary, documentation.Translation, documentation.CreatedDate.ToString(), documentation.UpdatedDate.ToString());
+    }
+
+    //TODO uncomment or delete
+
+
+    // private static Documentation DocumentationMapToEntity(DocumentationDTO documentation)
+    // {
+    //     return new Documentation(documentation.Summary, documentation.Translation, DateTime.Parse(documentation.CreatedDate));
+    // }
+
+
+    private static UserDTO UserMapToDTO(User user)
+    {
+        return new UserDTO(user.Name, user.Email, user.CreatedDate.ToString());
+    }
+
+    private static UserDTO UserMapToDTO(UserDTO user)
+    {
+        return new UserDTO(user.Name, user.Email, user.CreatedDate.ToString());
+    }
+
+    private static List<TestFileDTO> GetTestFileDTOs(Project project)
+    {
+        var scriptList = new List<TestFileDTO>();
+
+        if (project.TestFiles != null)
         {
-            scriptList.Add(ScriptFileMapToDTO(script));
+            project.TestFiles.ToList().ForEach(testFile => scriptList.Add(TestFileMapToDTO(testFile)));
         }
 
-        return new GitFolderDTO(gitFolder.Id, gitFolder.OwnerName, gitFolder.Name, scriptList);
+        return scriptList;
     }
 
-    public static GitFolderDTO GitFolderMapToDTO(CreateGitFolderDTO gitFolder)
+    private static List<TestFileDTO> GetTestFileDTOs(CreateProjectDTO project)
     {
-        return new GitFolderDTO(gitFolder.Id, gitFolder.OwnerName, gitFolder.Name, gitFolder.scriptFileDTOs);
-    }
+        var scriptList = new List<TestFileDTO>();
 
-    public static GitFolder GitFolderMapToEntity(CreateGitFolderDTO gitFolder)
-    {
-        var scriptList = new List<ScriptFile>();
-
-        foreach (var script in gitFolder.scriptFileDTOs)
+        if (project.testFileToBeCreatedDTOs != null)
         {
-            scriptList.Add(ScriptFileMapToEntity(script));
+            project.testFileToBeCreatedDTOs.ToList().ForEach(testFile => scriptList.Add(TestFileMapToDTO(testFile)));
         }
 
-        return new GitFolder(gitFolder.Name, gitFolder.OwnerName) { ScriptFiles = scriptList };
-
+        return scriptList;
     }
 
-    private static ScriptFile ScriptFileMapToEntity(ScriptFileDTO scriptFile)
+    private static IReadOnlyCollection<UserDTO> GetUserDTOs(Project project)
     {
-        return new ScriptFile(scriptFile.GitUrl, scriptFile.HtmlUrl, scriptFile.Url, scriptFile.Path, scriptFile.Name, scriptFile.Sha, scriptFile.Content);
+        var userList = new List<UserDTO>();
+
+        if (project.Users != null)
+        {
+            project.Users.ToList().ForEach(user => userList.Add(UserMapToDTO(user)));
+        }
+
+        return userList.AsReadOnly();
     }
 
-    private static ScriptFileDTO ScriptFileMapToDTO(ScriptFile scriptFile)
-    {
-        return new ScriptFileDTO(scriptFile.Id, scriptFile.DateCreated, scriptFile.Name, scriptFile.GitUrl, scriptFile.HtmlUrl, scriptFile.ApiUrl, scriptFile.FilePath, scriptFile.Sha, scriptFile.RawContent);
-    }
+    //TODO uncomment or delete
+
+    // private static IReadOnlyCollection<UserDTO> GetUserDTOs(CreateProjectDTO project)
+    // {
+    //     var userList = new List<UserDTO>();
+
+    //     if (project.Users != null)
+    //     {
+    //         project.Users.ToList().ForEach(user => userList.Add(UserMapToDTO(user)));
+    //     }
+
+    //     return userList.AsReadOnly();
+    // }
+
+
 
 
 }

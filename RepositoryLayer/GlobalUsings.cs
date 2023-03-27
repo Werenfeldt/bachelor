@@ -1,3 +1,3 @@
 global using DomainLayer;
 global using Microsoft.EntityFrameworkCore;
-global using Mapster;
+global using System.ComponentModel.DataAnnotations;

@@ -2,8 +2,8 @@ namespace RepositoryLayer;
 
 public interface IRepoManager
 {
-    IScriptFileRepository ScriptFileRepository { get; }
+    ITestFileRepository TestFileRepository { get; }
 
-    IGitFolderRepository GitFolderRepository { get; }
+    IProjectRepository ProjectRepository { get; }
 
 }

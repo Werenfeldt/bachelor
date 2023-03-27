@@ -13,7 +13,7 @@ public sealed class BachelorDbContext : DbContext, IBachelorDbContext
 
     modelBuilder.ApplyConfigurationsFromAssembly(typeof(BachelorDbContext).Assembly);
 
-    public DbSet<ScriptFile> ScriptFiles => Set<ScriptFile>();
+    public DbSet<TestFile> TestFiles => Set<TestFile>();
 
-    public DbSet<GitFolder> GitFolders => Set<GitFolder>();
+    public DbSet<Project> Projects => Set<Project>();
 }

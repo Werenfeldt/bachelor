@@ -19,12 +19,13 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 builder.Services.AddDbContext<BachelorDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BachelorDB")));
-Console.WriteLine(builder.Configuration.GetConnectionString("BachelorDB"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IBachelorDbContext, BachelorDbContext>();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<IRepoManager, RepoManager>();
 builder.Services.AddOpenAIService();
+
+
 
 // TODO remember to delete or use
 //Save for later
@@ -32,10 +33,20 @@ builder.Services.AddOpenAIService();
 
 var app = builder.Build();
 
+
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
+}
+else
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<BachelorDbContext>();
+        dbContext.Database.Migrate();
+    }
 }
 
 app.UseStaticFiles();
