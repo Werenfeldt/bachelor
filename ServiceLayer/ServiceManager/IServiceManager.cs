@@ -6,5 +6,5 @@ public interface IServiceManager
 
     IGithubIntegration GithubIntegration { get; }
 
-    IUserService UserService { get; }
+    ILoginService LoginService { get; }
 }

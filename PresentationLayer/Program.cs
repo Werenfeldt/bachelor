@@ -7,6 +7,7 @@ using OpenAI.GPT3.Extensions;
 using OpenAI.GPT3.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
+using Blazored.SessionStorage;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,7 @@ builder.Services.AddScoped<IBachelorDbContext, BachelorDbContext>();
 builder.Services.AddScoped<IServiceManager, ServiceManager>();
 builder.Services.AddScoped<IRepoManager, RepoManager>();
 builder.Services.AddOpenAIService();
+builder.Services.AddBlazoredSessionStorage();
 
 
 

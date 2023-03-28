@@ -1,0 +1,47 @@
+@page "/createuser"
+@layout MainLayout
+@attribute [AllowAnonymous]
+@inject IServiceManager serviceManager; 
+@inject NavigationManager NavManager;
+
+<EditForm Model="@newUser" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator/>
+        <MudGrid Justify="Justify.Center">
+            <MudItem xs="12" sm="7">
+                <MudCard>
+                    <MudText Align="Align.Center" Typo="Typo.h2" > Create New Account </MudText>
+                    <MudCardContent>
+                        <MudTextField Label="First name" HelperText="Max. 8 characters"
+                                    @bind-Value="newUser.Name" For="@(() => newUser.Name)"/>
+                        <MudTextField Label="Email" Class="mt-3"
+                                    @bind-Value="newUser.Email" For="@(() => newUser.Email)"/>
+                        <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+                                    @bind-Value="newUser.Password" For="@(() => newUser.Password)" InputType="InputType.Password"/>
+                    </MudCardContent>
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Create User</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </EditForm>
+
+@code {
+    private CreateUserDTO newUser = new();
+
+    [Inject] ISnackbar Snackbar { get; set; }
+    bool success;
+
+    private async void OnValidSubmit(EditContext context)
+    {
+        success = true;
+
+        await serviceManager.LoginService.CreateNewUser(newUser);
+
+        //TODO add if the response is success
+        Snackbar.Add("The user was succesfully created", Severity.Success);
+        
+        NavManager.NavigateTo("/login");
+    }
+
+}

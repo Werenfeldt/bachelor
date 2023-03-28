@@ -2,102 +2,59 @@
 @layout MainLayout
 @attribute [AllowAnonymous]
 @inject IServiceManager serviceManager;
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage;
+@inject NavigationManager NavManager;
 
-<MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
-    <MudTabPanel Text="Login">
-        <MudText>Login coming soon</MudText>
-        @* <EditForm Model="@newUser" OnValidSubmit="OnValidSubmit">
-            <DataAnnotationsValidator/>
-            <MudGrid>
-                <MudItem xs="12" sm="7">
-                    <MudCard>
-                        <MudCardContent>
-                            <MudTextField Label="First name" HelperText="Max. 8 characters"
-                                        @bind-Value="newUser.Name" For="@(() => newUser.Name)"/>
-                            <MudTextField Label="Email" Class="mt-3"
-                                        @bind-Value="newUser.Email" For="@(() => newUser.Email)"/>
-                            <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
-                                        @bind-Value="newUser.Password" For="@(() => newUser.Password)" InputType="InputType.Password"/>
-                            @* <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
-                                        @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password"/> 
-                        </MudCardContent>
-                        <MudCardActions>
-                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
-                        </MudCardActions>
-                    </MudCard>
-                </MudItem>
-                <MudItem xs="12" sm="5">
-                    <MudPaper Class="pa-4 mud-height-full">
-                        <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
-                        @if (success)
-                        {
-                            <MudText Color="Color.Success">Success</MudText>
-                        }
-                        else
-                        {
-                            <MudText Color="@Color.Error">
-                                <ValidationSummary />
-                            </MudText>
-                        }
-                    </MudPaper>
-                </MudItem>
-            </MudGrid>
-        </EditForm> *@
-    </MudTabPanel>
+<MudGrid Justify="Justify.Center">
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <MudText Align="Align.Center" Typo="Typo.h2" > Login </MudText>
+            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+                    <MudTextField T="string" Label="Email" Required="true" RequiredError="Email is required!" @ref="email"
+                                  Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})"/>
+                    <MudTextField T="string" Label="Password" HelperText="Choose a strong password" @ref="password"
+                                  InputType="InputType.Password"
+                                  Required="true"
+                                  RequiredError="Password is required!"/>
+                    <div class="d-flex align-center justify-space-between">       
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" OnClick="@(async () => await LoginWithUser())">Login</MudButton>
+                    </div>
+                    Don't have an account? 
+                    <MudButton Href="/createuser" Variant="Variant.Text" Color="Color.Primary" Class="ml-auto" Size="Size.Small"> Create New User</MudButton>
+            </MudForm>   
+        </MudPaper>
+    </MudItem>
+</MudGrid>
 
-    <MudTabPanel Text="Create New User">
-        <EditForm Model="@newUser" OnValidSubmit="OnValidSubmit">
-            <DataAnnotationsValidator/>
-            <MudGrid>
-                <MudItem xs="12" sm="7">
-                    <MudCard>
-                        <MudCardContent>
-                            <MudTextField Label="First name" HelperText="Max. 8 characters"
-                                        @bind-Value="newUser.Name" For="@(() => newUser.Name)"/>
-                            <MudTextField Label="Email" Class="mt-3"
-                                        @bind-Value="newUser.Email" For="@(() => newUser.Email)"/>
-                            <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
-                                        @bind-Value="newUser.Password" For="@(() => newUser.Password)" InputType="InputType.Password"/>
-                            @* <MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
-                                        @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password"/> *@
-                        </MudCardContent>
-                        <MudCardActions>
-                            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
-                        </MudCardActions>
-                    </MudCard>
-                </MudItem>
-                <MudItem xs="12" sm="5">
-                    <MudPaper Class="pa-4 mud-height-full">
-                        <MudText Typo="Typo.subtitle2">Validation Summary</MudText>
-                        @if (success)
-                        {
-                            <MudText Color="Color.Success">Success</MudText>
-                        }
-                        else
-                        {
-                            <MudText Color="@Color.Error">
-                                <ValidationSummary />
-                            </MudText>
-                        }
-                    </MudPaper>
-                </MudItem>
-            </MudGrid>
-        </EditForm>
-    </MudTabPanel>
-</MudTabs>
 
 
 
 
 @code {
-    private CreateUserDTO newUser = new();
-    bool success;
+    MudForm form;
+    [Inject] ISnackbar Snackbar { get; set; }
 
-    private async void OnValidSubmit(EditContext context)
+    private MudTextField<string> email;
+    private MudTextField<string> password;
+    bool success;
+    string[] errors = { };
+
+    private async Task LoginWithUser()
     {
         success = true;
 
-        await serviceManager.UserService.CreateNewUser(newUser);
+        try
+        {
+            var user = await serviceManager.LoginService.Login(email.Text, password.Text);
+            await sessionStorage.SetItemAsync("SessionUser", user);
+            NavManager.NavigateTo("/gpt");
+
+        }
+        catch (System.Exception e)
+        {
+            Snackbar.Add(e.Message, Severity.Warning);
+        }
+        
         StateHasChanged();
     }
 

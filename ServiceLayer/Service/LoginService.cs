@@ -1,10 +1,10 @@
 namespace ServiceLayer;
 
-public class UserService : IUserService
+public class LoginService : ILoginService
 {
     private readonly IRepoManager _repoManager;
 
-    public UserService(IRepoManager repoManager) => _repoManager = repoManager;
+    public LoginService(IRepoManager repoManager) => _repoManager = repoManager;
     public async Task<UserDTO> Login(string email, string password, CancellationToken cancellationToken = default)
     {
         var user = await _repoManager.UserRepository.GetByNameAndPassword(email, password, cancellationToken);
@@ -23,4 +23,5 @@ public class UserService : IUserService
 
         return await _repoManager.UserRepository.Insert(user);
     }
+
 }
