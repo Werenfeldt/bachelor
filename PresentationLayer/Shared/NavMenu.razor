@@ -1,14 +1,28 @@
-﻿<MudPaper Width="250px" Class="d-inline-flex py-3" Elevation="0">
+﻿@inject Blazored.SessionStorage.ISessionStorageService sessionStorage;
+
+
+<MudPaper Width="250px" Class="d-inline-flex py-3" Elevation="0">
     <MudNavMenu Class="mud-width-full">
         <MudText Typo="Typo.h6" Class="px-4">CODE2LULZ</MudText>
         <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Your way to understanding lulz</MudText>
         <MudDivider Class="my-2" />
         <MudNavLink Href="/" Icon="@Icons.Material.Filled.Dashboard">Welcome</MudNavLink>
-        <MudNavLink Href="/login" Icon="@Icons.Material.Filled.Login" IconColor="Color.Success">Login</MudNavLink>
-        <MudNavGroup Title="ChatGPT" Icon="@Icons.Material.Filled.SwapHoriz" Expanded="true">
-            <MudNavLink Href="/gpt" Icon="@Icons.Material.Filled.CloudUpload" IconColor="Color.Success">Upload scripts</MudNavLink>
-            <MudNavLink Href="/gpt" Icon="@Icons.Material.Filled.Description" IconColor="Color.Info">Your scripts</MudNavLink>
-        </MudNavGroup>
+        @if(loggedIn)
+        {
+            <MudNavGroup Title="ChatGPT" Icon="@Icons.Material.Filled.SwapHoriz" Expanded="true">
+                <MudNavLink Href="/gpt" Icon="@Icons.Material.Filled.CloudUpload" IconColor="Color.Success">Upload scripts</MudNavLink>
+                <MudNavLink Href="/gpt" Icon="@Icons.Material.Filled.Description" IconColor="Color.Info">Your scripts</MudNavLink>
+            </MudNavGroup>
+        }
     </MudNavMenu>
 </MudPaper>
 
+@code {
+    bool loggedIn = false;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        loggedIn = await sessionStorage.ContainKeyAsync("SessionUser");
+
+        StateHasChanged();
+    } 
+}

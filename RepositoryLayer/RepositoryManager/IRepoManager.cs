@@ -6,4 +6,6 @@ public interface IRepoManager
 
     IProjectRepository ProjectRepository { get; }
 
+    IUserRepository UserRepository { get; }
+
 }

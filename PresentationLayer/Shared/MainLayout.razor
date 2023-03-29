@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage;
 
 <MudThemeProvider />
 <MudDialogProvider />
@@ -6,8 +7,19 @@
 
 <MudLayout>
     <MudAppBar>
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        Navigation
+        <MudButton StartIcon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())">Navigation</MudButton>
+        <MudSpacer />
+        @if(loggedIn)
+        {
+            <MudButton Href="/" StartIcon="@Icons.Material.Filled.Logout" Edge="Edge.End" Color="Color.Inherit" OnClick="@(async () => await Logout())"> 
+            Logout
+            </MudButton>
+            
+        } 
+        else
+        {
+            <MudButton Href="/login" StartIcon="@Icons.Material.Filled.Login" Edge="Edge.End" Color="Color.Inherit">Login</MudButton>
+        }
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen">
         <NavMenu/>
@@ -20,10 +32,24 @@
 </MudLayout>
 
 @code {
-    bool _drawerOpen = true;
+    bool _drawerOpen = false;
+
+    bool loggedIn = false;
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
+
+     private async Task Logout()
+    {
+        await sessionStorage.ClearAsync();
+        StateHasChanged();
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        loggedIn = await sessionStorage.ContainKeyAsync("SessionUser");
+
+        StateHasChanged();
+    } 
 }
