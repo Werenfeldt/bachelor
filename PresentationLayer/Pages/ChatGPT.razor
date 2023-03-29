@@ -37,7 +37,8 @@
 
         var prompt = await serviceManager.GithubIntegration.CreateGitRepositoryFromURLAsync(gitUrl, "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");
 
-        generatedText = await serviceManager.OpenAIIntegration.Translate("Translate this cypress script into steps: " + prompt.testFileDTOs.First());
+        //TODO not allowed to call integration directly 
+        generatedText = await serviceManager.OpenAIIntegration.Request("Translate this cypress script into steps: " + prompt.testFileDTOs.First());
 
         StateHasChanged();
     }
