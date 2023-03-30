@@ -13,10 +13,15 @@ internal sealed class ProjectRepository : IProjectRepository
     public async Task<Project> GetByIdAsync(Guid projectId, CancellationToken cancellationToken = default) =>
         await _dbContext.Projects.FindAsync(projectId, cancellationToken);
 
-    public async Task<ProjectDTO> Insert(CreateProjectDTO project)
+    public async Task<ProjectDTO> Insert(CreateProjectDTO projectDTO)
     {
-        var result = ConvertFunctions.ProjectMapToEntity(project);
-        _dbContext.Projects.Add(result);
+        var project = ConvertFunctions.ProjectMapToEntity(projectDTO);
+        var users = new List<User>();
+        var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == projectDTO.User.Email);
+        users.Add(user);
+        project.Users = users;
+        
+        _dbContext.Projects.Add(project);
         await _dbContext.SaveChangesAsync();
         return ConvertFunctions.ProjectMapToDTO(project);
     }

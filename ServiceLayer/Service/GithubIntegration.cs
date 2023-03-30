@@ -4,11 +4,7 @@ internal sealed class GithubIntegration : IGithubIntegration
 {
     private GitHubClient? gitHub;
 
-    public GithubIntegration()
-    {
-    }
-
-    
+    public GithubIntegration() { }
 
     public void SetCredentials(string tokenAuth)
     {
@@ -24,7 +20,7 @@ internal sealed class GithubIntegration : IGithubIntegration
         gitHub.Credentials = new Credentials(username, password);
     }
 
-    public async Task<SearchCodeResult> Request(string url)
+    public async Task<(string GitRepositoryOwner, string GitRepositoryName, IReadOnlyList<RepositoryContent>)> Request(string url)
     {
         var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
         var repositoryOwner = splittedString[0];
@@ -38,50 +34,23 @@ internal sealed class GithubIntegration : IGithubIntegration
             Repos = repos
         };
 
-        gitHub.
+        var result = await gitHub.Search.SearchCode(request);
 
-        return await gitHub.Search.SearchCode(request);
-    }
+        List<RepositoryContent> content = new List<RepositoryContent>();
 
-    public async Task<IReadOnlyList<RepositoryContent>> getContent(owner, name, testFile.Path)
-    {
-        await gitHub.Repository.Content.GetAllContents(owner, name, testFile.Path);
-    }
-
-        private async Task<List<IReadOnlyList<RepositoryContent>>> makeTestFileDTO(string owner, string name, IReadOnlyList<SearchCode> project)
-    {
-        //List<CreateTestFileDTO> result = new List<CreateTestFileDTO>();
-
-        List<IReadOnlyList<RepositoryContent>> result = new List<IReadOnlyList<RepositoryContent>>();
-
-        foreach (var testFile in project)
+        foreach (var item in result.Items)
         {
-            
-            var fileContent = await gitHub.Repository.Content.GetAllContents(owner, name, testFile.Path);
-            //TODO fix this project null
-            // CreateTestFileDTO file = new CreateTestFileDTO
-            // {
-            //     Name = testFile.Name,
-            //     Path = testFile.Path,
-            //     Content = fileContent[0].Content,
-            //     CreatedDate = DateTime.UtcNow,
-            //     Project = null
-            // };
-
-            result.Add(fileContent);
+            var listOfContent = await gitHub.Repository.Content.GetAllContents(repositoryOwner, repositoryName, item.Path);
+            content.Add(listOfContent[0]);
         }
 
-        return result;
+        return (repositoryOwner, repositoryName, content);
     }
 
-    private void SetUpClient()
-    {
-        gitHub = new GitHubClient(new ProductHeaderValue("Client"));
-    }
 
     public async void AddToGithubActions(string url, string tokenAuth)
     {
-        //var gitHub = new GitHubClient(new ProductHeaderValue("Client"));
+        //TODO update so it doesnt set the credentials again 
         gitHub.Credentials = new Credentials(tokenAuth);
 
         var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
@@ -97,41 +66,13 @@ internal sealed class GithubIntegration : IGithubIntegration
         await gitHub.Repository.Content.CreateFile(repositoryOwner, repositoryName, ".github/workflows/" + fileName, new CreateFileRequest(commitMessage, fileContent));
     }
 
-    private async Task<ProjectDTO> CreateGitRepository(string repositoryName, string repositoryOwner)
+    private void SetUpClient()
     {
-        RepositoryCollection repos = new RepositoryCollection();
-        repos.Add(repositoryOwner, repositoryName);
-
-        var request = new SearchCodeRequest()
-        {
-            Repos = repos
-        };
-
-        var repositoryContents = await gitHub.Search.SearchCode(request);
-
-        var projectDTO = new CreateProjectDTO
-        {
-            Title = repositoryName,
-            GitRepoOwner = repositoryOwner,
-            GitRepoName = repositoryName,
-            CreatedDate = DateTime.UtcNow
-        };
-        return await _repoManager.ProjectRepository.Insert(projectDTO);
+        gitHub = new GitHubClient(new ProductHeaderValue("Client"));
     }
-
-    private static string StripPrefix(string text, string prefix)
+    private string StripPrefix(string text, string prefix)
     {
         return text.StartsWith(prefix) ? text.Substring(prefix.Length) : text;
-    }
-
-
-
-    public void printFiles(List<TestFileDTO> testFiles)
-    {
-        foreach (var item in testFiles)
-        {
-            Console.WriteLine(item.ToString());
-        }
     }
 
 }
