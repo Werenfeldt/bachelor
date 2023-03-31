@@ -16,7 +16,10 @@ internal sealed class DocumentationRepository : IDocumentationRepository
 
     public async Task<IEnumerable<DocumentationDTO>> ReadAllDocumentationByProjectIdAsync(Guid projectId, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Documentation.Where(doc => doc.ProjectId == projectId).Select(doc => ConvertFunctions.DocumentationMapToDTO(doc)).ToListAsync();
+        //return await _dbContext.Documentation.Where(doc => doc.ProjectId == projectId).Select(doc => ConvertFunctions.DocumentationMapToDTO(doc)).ToListAsync();
+
+        //if below works then remove the one above + projectid from documentation entity   
+        return await _dbContext.TestFiles.Where(tf => tf.ProjectId == projectId).Select(tf => ConvertFunctions.DocumentationMapToDTO(tf.Documentation)).ToListAsync();
     }
 
     public async Task<Option<DocumentationDTO>> ReadDocumentationByTestFileIdAsync(Guid testFileId, CancellationToken cancellationToken = default)

@@ -21,7 +21,7 @@ public class Documentation
     //Dependent entity therefore has id to principal entity
     public Guid TestFileId { get; set; }
 
-    public Guid ProjectId { get; set; }
+    //public Guid ProjectId { get; set; }
     [Required]
     public TestFile? TestFile { get; set; }
     public Documentation(string summary, string translation)
