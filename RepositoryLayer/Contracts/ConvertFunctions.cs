@@ -49,12 +49,12 @@ public static class ConvertFunctions
 
 
     //-------------------------------------- Documentation mappings ------------------------------------------//
-    private static DocumentationDTO DocumentationMapToDTO(Documentation documentation)
+    public static DocumentationDTO DocumentationMapToDTO(Documentation documentation)
     {
         return new DocumentationDTO(documentation.Id, documentation.Summary, documentation.Translation, documentation.TestFileId, documentation.CreatedDate, documentation.UpdatedDate);
     }
 
-    private static Documentation DocumentationMapToDTO(CreateDocumentationDTO documentation)
+    public static Documentation DocumentationMapToDTO(CreateDocumentationDTO documentation)
     {
         return new Documentation(documentation.Summary, documentation.Translation);
     }
