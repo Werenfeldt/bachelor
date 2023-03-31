@@ -12,21 +12,27 @@ public static class ConvertFunctions
     //TODO fix TestFile DTOs (sidste parameter) 
     public static ProjectDTO ProjectMapToDTO(CreateProjectDTO project)
     {
-        return new ProjectDTO(project.Title, project.GitRepoName, project.GitRepoOwner, project.Description, project.CreatedDate.ToString(), project.Users.ToList().AsReadOnly(), GetTestFileDTOs(project).AsReadOnly());
+        return new ProjectDTO(project.Title, project.GitRepoName, project.GitRepoOwner, project.Description, project.CreatedDate.ToString(), new List<UserDTO>(){project.User}.AsReadOnly(), GetTestFileDTOs(project).AsReadOnly());
     }
 
     public static Project ProjectMapToEntity(CreateProjectDTO project)
     {
-        return new Project(project.Title, project.GitRepoName, project.GitRepoOwner, project.CreatedDate);
+        List<TestFile> testFiles = new List<TestFile>();
+        foreach (var item in project.TestFileToBeCreatedDTOs)
+        {
+            testFiles.Add(TestFileMapToEntity(item));
+        }
+        
+        return new Project(project.Title, project.GitRepoName, project.GitRepoOwner, project.CreatedDate){TestFiles = testFiles};
     }
     public static TestFileDTO TestFileMapToDTO(TestFile testFile)
     {
-        return new TestFileDTO(testFile.Name, testFile.Path, testFile.Content, testFile.CreatedDate.ToString(), testFile.UpdatedDate.ToString(), ProjectMapToDTO(testFile.Project), DocumentationMapToDTO(testFile.Documentation));
+        return new TestFileDTO(testFile.Name, testFile.Path, testFile.Content, testFile.CreatedDate.ToString(), testFile.UpdatedDate.ToString(), DocumentationMapToDTO(testFile.Documentation));
     }
 
     public static TestFileDTO TestFileMapToDTO(CreateTestFileDTO testFile)
     {
-        return new TestFileDTO(testFile.Name, testFile.Path, testFile.Content, testFile.CreatedDate.ToString(), null, testFile.Project, null);
+        return new TestFileDTO(testFile.Name, testFile.Path, testFile.Content, testFile.CreatedDate.ToString(), null, null);
     }
 
     public static TestFile TestFileMapToEntity(CreateTestFileDTO testFile)
@@ -84,9 +90,9 @@ public static class ConvertFunctions
     {
         var scriptList = new List<TestFileDTO>();
 
-        if (project.testFileToBeCreatedDTOs != null)
+        if (project.TestFileToBeCreatedDTOs != null)
         {
-            project.testFileToBeCreatedDTOs.ToList().ForEach(testFile => scriptList.Add(TestFileMapToDTO(testFile)));
+            project.TestFileToBeCreatedDTOs.ToList().ForEach(testFile => scriptList.Add(TestFileMapToDTO(testFile)));
         }
 
         return scriptList;

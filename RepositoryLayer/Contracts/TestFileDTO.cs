@@ -2,7 +2,7 @@ namespace RepositoryLayer;
 
 //TODO add simple record if you dont need all information
 
-public record TestFileDTO(string Name, string Path, string Content, string CreatedDate, string UpdatedDate, ProjectDTO Project, DocumentationDTO Documentation);
+public record TestFileDTO(string Name, string Path, string Content, string CreatedDate, string UpdatedDate, DocumentationDTO Documentation);
 
 public record CreateTestFileDTO
 {
@@ -13,8 +13,6 @@ public record CreateTestFileDTO
 
     [DataType(DataType.Date)]
     public DateTime CreatedDate { get; set; }
-    
-    public ProjectDTO? Project { get; set; }
 
 }
 

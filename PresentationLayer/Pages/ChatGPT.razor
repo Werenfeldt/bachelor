@@ -7,7 +7,8 @@
 <PageTitle>Chat GPT</PageTitle>
 <div class="h1 mb-4 text-center"> Input your script or url</div>
 <div class="form-group text-center">
-  <input class="form-control my-4 text-center py-2 m-auto" style="max-width:600px;" type="text" @bind="@gitUrl" placeholder="Type your message here" />
+  <input class="form-control my-4 text-center py-2 m-auto" style="max-width:600px;" type="text" @bind="@gitUrl" placeholder="Give gitUrl here" />
+  <input class="form-control my-4 text-center py-2 m-auto" style="max-width:600px;" type="text" @bind="@authToken" placeholder="Give authToken here" />
   <button class="btn btn-success mb-4 px-2" style="max-width:200px;" onclick="@GetResponseFromGPT3">Translate</button>
 </div>
 <div class="d-flex justify-content-center text-center">
@@ -27,6 +28,7 @@
 @code{
 
     public string gitUrl { get; set; }
+    public string authToken { get; set; }
     public string generatedText { get; set; } = "Answer will be displayed here.";
 
     private UserDTO? user { get; set; }
@@ -35,10 +37,9 @@
     {
         generatedText = "Translating...";
 
-        var prompt = await serviceManager.GithubIntegration.CreateGitRepositoryFromURLAsync(gitUrl, "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");
+        var hej = serviceManager.ProjectService.CreateProjectAsync(user, gitUrl, authToken);
 
-        generatedText = await serviceManager.OpenAIIntegration.Translate("Translate this cypress script into steps: " + prompt.testFileDTOs.First());
-
+        generatedText = hej.ToString();
         StateHasChanged();
     }
 
@@ -47,12 +48,4 @@
         user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
         StateHasChanged();
     } 
-
-
-
-
-
-
-
-
 }

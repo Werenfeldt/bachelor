@@ -1,18 +1,11 @@
 namespace ServiceLayer;
 public interface IGithubIntegration
 {
-    Task<ProjectDTO> CreateGitRepositoryFromURLAsync(string url);
+    void SetCredentials(string tokenAuth);
 
-    Task<ProjectDTO> CreateGitRepositoryFromURLAsync(string url, string tokenAuth);
-
-    Task<ProjectDTO> CreateGitRepositoryFromURLAsync(string url, string username, string password);
-
-    Task<ProjectDTO> CreateGitRepositoryAsync(string repositoryName, string repositoryOwner);
-
-    Task<ProjectDTO> CreateGitRepositoryAsync(string repositoryName, string repositoryOwner, string tokenAuth);
-
-    Task<ProjectDTO> CreateGitRepositoryAsync(string repositoryName, string repositoryOwner, string username, string password);
-
+    void SetCredentials(string username, string password);
+    
+    Task<(string GitRepositoryOwner, string GitRepositoryName, IReadOnlyList<RepositoryContent>)> Request(string url);
     void AddToGithubActions(string url, string tokenAuth);
 
 }

@@ -17,9 +17,9 @@ public record CreateProjectDTO
     [DataType(DataType.Date)]
     public DateTime CreatedDate { get; set; }
 
-    public ICollection<UserDTO>? Users { get; set; }
+    public UserDTO? User { get; set; }
 
-    public ICollection<CreateTestFileDTO>? testFileToBeCreatedDTOs { get; set; }
+    public ICollection<CreateTestFileDTO>? TestFileToBeCreatedDTOs { get; set; }
 }
 
 public record UpdateProjectDTO : CreateProjectDTO
