@@ -1,6 +1,7 @@
 
 
 namespace DomainLayer;
+[Index(nameof(GitRepoName), nameof(GitRepoOwner), IsUnique = true)]
 //TODO set up deletion cascade. 
 public class Project
 {
@@ -15,8 +16,11 @@ public class Project
 
     public string? Description { get; set; }
 
-    [DataType(DataType.Date)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedDate { get; set; }
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime UpdatedDate { get; set; }
 
     [Required]
     public ICollection<User>? Users { get; set; }
@@ -24,11 +28,11 @@ public class Project
     //Principal entity to TestFiles
     public ICollection<TestFile>? TestFiles { get; set; }
 
-    public Project(string title, string gitRepoName, string gitRepoOwner, DateTime createdDate)
+    public Project(string title, string gitRepoName, string gitRepoOwner)
     {
         Title = title;
         GitRepoName = gitRepoName;
         GitRepoOwner = gitRepoOwner;
-        CreatedDate = createdDate;
+        Users = new List<User>();
     }
 }

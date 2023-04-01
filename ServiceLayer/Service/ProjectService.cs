@@ -11,26 +11,26 @@ public class ProjectService : IProjectService
         _lazyGithubIntegration = new Lazy<IGithubIntegration>(() => new GithubIntegration());
         _repoManager = repoManager;
     }
-    public Task<ProjectDTO> CreateProjectAsync(UserDTO user, string url)
+    public Task<ProjectDTO> CreateProjectAsync(Guid userId, string url)
     {
-        return sendRequest(user, url);
+        return sendRequest(userId, url);
     }
 
-    public Task<ProjectDTO> CreateProjectAsync(UserDTO user, string url, string tokenAuth)
+    public Task<ProjectDTO> CreateProjectAsync(Guid userId, string url, string tokenAuth)
     {
         GithubIntegration.SetCredentials(tokenAuth);
 
-        return sendRequest(user, url);
+        return sendRequest(userId, url);
     }
 
-    public Task<ProjectDTO> CreateProjectAsync(UserDTO user, string url, string username, string password)
+    public Task<ProjectDTO> CreateProjectAsync(Guid userId, string url, string username, string password)
     {
         GithubIntegration.SetCredentials(username, password);
 
-        return sendRequest(user, url);
+        return sendRequest(userId, url);
     }
 
-    private async Task<ProjectDTO> sendRequest(UserDTO user, string url)
+    private async Task<ProjectDTO> sendRequest(Guid userId, string url)
     {
         var (gitRepositoryOwner, gitRepositoryName, repositoryContent) = await GithubIntegration.Request(url);
 
@@ -41,12 +41,11 @@ public class ProjectService : IProjectService
             Title = gitRepositoryName,
             GitRepoOwner = gitRepositoryOwner,
             GitRepoName = gitRepositoryName,
-            CreatedDate = DateTime.UtcNow,
-            User = user,
+            UserId = userId,
             TestFileToBeCreatedDTOs = listCreateTestFileDTO
         };
         
-        return await _repoManager.ProjectRepository.Insert(projectDTO);
+        return await _repoManager.ProjectRepository.CreateProjectAsync(projectDTO);
     }
 
     private List<CreateTestFileDTO> GetAllTestFiles(IReadOnlyList<RepositoryContent> repositoryContent)
@@ -60,7 +59,7 @@ public class ProjectService : IProjectService
                 Name = item.Name,
                 Path = item.Path,
                 Content = item.Content,
-                CreatedDate = DateTime.UtcNow
+                //CreatedDate = DateTime.UtcNow
             };
             testList.Add(script);
         }

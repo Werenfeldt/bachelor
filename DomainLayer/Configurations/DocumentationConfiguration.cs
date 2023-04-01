@@ -1,8 +1,8 @@
 namespace DomainLayer.Configurations;
 
-internal sealed class ProjectConfiguration : IEntityTypeConfiguration<Project>
+internal sealed class DocumentationConfiguration : IEntityTypeConfiguration<Documentation>
 {
-    public void Configure(EntityTypeBuilder<Project> builder)
+    public void Configure(EntityTypeBuilder<Documentation> builder)
     {
         builder.Property(s => s.CreatedDate)
             .HasDefaultValueSql("GETDATE()");

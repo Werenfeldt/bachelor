@@ -19,6 +19,7 @@
   <MudCard>
       <MudCardContent>
           <MudText>SessionUser</MudText>
+          <MudText Typo="Typo.body2">Id: @user.Id </MudText>
           <MudText Typo="Typo.body2">Name: @user.Name </MudText>
           <MudText Typo="Typo.body2">Email: @user.Email </MudText>
       </MudCardContent>
@@ -37,7 +38,7 @@
     {
         generatedText = "Translating...";
 
-        var hej = serviceManager.ProjectService.CreateProjectAsync(user, gitUrl, authToken);
+        var hej = serviceManager.ProjectService.CreateProjectAsync(user.Id, gitUrl, authToken);
 
         generatedText = hej.ToString();
         StateHasChanged();

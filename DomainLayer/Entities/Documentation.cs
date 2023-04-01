@@ -10,21 +10,21 @@ public class Documentation
 
     public string Translation { get; set; }
 
-    [DataType(DataType.Date)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedDate { get; set; }
 
-    [DataType(DataType.Date)]
-    public DateTime? UpdatedDate { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public DateTime UpdatedDate { get; set; }
 
     //Dependent entity therefore has id to principal entity
     public Guid TestFileId { get; set; }
 
+    //public Guid ProjectId { get; set; }
     [Required]
     public TestFile? TestFile { get; set; }
-    public Documentation(string summary, string translation, DateTime createdDate)
+    public Documentation(string summary, string translation)
     {
         Summary = summary;
         Translation = translation;
-        createdDate = CreatedDate;
     }
 }
