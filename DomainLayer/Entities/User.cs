@@ -13,8 +13,8 @@ public class User
 
     public string Email { get; set; }
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    [DataType(DataType.Date)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    //[DataType(DataType.Date)]
     public DateTime CreatedDate { get; set; }
 
     public ICollection<Project>? Projects { get; set; }

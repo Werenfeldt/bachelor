@@ -1,7 +1,7 @@
 
 
 namespace DomainLayer;
-[Index((nameof(GitRepoName) + nameof(GitRepoOwner)), IsUnique = true)]
+[Index(nameof(GitRepoName), nameof(GitRepoOwner), IsUnique = true)]
 //TODO set up deletion cascade. 
 public class Project
 {
@@ -16,12 +16,10 @@ public class Project
 
     public string? Description { get; set; }
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    [DataType(DataType.Date)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedDate { get; set; }
 
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    [DataType(DataType.Date)]
     public DateTime UpdatedDate { get; set; }
 
     [Required]
@@ -35,5 +33,6 @@ public class Project
         Title = title;
         GitRepoName = gitRepoName;
         GitRepoOwner = gitRepoOwner;
+        Users = new List<User>();
     }
 }

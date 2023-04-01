@@ -15,7 +15,7 @@ internal sealed class ProjectRepository : IProjectRepository
         project.Users.Add(user);
         
         //Adds project to database
-        _dbContext.Projects.Add(project);
+        await _dbContext.AddAsync(project);
         await _dbContext.SaveChangesAsync();
         return ConvertFunctions.ProjectMapToDTO(project);
     }

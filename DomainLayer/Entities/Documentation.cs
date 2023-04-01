@@ -10,12 +10,10 @@ public class Documentation
 
     public string Translation { get; set; }
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    [DataType(DataType.Date)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedDate { get; set; }
 
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    [DataType(DataType.Date)]
     public DateTime UpdatedDate { get; set; }
 
     //Dependent entity therefore has id to principal entity

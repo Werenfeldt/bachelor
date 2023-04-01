@@ -41,7 +41,6 @@ public class ProjectService : IProjectService
             Title = gitRepositoryName,
             GitRepoOwner = gitRepositoryOwner,
             GitRepoName = gitRepositoryName,
-            //CreatedDate = DateTime.UtcNow,
             UserId = userId,
             TestFileToBeCreatedDTOs = listCreateTestFileDTO
         };

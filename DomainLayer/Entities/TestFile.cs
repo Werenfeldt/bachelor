@@ -9,14 +9,12 @@ public class TestFile
     public string Path { get; set; }
     public string Content { get; set; }
     
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    [DataType(DataType.Date)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedDate { get; set; }
 
     
     [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    [DataType(DataType.Date)]
-    public DateTime UpdatedDate { get; set; }
+    public DateTime? UpdatedDate { get; set; }
 
     //Dependent entity therefore has id to principal entity
     public Guid ProjectId { get; set; }
