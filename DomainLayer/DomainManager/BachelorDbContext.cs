@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace DomainLayer;
 
 public sealed class BachelorDbContext : DbContext, IBachelorDbContext

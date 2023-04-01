@@ -7,11 +7,11 @@ public class LoginService : ILoginService
     public LoginService(IRepoManager repoManager) => _repoManager = repoManager;
     public async Task<UserDTO> Login(string email, string password, CancellationToken cancellationToken = default)
     {
-        var user = await _repoManager.UserRepository.GetByNameAndPassword(email, password, cancellationToken);
+        var user = await _repoManager.UserRepository.ReadUserByEmailAndPasswordAsync(email, password, cancellationToken);
 
-        if (user != null)
+        if (user.IsSome)
         {
-            return ConvertFunctions.UserMapToDTO(user);
+            return user.Value;
         }
 
         throw new UserNotFoundException("User does not exist. Please check password and email. Otherwise create new use");
@@ -19,9 +19,9 @@ public class LoginService : ILoginService
 
     public async Task<UserDTO> CreateNewUser(CreateUserDTO user)
     {
-        user.CreatedDate = DateTime.UtcNow;
+        //user.CreatedDate = DateTime.UtcNow;
 
-        return await _repoManager.UserRepository.Insert(user);
+        return await _repoManager.UserRepository.CreateUserAsync(user);
     }
 
 }

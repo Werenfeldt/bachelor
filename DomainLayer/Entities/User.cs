@@ -13,17 +13,17 @@ public class User
 
     public string Email { get; set; }
 
-    [DataType(DataType.Date)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    //[DataType(DataType.Date)]
     public DateTime CreatedDate { get; set; }
 
     public ICollection<Project>? Projects { get; set; }
 
-    public User(string name, string email, string password, DateTime createdDate)
+    public User(string name, string email, string password)
     {
         Name = name;
         Email = email;
         Password = password;
-        CreatedDate = createdDate;
     }
 
 }

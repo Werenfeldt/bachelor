@@ -8,10 +8,12 @@ public class TestFile
 
     public string Path { get; set; }
     public string Content { get; set; }
-    [DataType(DataType.Date)]
+    
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedDate { get; set; }
 
-    [DataType(DataType.Date)]
+    
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
     public DateTime? UpdatedDate { get; set; }
 
     //Dependent entity therefore has id to principal entity
@@ -23,12 +25,10 @@ public class TestFile
     //Principal entity to documentation
     public Documentation? Documentation { get; set; }
 
-    public TestFile(string name, string path, string content, DateTime createdDate )
+    public TestFile(string name, string path, string content)
     {
         Name = name;
         Path = path;
         Content = content;
-        CreatedDate = createdDate;
-
     }
 }
