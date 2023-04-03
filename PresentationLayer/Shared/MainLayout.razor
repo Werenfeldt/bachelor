@@ -7,19 +7,31 @@
 
 <MudLayout>
     <MudAppBar>
-        <MudButton StartIcon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())">Navigation</MudButton>
-        <MudSpacer />
-        @if(loggedIn)
+        @if(!loggedIn)
         {
+            <MudSpacer />
+        }
+        else 
+        {
+            <MudButton StartIcon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())">Files</MudButton>
+            <MudButton Href="createProject" Color="Color.Inherit">Create Project</MudButton>
+            <MudButton Href="createProject" Color="Color.Inherit">Download Documentation</MudButton>
+            <MudSpacer />
+        }
+            <MudButton Href="/login" Edge="Edge.End" Color="Color.Inherit">API</MudButton>
+            <MudButton Href="/login" Edge="Edge.End" Color="Color.Inherit">Help</MudButton>
+            @if(!loggedIn)
+            {
+            <MudButton Href="/login" Color="Color.Inherit">Login</MudButton>
+            <MudButton Href="/createuser" Color="Color.Inherit" Variant="Variant.Outlined">Sign Up</MudButton>
+            }
+            else 
+            {
             <MudButton Href="/" StartIcon="@Icons.Material.Filled.Logout" Edge="Edge.End" Color="Color.Inherit" OnClick="@(async () => await Logout())"> 
             Logout
-            </MudButton>
-            
-        } 
-        else
-        {
-            <MudButton Href="/login" StartIcon="@Icons.Material.Filled.Login" Edge="Edge.End" Color="Color.Inherit">Login</MudButton>
-        }
+            </MudButton>  
+            }
+
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen">
         <NavMenu/>
