@@ -19,8 +19,7 @@ public class TestFile
     //Dependent entity therefore has id to principal entity
     public Guid ProjectId { get; set; }
     
-    [Required]
-    public Project? Project { get; set; }
+    public Project Project { get; set; } = null!;
 
     //Principal entity to documentation
     public Documentation? Documentation { get; set; }
