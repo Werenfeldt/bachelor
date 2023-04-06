@@ -47,7 +47,7 @@
         {
             var user = await serviceManager.LoginService.Login(email.Text, password.Text);
             await sessionStorage.SetItemAsync("SessionUser", user);
-            NavManager.NavigateTo("/gpt");
+            NavManager.NavigateTo("/projects");
 
         }
         catch (System.Exception e)

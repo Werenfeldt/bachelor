@@ -11,6 +11,7 @@ public class ProjectService : IProjectService
         _lazyGithubIntegration = new Lazy<IGithubIntegration>(() => new GithubIntegration());
         _repoManager = repoManager;
     }
+
     public Task<ProjectDTO> CreateProjectAsync(Guid userId, string url)
     {
         return sendRequest(userId, url);
@@ -28,6 +29,12 @@ public class ProjectService : IProjectService
         GithubIntegration.SetCredentials(username, password);
 
         return sendRequest(userId, url);
+    }
+
+    public async Task<List<ProjectDTO>> LoadProjectsAsync(Guid userId)
+    {
+        var projects = await _repoManager.ProjectRepository.ReadAllProjectsByUserIdAsync(userId);
+        return projects.ToList();
     }
 
     private async Task<ProjectDTO> sendRequest(Guid userId, string url)

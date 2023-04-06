@@ -20,8 +20,8 @@ public class Documentation
     public Guid TestFileId { get; set; }
 
     //public Guid ProjectId { get; set; }
-    [Required]
-    public TestFile? TestFile { get; set; }
+
+    public TestFile TestFile { get; set; } = null!;
     public Documentation(string summary, string translation)
     {
         Summary = summary;
