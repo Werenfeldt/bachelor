@@ -8,4 +8,6 @@ public interface IRepoManager
 
     IUserRepository UserRepository { get; }
 
+    IDocumentationRepository DocumentationRepository { get; }
+
 }
