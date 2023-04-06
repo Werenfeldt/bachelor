@@ -12,23 +12,23 @@ public class ProjectService : IProjectService
         _repoManager = repoManager;
     }
 
-    public Task<ProjectDTO> CreateProjectAsync(Guid userId, string url)
+    public Task<ProjectDTO> CreateProjectAsync(Guid userId, string projectTitle, string projectDescription, string url)
     {
-        return sendRequest(userId, url);
+        return sendRequest(userId, projectTitle, projectDescription, url);
     }
 
-    public Task<ProjectDTO> CreateProjectAsync(Guid userId, string url, string tokenAuth)
+    public Task<ProjectDTO> CreateProjectAsync(Guid userId, string projectTitle, string projectDescription, string url, string tokenAuth)
     {
         GithubIntegration.SetCredentials(tokenAuth);
 
-        return sendRequest(userId, url);
+        return sendRequest(userId, projectTitle, projectDescription, url);
     }
 
-    public Task<ProjectDTO> CreateProjectAsync(Guid userId, string url, string username, string password)
+    public Task<ProjectDTO> CreateProjectAsync(Guid userId, string projectTitle, string projectDescription, string url, string username, string password)
     {
         GithubIntegration.SetCredentials(username, password);
 
-        return sendRequest(userId, url);
+        return sendRequest(userId, projectTitle, projectDescription, url);
     }
 
     public async Task<List<ProjectDTO>> LoadProjectsAsync(Guid userId)
@@ -37,7 +37,7 @@ public class ProjectService : IProjectService
         return projects.ToList();
     }
 
-    private async Task<ProjectDTO> sendRequest(Guid userId, string url)
+    private async Task<ProjectDTO> sendRequest(Guid userId, string projectTitle, string projectDescription, string url)
     {
         var (gitRepositoryOwner, gitRepositoryName, repositoryContent) = await GithubIntegration.Request(url);
 
@@ -45,13 +45,15 @@ public class ProjectService : IProjectService
 
         var projectDTO = new CreateProjectDTO
         {
-            Title = gitRepositoryName,
+            Title = projectTitle,
+            Description = projectDescription,
             GitRepoOwner = gitRepositoryOwner,
             GitRepoName = gitRepositoryName,
             UserId = userId,
             TestFileToBeCreatedDTOs = listCreateTestFileDTO
+
         };
-        
+
         return await _repoManager.ProjectRepository.CreateProjectAsync(projectDTO);
     }
 
