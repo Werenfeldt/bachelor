@@ -9,5 +9,17 @@ internal sealed class DocumentationConfiguration : IEntityTypeConfiguration<Docu
 
         builder.Property(s => s.UpdatedDate)
             .HasDefaultValueSql("GETDATE()");
+        
+        builder.HasOne(d => d.TestFile).WithOne(t => t.Documentation).HasForeignKey<Documentation>(d => d.TestFileId);
+
+        builder.HasData(
+            new Documentation("Jeg er et summary", "Jeg er en translation")
+            {
+                Id = Guid.NewGuid(),
+                TestFileId = Guid.Parse("6ea2fe17-3be2-4990-aa44-d233698ac483"),
+                CreatedDate = DateTime.UtcNow,
+                UpdatedDate = DateTime.UtcNow
+            }
+        );
     }
 }
