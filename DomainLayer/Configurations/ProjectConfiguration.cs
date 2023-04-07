@@ -16,35 +16,35 @@ internal sealed class ProjectConfiguration : IEntityTypeConfiguration<Project>
 
 
         builder.HasData(
-            new Project("Project 1", "Repo1", "OwnerJens")
+            new Project("Project 1", "Repo1")
             {
                 Id = Guid.Parse("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6"),
                 Description = "Dette er en beskrivelse",
                 CreatedDate = DateTime.UtcNow,
                 UpdatedDate = DateTime.UtcNow
             },
-            new Project("Project 2", "Repo2", "OwnerBo")
+            new Project("Project 2", "Repo2")
             {
                 Id = Guid.Parse("d91cc4d8-f22a-4aa9-841d-3f8540c01f29"),
                 Description = "Dette er en beskrivelse",
                 CreatedDate = DateTime.UtcNow,
                 UpdatedDate = DateTime.UtcNow
             },
-            new Project("Project 3", "Repo3", "OwnerBo")
+            new Project("Project 3", "Repo3")
             {
                 Id = guid3,
                 Description = "Dette er en beskrivelse",
                 CreatedDate = DateTime.UtcNow,
                 UpdatedDate = DateTime.UtcNow
             },
-            new Project("Project 4", "Repo4", "OwnerBo")
+            new Project("Project 4", "Repo4")
             {
                 Id = guid4,
                 Description = "Dette er en beskrivelse",
                 CreatedDate = DateTime.UtcNow,
                 UpdatedDate = DateTime.UtcNow
             },
-            new Project("Project 5", "Repo5", "OwnerBo")
+            new Project("Project 5", "Repo5")
             {
                 Id = guid5,
                 Description = "Dette er en beskrivelse",

@@ -8,16 +8,27 @@ internal sealed class ProjectRepository : IProjectRepository
 
     public async Task<ProjectDTO> CreateProjectAsync(CreateProjectDTO projectDTO)
     {
-        var project = ConvertFunctions.ProjectMapToEntity(projectDTO);
+        var entity = await _dbContext.Projects.Where(p => p.GitUrl == projectDTO.GitUrl).FirstOrDefaultAsync();
+        if (entity != null)
+        {
+            var project = ConvertFunctions.ProjectMapToEntity(projectDTO);
 
-        //Adds logged in user to project entity        
-        var user = await _dbContext.Users.FindAsync(projectDTO.UserId);
-        project.Users.Add(user);
+            //Adds logged in user to project entity        
+            var user = await _dbContext.Users.FindAsync(projectDTO.UserId);
+            project.Users.Add(user);
 
-        //Adds project to database
-        await _dbContext.AddAsync(project);
-        await _dbContext.SaveChangesAsync();
-        return ConvertFunctions.ProjectMapToDTO(project);
+            //Adds project to database
+            await _dbContext.AddAsync(project);
+            await _dbContext.SaveChangesAsync();
+            return ConvertFunctions.ProjectMapToDTO(project);
+        }
+        else
+        {
+            var user = await _dbContext.Users.FindAsync(projectDTO.UserId);
+            entity.Users.Add(user);
+            await _dbContext.SaveChangesAsync();
+            return ConvertFunctions.ProjectMapToDTO(entity);
+        }
     }
 
     public async Task<Option<ProjectDTO>> ReadProjectByIdAsync(Guid projectId, CancellationToken cancellationToken = default)

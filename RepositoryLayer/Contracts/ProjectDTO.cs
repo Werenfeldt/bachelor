@@ -1,6 +1,6 @@
 namespace RepositoryLayer;
 
-public record ProjectDTO(Guid Id, string title, string gitRepoName, string gitRepoOwner, string description, DateTime createdDate);
+public record ProjectDTO(Guid Id, string title, string gitUrl, string description, DateTime createdDate);
 
 public record CreateProjectDTO
 {
