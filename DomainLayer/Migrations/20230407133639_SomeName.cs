@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DomainLayer.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateSeedDate : Migration
+    public partial class SomeName : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,8 +19,7 @@ namespace DomainLayer.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GitRepoName = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    GitRepoOwner = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    GitUrl = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
@@ -116,14 +115,14 @@ namespace DomainLayer.Migrations
 
             migrationBuilder.InsertData(
                 table: "Projects",
-                columns: new[] { "Id", "CreatedDate", "Description", "GitRepoName", "GitRepoOwner", "Title" },
+                columns: new[] { "Id", "CreatedDate", "Description", "GitUrl", "Title" },
                 values: new object[,]
                 {
-                    { new Guid("2d11a37e-9f9a-485d-9921-346c19b59e7b"), new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570), "Dette er en beskrivelse", "Repo4", "OwnerBo", "Project 4" },
-                    { new Guid("8bf19e4d-3abf-4504-8fbb-65d50a2cfd9e"), new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570), "Dette er en beskrivelse", "Repo5", "OwnerBo", "Project 5" },
-                    { new Guid("ac2493fc-1a2f-4462-9707-86968b937254"), new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570), "Dette er en beskrivelse", "Repo3", "OwnerBo", "Project 3" },
-                    { new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6"), new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570), "Dette er en beskrivelse", "Repo1", "OwnerJens", "Project 1" },
-                    { new Guid("d91cc4d8-f22a-4aa9-841d-3f8540c01f29"), new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570), "Dette er en beskrivelse", "Repo2", "OwnerBo", "Project 2" }
+                    { new Guid("6bcc80d0-f306-4c8c-bf48-2265e19b811b"), new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5530), "Dette er en beskrivelse", "Repo5", "Project 5" },
+                    { new Guid("72fdc801-cbe7-48c6-bdf8-864ed745848d"), new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5530), "Dette er en beskrivelse", "Repo3", "Project 3" },
+                    { new Guid("9fa2ded0-668a-45d7-83a3-0c81c72d83f0"), new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5530), "Dette er en beskrivelse", "Repo4", "Project 4" },
+                    { new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6"), new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5520), "Dette er en beskrivelse", "Repo1", "Project 1" },
+                    { new Guid("d91cc4d8-f22a-4aa9-841d-3f8540c01f29"), new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5530), "Dette er en beskrivelse", "Repo2", "Project 2" }
                 });
 
             migrationBuilder.InsertData(
@@ -131,8 +130,8 @@ namespace DomainLayer.Migrations
                 columns: new[] { "Id", "CreatedDate", "Email", "Name", "Password" },
                 values: new object[,]
                 {
-                    { new Guid("596bd00e-8699-4183-850f-14dc879bf9d8"), new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(3330), "Jens@gmail.com", "Jens", "1234" },
-                    { new Guid("5f6bd9e2-569f-40ea-8f27-79f3b87e1638"), new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(3330), "Bo@gmail.com", "Bo", "1234" }
+                    { new Guid("596bd00e-8699-4183-850f-14dc879bf9d8"), new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(4380), "Jens@gmail.com", "Jens", "1234" },
+                    { new Guid("5f6bd9e2-569f-40ea-8f27-79f3b87e1638"), new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(4380), "Bo@gmail.com", "Bo", "1234" }
                 });
 
             migrationBuilder.InsertData(
@@ -140,12 +139,12 @@ namespace DomainLayer.Migrations
                 columns: new[] { "Id", "Content", "CreatedDate", "Name", "Path", "ProjectId" },
                 values: new object[,]
                 {
-                    { new Guid("19528834-83ea-44f2-8beb-594300d0e9e1"), "Jeg er også et script", new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2680), "TestFile 4", "somePath4", new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6") },
-                    { new Guid("21444a04-eea6-4d61-84b6-2d260463a923"), "Jeg er også et script", new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2660), "TestFile 3", "somePath3", new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6") },
-                    { new Guid("5d4e7b0d-3ff2-4ffd-abb6-1e0583731a23"), "Jeg er også et script", new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2680), "TestFile 5", "somePath5", new Guid("d91cc4d8-f22a-4aa9-841d-3f8540c01f29") },
-                    { new Guid("6ea2fe17-3be2-4990-aa44-d233698ac483"), "Jeg er også et script", new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2660), "TestFile 2", "somePath2", new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6") },
-                    { new Guid("8301384b-0d85-4f87-bcd5-367f5320a2d3"), "Jeg er også et script", new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2690), "TestFile 6", "somePath6", new Guid("d91cc4d8-f22a-4aa9-841d-3f8540c01f29") },
-                    { new Guid("ee61a729-a960-467a-bdc1-1d7184ee7346"), "Jeg er et script content", new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2660), "TestFile 1", "somePath", new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6") }
+                    { new Guid("0482336c-9de0-4472-8dbc-c2c53722f394"), "Jeg er også et script", new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2030), "TestFile 6", "somePath6", new Guid("d91cc4d8-f22a-4aa9-841d-3f8540c01f29") },
+                    { new Guid("21444a04-eea6-4d61-84b6-2d260463a923"), "Jeg er også et script", new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2010), "TestFile 3", "somePath3", new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6") },
+                    { new Guid("6ea2fe17-3be2-4990-aa44-d233698ac483"), "Jeg er også et script", new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2000), "TestFile 2", "somePath2", new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6") },
+                    { new Guid("9fa4c352-9c73-49f4-95e3-bda8b7b302a7"), "Jeg er også et script", new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2020), "TestFile 5", "somePath5", new Guid("d91cc4d8-f22a-4aa9-841d-3f8540c01f29") },
+                    { new Guid("ee61a729-a960-467a-bdc1-1d7184ee7346"), "Jeg er et script content", new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2000), "TestFile 1", "somePath", new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6") },
+                    { new Guid("f823f652-5f9a-4eee-9658-b0228db23b51"), "Jeg er også et script", new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2020), "TestFile 4", "somePath4", new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6") }
                 });
 
             migrationBuilder.InsertData(
@@ -153,9 +152,9 @@ namespace DomainLayer.Migrations
                 columns: new[] { "ProjectsId", "UsersId" },
                 values: new object[,]
                 {
-                    { new Guid("2d11a37e-9f9a-485d-9921-346c19b59e7b"), new Guid("596bd00e-8699-4183-850f-14dc879bf9d8") },
-                    { new Guid("8bf19e4d-3abf-4504-8fbb-65d50a2cfd9e"), new Guid("596bd00e-8699-4183-850f-14dc879bf9d8") },
-                    { new Guid("ac2493fc-1a2f-4462-9707-86968b937254"), new Guid("596bd00e-8699-4183-850f-14dc879bf9d8") },
+                    { new Guid("6bcc80d0-f306-4c8c-bf48-2265e19b811b"), new Guid("596bd00e-8699-4183-850f-14dc879bf9d8") },
+                    { new Guid("72fdc801-cbe7-48c6-bdf8-864ed745848d"), new Guid("596bd00e-8699-4183-850f-14dc879bf9d8") },
+                    { new Guid("9fa2ded0-668a-45d7-83a3-0c81c72d83f0"), new Guid("596bd00e-8699-4183-850f-14dc879bf9d8") },
                     { new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6"), new Guid("596bd00e-8699-4183-850f-14dc879bf9d8") },
                     { new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6"), new Guid("5f6bd9e2-569f-40ea-8f27-79f3b87e1638") },
                     { new Guid("d91cc4d8-f22a-4aa9-841d-3f8540c01f29"), new Guid("596bd00e-8699-4183-850f-14dc879bf9d8") },
@@ -165,7 +164,7 @@ namespace DomainLayer.Migrations
             migrationBuilder.InsertData(
                 table: "Documentation",
                 columns: new[] { "Id", "CreatedDate", "Summary", "TestFileId", "Translation" },
-                values: new object[] { new Guid("0427d31b-5d96-449b-b420-ddaadceaefb2"), new DateTime(2023, 4, 6, 9, 21, 26, 302, DateTimeKind.Utc).AddTicks(9600), "Jeg er et summary", new Guid("6ea2fe17-3be2-4990-aa44-d233698ac483"), "Jeg er en translation" });
+                values: new object[] { new Guid("807ed932-9157-4511-bdaa-e565f4e58c23"), new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(2700), "Jeg er et summary", new Guid("6ea2fe17-3be2-4990-aa44-d233698ac483"), "Jeg er en translation" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Documentation_TestFileId",
@@ -174,9 +173,9 @@ namespace DomainLayer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Projects_GitRepoName_GitRepoOwner",
+                name: "IX_Projects_GitUrl",
                 table: "Projects",
-                columns: new[] { "GitRepoName", "GitRepoOwner" },
+                column: "GitUrl",
                 unique: true);
 
             migrationBuilder.CreateIndex(

@@ -59,12 +59,12 @@ namespace DomainLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0427d31b-5d96-449b-b420-ddaadceaefb2"),
-                            CreatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 302, DateTimeKind.Utc).AddTicks(9600),
+                            Id = new Guid("807ed932-9157-4511-bdaa-e565f4e58c23"),
+                            CreatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(2700),
                             Summary = "Jeg er et summary",
                             TestFileId = new Guid("6ea2fe17-3be2-4990-aa44-d233698ac483"),
                             Translation = "Jeg er en translation",
-                            UpdatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 302, DateTimeKind.Utc).AddTicks(9600)
+                            UpdatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(2700)
                         });
                 });
 
@@ -82,11 +82,7 @@ namespace DomainLayer.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("GitRepoName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("GitRepoOwner")
+                    b.Property<string>("GitUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -101,7 +97,7 @@ namespace DomainLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GitRepoName", "GitRepoOwner")
+                    b.HasIndex("GitUrl")
                         .IsUnique();
 
                     b.ToTable("Projects");
@@ -110,52 +106,47 @@ namespace DomainLayer.Migrations
                         new
                         {
                             Id = new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6"),
-                            CreatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570),
+                            CreatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5520),
                             Description = "Dette er en beskrivelse",
-                            GitRepoName = "Repo1",
-                            GitRepoOwner = "OwnerJens",
+                            GitUrl = "Repo1",
                             Title = "Project 1",
-                            UpdatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570)
+                            UpdatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5520)
                         },
                         new
                         {
                             Id = new Guid("d91cc4d8-f22a-4aa9-841d-3f8540c01f29"),
-                            CreatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570),
+                            CreatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5530),
                             Description = "Dette er en beskrivelse",
-                            GitRepoName = "Repo2",
-                            GitRepoOwner = "OwnerBo",
+                            GitUrl = "Repo2",
                             Title = "Project 2",
-                            UpdatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570)
+                            UpdatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5530)
                         },
                         new
                         {
-                            Id = new Guid("ac2493fc-1a2f-4462-9707-86968b937254"),
-                            CreatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570),
+                            Id = new Guid("72fdc801-cbe7-48c6-bdf8-864ed745848d"),
+                            CreatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5530),
                             Description = "Dette er en beskrivelse",
-                            GitRepoName = "Repo3",
-                            GitRepoOwner = "OwnerBo",
+                            GitUrl = "Repo3",
                             Title = "Project 3",
-                            UpdatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570)
+                            UpdatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5530)
                         },
                         new
                         {
-                            Id = new Guid("2d11a37e-9f9a-485d-9921-346c19b59e7b"),
-                            CreatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570),
+                            Id = new Guid("9fa2ded0-668a-45d7-83a3-0c81c72d83f0"),
+                            CreatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5530),
                             Description = "Dette er en beskrivelse",
-                            GitRepoName = "Repo4",
-                            GitRepoOwner = "OwnerBo",
+                            GitUrl = "Repo4",
                             Title = "Project 4",
-                            UpdatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570)
+                            UpdatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5530)
                         },
                         new
                         {
-                            Id = new Guid("8bf19e4d-3abf-4504-8fbb-65d50a2cfd9e"),
-                            CreatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570),
+                            Id = new Guid("6bcc80d0-f306-4c8c-bf48-2265e19b811b"),
+                            CreatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5530),
                             Description = "Dette er en beskrivelse",
-                            GitRepoName = "Repo5",
-                            GitRepoOwner = "OwnerBo",
+                            GitUrl = "Repo5",
                             Title = "Project 5",
-                            UpdatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(570)
+                            UpdatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 652, DateTimeKind.Utc).AddTicks(5530)
                         });
                 });
 
@@ -201,61 +192,61 @@ namespace DomainLayer.Migrations
                         {
                             Id = new Guid("ee61a729-a960-467a-bdc1-1d7184ee7346"),
                             Content = "Jeg er et script content",
-                            CreatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2660),
+                            CreatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2000),
                             Name = "TestFile 1",
                             Path = "somePath",
                             ProjectId = new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6"),
-                            UpdatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2660)
+                            UpdatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2000)
                         },
                         new
                         {
                             Id = new Guid("6ea2fe17-3be2-4990-aa44-d233698ac483"),
                             Content = "Jeg er også et script",
-                            CreatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2660),
+                            CreatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2000),
                             Name = "TestFile 2",
                             Path = "somePath2",
                             ProjectId = new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6"),
-                            UpdatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2660)
+                            UpdatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2000)
                         },
                         new
                         {
                             Id = new Guid("21444a04-eea6-4d61-84b6-2d260463a923"),
                             Content = "Jeg er også et script",
-                            CreatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2660),
+                            CreatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2010),
                             Name = "TestFile 3",
                             Path = "somePath3",
                             ProjectId = new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6"),
-                            UpdatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2660)
+                            UpdatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2010)
                         },
                         new
                         {
-                            Id = new Guid("19528834-83ea-44f2-8beb-594300d0e9e1"),
+                            Id = new Guid("f823f652-5f9a-4eee-9658-b0228db23b51"),
                             Content = "Jeg er også et script",
-                            CreatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2680),
+                            CreatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2020),
                             Name = "TestFile 4",
                             Path = "somePath4",
                             ProjectId = new Guid("bfaf6610-6eaf-4bf2-8d08-eadaf01d2fd6"),
-                            UpdatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2680)
+                            UpdatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2020)
                         },
                         new
                         {
-                            Id = new Guid("5d4e7b0d-3ff2-4ffd-abb6-1e0583731a23"),
+                            Id = new Guid("9fa4c352-9c73-49f4-95e3-bda8b7b302a7"),
                             Content = "Jeg er også et script",
-                            CreatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2680),
+                            CreatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2020),
                             Name = "TestFile 5",
                             Path = "somePath5",
                             ProjectId = new Guid("d91cc4d8-f22a-4aa9-841d-3f8540c01f29"),
-                            UpdatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2680)
+                            UpdatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2020)
                         },
                         new
                         {
-                            Id = new Guid("8301384b-0d85-4f87-bcd5-367f5320a2d3"),
+                            Id = new Guid("0482336c-9de0-4472-8dbc-c2c53722f394"),
                             Content = "Jeg er også et script",
-                            CreatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2690),
+                            CreatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2030),
                             Name = "TestFile 6",
                             Path = "somePath6",
                             ProjectId = new Guid("d91cc4d8-f22a-4aa9-841d-3f8540c01f29"),
-                            UpdatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(2690)
+                            UpdatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(2030)
                         });
                 });
 
@@ -293,7 +284,7 @@ namespace DomainLayer.Migrations
                         new
                         {
                             Id = new Guid("596bd00e-8699-4183-850f-14dc879bf9d8"),
-                            CreatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(3330),
+                            CreatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(4380),
                             Email = "Jens@gmail.com",
                             Name = "Jens",
                             Password = "1234"
@@ -301,7 +292,7 @@ namespace DomainLayer.Migrations
                         new
                         {
                             Id = new Guid("5f6bd9e2-569f-40ea-8f27-79f3b87e1638"),
-                            CreatedDate = new DateTime(2023, 4, 6, 9, 21, 26, 303, DateTimeKind.Utc).AddTicks(3330),
+                            CreatedDate = new DateTime(2023, 4, 7, 13, 36, 39, 653, DateTimeKind.Utc).AddTicks(4380),
                             Email = "Bo@gmail.com",
                             Name = "Bo",
                             Password = "1234"
@@ -345,17 +336,17 @@ namespace DomainLayer.Migrations
                         },
                         new
                         {
-                            ProjectsId = new Guid("ac2493fc-1a2f-4462-9707-86968b937254"),
+                            ProjectsId = new Guid("72fdc801-cbe7-48c6-bdf8-864ed745848d"),
                             UsersId = new Guid("596bd00e-8699-4183-850f-14dc879bf9d8")
                         },
                         new
                         {
-                            ProjectsId = new Guid("2d11a37e-9f9a-485d-9921-346c19b59e7b"),
+                            ProjectsId = new Guid("9fa2ded0-668a-45d7-83a3-0c81c72d83f0"),
                             UsersId = new Guid("596bd00e-8699-4183-850f-14dc879bf9d8")
                         },
                         new
                         {
-                            ProjectsId = new Guid("8bf19e4d-3abf-4504-8fbb-65d50a2cfd9e"),
+                            ProjectsId = new Guid("6bcc80d0-f306-4c8c-bf48-2265e19b811b"),
                             UsersId = new Guid("596bd00e-8699-4183-850f-14dc879bf9d8")
                         });
                 });

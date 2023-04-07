@@ -12,23 +12,22 @@ public class ProjectService : IProjectService
         _repoManager = repoManager;
     }
 
-    public Task<ProjectDTO> CreateProjectAsync(Guid userId, string url)
+    public Task<ProjectDTO> CreateProjectAsync(CreateProjectDTO projectDTO)
     {
-        return sendRequest(userId, url);
+        return sendRequest(projectDTO);
     }
 
-    public Task<ProjectDTO> CreateProjectAsync(Guid userId, string url, string tokenAuth)
+    public Task<ProjectDTO> CreateProjectAsync(CreateProjectDTO projectDTO, string tokenAuth)
     {
         GithubIntegration.SetCredentials(tokenAuth);
-
-        return sendRequest(userId, url);
+        return sendRequest(projectDTO);
     }
 
-    public Task<ProjectDTO> CreateProjectAsync(Guid userId, string url, string username, string password)
+    public Task<ProjectDTO> CreateProjectAsync(CreateProjectDTO projectDTO, string username, string password)
     {
         GithubIntegration.SetCredentials(username, password);
 
-        return sendRequest(userId, url);
+        return sendRequest(projectDTO);
     }
 
     public async Task<List<ProjectDTO>> LoadProjectsAsync(Guid userId)
@@ -42,20 +41,11 @@ public class ProjectService : IProjectService
         return await _repoManager.ProjectRepository.DeleteProjectAsync(projectId);
     }
 
-    private async Task<ProjectDTO> sendRequest(Guid userId, string url)
+    private async Task<ProjectDTO> sendRequest(CreateProjectDTO projectDTO)
     {
-        var (gitRepositoryOwner, gitRepositoryName, repositoryContent) = await GithubIntegration.Request(url);
+        var repositoryContent = await GithubIntegration.Request(projectDTO.GitUrl);
 
-        var listCreateTestFileDTO = GetAllTestFiles(repositoryContent);
-
-        var projectDTO = new CreateProjectDTO
-        {
-            Title = gitRepositoryName,
-            GitRepoOwner = gitRepositoryOwner,
-            GitRepoName = gitRepositoryName,
-            UserId = userId,
-            TestFileToBeCreatedDTOs = listCreateTestFileDTO
-        };
+        projectDTO.TestFileToBeCreatedDTOs = GetAllTestFiles(repositoryContent);
 
         return await _repoManager.ProjectRepository.CreateProjectAsync(projectDTO);
     }
@@ -71,7 +61,6 @@ public class ProjectService : IProjectService
                 Name = item.Name,
                 Path = item.Path,
                 Content = item.Content,
-                //CreatedDate = DateTime.UtcNow
             };
             testList.Add(script);
         }
