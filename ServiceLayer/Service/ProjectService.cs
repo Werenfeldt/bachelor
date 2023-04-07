@@ -20,7 +20,6 @@ public class ProjectService : IProjectService
     public Task<ProjectDTO> CreateProjectAsync(CreateProjectDTO projectDTO, string tokenAuth)
     {
         GithubIntegration.SetCredentials(tokenAuth);
-
         return sendRequest(projectDTO);
     }
 
