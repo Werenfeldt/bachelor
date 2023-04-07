@@ -20,7 +20,7 @@ internal sealed class OpenAIIntegration : IOpenAIIntegration
                 ChatMessage.FromUser(s)
             },
             Model = Models.ChatGpt3_5Turbo,
-            MaxTokens = 50//optional
+            MaxTokens = 200//optional
         });
 
         if (translation.Successful)

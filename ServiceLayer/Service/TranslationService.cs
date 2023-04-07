@@ -17,7 +17,9 @@ public class TranslationService : ITranslationService
         try
         {
             var input = prompt + testFile.Content;
+            Console.WriteLine(input);
             var output = await OpenAIIntegration.Request(input);
+            Console.WriteLine(output);
             var splitOutput = output.Split('*');
 
             var docDTO = new CreateDocumentationDTO
