@@ -9,7 +9,7 @@ internal sealed class ProjectRepository : IProjectRepository
     public async Task<ProjectDTO> CreateProjectAsync(CreateProjectDTO projectDTO)
     {
         var entity = await _dbContext.Projects.Where(p => p.GitUrl == projectDTO.GitUrl).FirstOrDefaultAsync();
-        if (entity != null)
+        if (entity == null)
         {
             var project = ConvertFunctions.ProjectMapToEntity(projectDTO);
 
