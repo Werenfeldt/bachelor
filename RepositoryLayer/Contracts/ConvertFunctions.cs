@@ -11,12 +11,22 @@ public static class ConvertFunctions
 
     public static Project ProjectMapToEntity(CreateProjectDTO project)
     {
-        return new Project(project.Title, project.GitRepoName, project.GitRepoOwner) { TestFiles = GetTestFiles(project.TestFileToBeCreatedDTOs) };
+        var (gitRepoOwner, gitRepoName) = splitGitUrl(project.GitUrl);
+        return new Project(project.Title, gitRepoName, gitRepoOwner)
+        {
+            Description = project.Description,
+            TestFiles = GetTestFiles(project.TestFileToBeCreatedDTOs)
+        };
     }
 
     public static Project ProjectMapToEntity(UpdateProjectDTO project)
     {
-        return new Project(project.Title, project.GitRepoName, project.GitRepoOwner) { TestFiles = GetTestFiles(project.TestFileToBeUpdatedDTOs) };
+        var (gitRepoOwner, gitRepoName) = splitGitUrl(project.GitUrl);
+        return new Project(project.Title, gitRepoName, gitRepoOwner)
+        {
+            Description = project.Description,
+            TestFiles = GetTestFiles(project.TestFileToBeUpdatedDTOs)
+        };
     }
 
     //-------------------------------------- TestFile mappings ------------------------------------------//
@@ -88,5 +98,18 @@ public static class ConvertFunctions
         }
 
         return testFiles;
+    }
+
+    private static (string, string) splitGitUrl(string url)
+    {
+        var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
+        var repositoryOwner = splittedString[0];
+        var repositoryName = splittedString[1];
+        return (repositoryOwner, repositoryName);
+    }
+
+    private static string StripPrefix(string text, string prefix)
+    {
+        return text.StartsWith(prefix) ? text.Substring(prefix.Length) : text;
     }
 }

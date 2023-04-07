@@ -4,14 +4,11 @@ public record ProjectDTO(Guid Id, string title, string gitRepoName, string gitRe
 
 public record CreateProjectDTO
 {
-    [Required]
+    [Required(ErrorMessage = "A project title is required.")]
     public string Title { get; set; }
 
-    [Required]
-    public string GitRepoName { get; set; }
-
-    [Required]
-    public string GitRepoOwner { get; set; }
+    [Required(ErrorMessage = "A GitHub URL is required.")]
+    public string GitUrl { get; set; }
 
     public string Description { get; set; }
 

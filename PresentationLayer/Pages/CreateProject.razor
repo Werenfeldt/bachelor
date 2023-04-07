@@ -3,90 +3,91 @@
 @inject IServiceManager serviceManager;
 @inject NavigationManager NavManager;
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage;
+@using MudBlazor;
 
-<MudGrid Justify="Justify.Center">
-    <MudItem xs="12" sm="7">
-        <MudText Typo="Typo.h3" Align="Align.Center">Create project</MudText>
-    </MudItem>
-    <MudItem xs="12" sm="7">
-        <MudCard Outlined="true" class="rounded-xl" Justify="Justify.Center">
-            <MudCardContent>
-                <MudTextField Label="Project Title" @bind-Value="projectTitle" For="@(() => projectTitle)" />
-                <MudTextField Label="Project Description" @bind-Value="projectDescription"
-                    For="@(() => projectDescription)" />
-                <MudTextField Label="GitHub URL" Class="mt-3" @bind-Value="githubUrl" For="@(() => githubUrl)" />
-                <MudField Label="Repository is:" Variant="Variant.Text" InnerPadding="false">
-                    <MudRadioGroup @bind-SelectedOption="repositoryIsPrivate">
-                        <MudRadio Option="false" Color="Color.Primary" Dense="false">Public</MudRadio>
-                        <MudRadio Option="true" Color="Color.Primary" Dense="false">Private</MudRadio>
-                    </MudRadioGroup>
-                </MudField>
-                @if (repositoryIsPrivate)
-                {
-                    <MudField Label="Get access with:" Variant="Variant.Text" InnerPadding="false">
-                        <MudRadioGroup @bind-SelectedOption="accessWithAuthenticationToken">
-                            <MudRadio Option="true" Color="Color.Primary" Dense="false">
-                                Authentication Token</MudRadio>
-                            <MudRadio Option="false" Color="Color.Primary" Dense="false">Username & Password</MudRadio>
+
+<EditForm Model="@projectDTO" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12" sm="7">
+            <MudText Typo="Typo.h3" Align="Align.Center">Create project</MudText>
+        </MudItem>
+        <MudItem xs="12" sm="7">
+            <MudCard Outlined="true" class="rounded-xl" Justify="Justify.Center">
+                <MudCardContent>
+                    <MudTextField Label="Project Title" @bind-Value="projectDTO.Title"
+                        For="@(() => projectDTO.Title)" />
+                    <MudTextField Label="Project Description" @bind-Value="projectDTO.Description"
+                        For="@(() => projectDTO.Description)" />
+                    <MudTextField Label="GitHub URL" Class="mt-3" @bind-Value="projectDTO.GitUrl"
+                        For="@(() => projectDTO.GitUrl)" />
+                    <MudField Label="Repository is:" Variant="Variant.Text" InnerPadding="false">
+                        <MudRadioGroup @bind-SelectedOption="repositoryIsPrivate">
+                            <MudRadio Option="false" Color="Color.Primary" Dense="false">Public</MudRadio>
+                            <MudRadio Option="true" Color="Color.Primary" Dense="false">Private</MudRadio>
                         </MudRadioGroup>
                     </MudField>
-                    if (accessWithAuthenticationToken)
+                    @if (repositoryIsPrivate)
                     {
-                        <MudTextField Label="Token" @bind-Value="token" For="@(() => token)" />
+                        <MudField Label="Get access with:" Variant="Variant.Text" InnerPadding="false">
+                            <MudRadioGroup @bind-SelectedOption="accessWithAuthenticationToken">
+                                <MudRadio Option="true" Color="Color.Primary" Dense="false">
+                                    Authentication Token</MudRadio>
+                                <MudRadio Option="false" Color="Color.Primary" Dense="false">Username & Password</MudRadio>
+                            </MudRadioGroup>
+                        </MudField>
+                        if (accessWithAuthenticationToken)
+                        {
+                            <MudTextField Label="Token" Value="@token" For="@(() => token)" />
+                        }
+                        else
+                        {
+                            <MudGrid>
+                                <MudItem xs="12" sm="6">
+                                    <MudTextField Label="Username" @bind-Value="username" For="@(() => username)" />
+                                </MudItem>
+                                <MudItem xs="12" sm="6">
+                                    <MudTextField Label="Password" InputType="InputType.Password" @bind-Value="password"
+                                For="@(() => password)" />
+                                </MudItem>
+                            </MudGrid>
+                        }
                     }
-                    else
-                    {
-                        <MudGrid>
-                            <MudItem xs="12" sm="6">
-                                <MudTextField Label="Username" @bind-Value="username" For="@(() => projectTitle)" />
-                            </MudItem>
-                            <MudItem xs="12" sm="6">
-                                <MudTextField Label="Password" InputType="InputType.Password" @bind-Value="password"
-                            For="@(() => projectTitle)" />
-                            </MudItem>
-                        </MudGrid>
-                    }
-                }
 
-            </MudCardContent>
-            <MudCardActions>
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
-                    Justify="Justify.Center" OnClick="Submit">Create Project</MudButton>
-            </MudCardActions>
-        </MudCard>
-    </MudItem>
-</MudGrid>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                        Justify="Justify.Center">Create Project</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</EditForm>
 
 @code {
-    MudForm form;
-    UserDTO? user;
-    string? projectTitle;
-    string? projectDescription;
-    string? githubUrl;
+    CreateProjectDTO projectDTO = new CreateProjectDTO();
     bool repositoryIsPrivate = false;
     bool accessWithAuthenticationToken = true;
-    string? username;
-    string? password;
-    string? token;
+    string username;
+    string password;
+    string token;
 
-    async Task Submit()
+    async Task OnValidSubmit()
     {
         if (repositoryIsPrivate)
         {
             if (accessWithAuthenticationToken)
             {
-                var usesr = await serviceManager.ProjectService.CreateProjectAsync(user.Id, projectTitle, projectDescription,
-                githubUrl, token);
+                var usesr = await serviceManager.ProjectService.CreateProjectAsync(projectDTO, token);
             }
             else
             {
-                await serviceManager.ProjectService.CreateProjectAsync(user.Id, projectTitle, projectDescription, githubUrl,
-                username, password);
+                await serviceManager.ProjectService.CreateProjectAsync(projectDTO, username, password);
             }
         }
         else
         {
-            await serviceManager.ProjectService.CreateProjectAsync(user.Id, projectTitle, projectDescription, githubUrl);
+            await serviceManager.ProjectService.CreateProjectAsync(projectDTO);
         }
 
 
@@ -95,8 +96,23 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
+        var user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
+        projectDTO.UserId = user.Id;
         StateHasChanged();
     }
+
+    public class NotEmptyValidator
+    {
+        public string ErrorMessage { get; set; }
+
+        public IEnumerable<string> Validate(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                yield return ErrorMessage ?? "Field is required.";
+            }
+        }
+    }
+
 
 }
