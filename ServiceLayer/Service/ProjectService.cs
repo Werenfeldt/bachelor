@@ -37,6 +37,11 @@ public class ProjectService : IProjectService
         return projects.ToList();
     }
 
+    public async Task<Response> DeleteProject(Guid projectId)
+    {
+        return await _repoManager.ProjectRepository.DeleteProjectAsync(projectId);
+    }
+
     private async Task<ProjectDTO> sendRequest(Guid userId, string url)
     {
         var (gitRepositoryOwner, gitRepositoryName, repositoryContent) = await GithubIntegration.Request(url);
@@ -51,7 +56,7 @@ public class ProjectService : IProjectService
             UserId = userId,
             TestFileToBeCreatedDTOs = listCreateTestFileDTO
         };
-        
+
         return await _repoManager.ProjectRepository.CreateProjectAsync(projectDTO);
     }
 
