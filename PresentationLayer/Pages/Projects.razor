@@ -2,6 +2,7 @@
 @layout MainLayout
 @inject IServiceManager serviceManager;
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage;
+@inject NavigationManager NavManager;
 
 <MudText Typo="Typo.h3" Align="Align.Center" Class="mb-5">Your Projects</MudText>
 @if(IsLoading)
@@ -31,6 +32,7 @@ else
                                 </MudCardContent>
                                 <MudCardActions>
                                     <MudButton Variant="Variant.Text" Color="Color.Primary">Add team members</MudButton>
+                                    <MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="@(async () => await DeleteProject(@item.Id))">Delete</MudButton>
                                 </MudCardActions>
                             </MudCard>
                         </MudItem>
@@ -58,12 +60,36 @@ else
 
     bool IsLoading { get; set; } = true;
 
+    [Inject] ISnackbar Snackbar { get; set; }
+
 
     public async Task<List<ProjectDTO>> GetEntitiesAsync(Guid userId)
     {
         // Retrieve entities from the database and return them
         var listOfProjects = await serviceManager.ProjectService.LoadProjectsAsync(userId);
         return listOfProjects;
+    }
+
+    public async Task DeleteProject(Guid projectId)
+    {
+        try
+        {
+            var response = await serviceManager.ProjectService.DeleteProject(projectId);
+            
+            if(response == Response.Deleted)
+            {
+                Snackbar.Add("Project was deleted", Severity.Success);
+            }
+
+            
+        } 
+        catch (System.Exception e)
+        {
+            Snackbar.Add(e.Message, Severity.Warning);
+        }
+
+        NavManager.NavigateTo("/projects");
+
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

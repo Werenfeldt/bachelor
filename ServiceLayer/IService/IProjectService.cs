@@ -9,4 +9,6 @@ public interface IProjectService
     Task<ProjectDTO> CreateProjectAsync(CreateProjectDTO projectDTO, string username, string password);
 
     Task<List<ProjectDTO>> LoadProjectsAsync(Guid userId);
+
+    Task<Response> DeleteProject(Guid projectId);
 }
