@@ -36,6 +36,7 @@ else
                 <MudStack Style="min-height:70%;" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Stretch">
                     <MudStack Row="true" Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.h5">Steps: </MudText>
+                        
                         @if(!Locked)
                         {
                             <MudIconButton OnClick="@(async () => await Save())" Icon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
@@ -95,7 +96,8 @@ else
 
     [Inject] ISnackbar Snackbar { get; set; }
 
-    public bool Locked = true;
+    //TODO lav to forskellige locked - en for summary og en for translation. 
+      public bool Locked = true;
 
     bool IsLoading { get; set; } = true;
 
@@ -112,9 +114,10 @@ else
         return await serviceManager.ProjectService.LoadTestFileByIdAsync(testFileId);
     }
 
+    //TODO lav loader imens den translater. 
     public async Task Translate()
     {
-        documentation = await serviceManager.TranslationService.translateTestfile("Translate this to steps and a summary and seperate the two by a * character: ", testFile);
+        documentation = await serviceManager.TranslationService.translateTestfile("Translate this cypress script into steps and a summary. Seperate the two by a '*' character: ", testFile);
 
         StateHasChanged();
     }
@@ -130,11 +133,6 @@ else
 
         Locked = true;
 
-    }
-
-    private void OnChange(ChangeEventArgs e)
-    {
-        ValueChanged.InvokeAsync(e.Value.ToString());
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

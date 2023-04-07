@@ -25,11 +25,11 @@ internal sealed class OpenAIIntegration : IOpenAIIntegration
 
         if (translation.Successful)
         {
-                return translation.Choices.First().Message.Content;
+            return translation.Choices.First().Message.Content;
         }
-        
+
         return "Something went wrong";
     }
 
-    
+
 }

@@ -20,7 +20,7 @@ public class TranslationService : ITranslationService
             Console.WriteLine(input);
             var output = await OpenAIIntegration.Request(input);
             Console.WriteLine(output);
-            var splitOutput = output.Split('*');
+            var splitOutput = output.Split("Summary");
 
             var docDTO = new CreateDocumentationDTO
             {
