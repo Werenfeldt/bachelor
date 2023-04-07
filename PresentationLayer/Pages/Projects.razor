@@ -19,18 +19,20 @@ else
     <MudGrid Justify="Justify.FlexStart">
         @foreach (var item in projects)
         {
-            <MudItem xs="12" sm="6" md="4" lg="3" >
+            <MudItem xs="4">
                 <MudButton OnClick="@(async() => await NavigateToProject(@item.Id))">
-                    <MudCard Outlined="true" >
-                        <MudCardHeader>
+                    <MudCard Outlined="true" Style="min-width: 250px; max-width: 250px; min-height: 250px; max-height: 250px;">
+                        <MudCardHeader Style="max-height:50%;">
                             <CardHeaderContent>
-                                <MudText Typo="Typo.h6">@item.title</MudText>
+                                <MudText Typo="Typo.h6" Style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;  overflow: hidden;">
+                                    @item.title
+                                </MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
                         <MudCardContent>
                             <MudText Typo="Typo.body2">@item.description</MudText>
                         </MudCardContent>
-                        <MudCardActions>
+                        <MudCardActions Class="align-content-end">
                             <MudButton Variant="Variant.Text" Color="Color.Primary">Add team members</MudButton>
                         </MudCardActions>
                     </MudCard>
