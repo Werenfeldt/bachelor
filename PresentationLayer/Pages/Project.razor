@@ -20,7 +20,7 @@ else
         @foreach (var item in testfiles)
         {
             <MudItem xs="2"  >
-                <MudButton OnClick="@(async() => await NavigateToEditor())">
+                <MudButton OnClick="@(async() => await NavigateToEditor(@item.Id))">
                     <MudCard Outlined="true" Style="min-width: 150px; max-width: 150px; min-height: 150px; max-height: 150px;">
                         <MudCardHeader>
                             <CardHeaderContent>
@@ -67,10 +67,11 @@ else
         return listOfTestfiles;
     }
 
-    private async Task NavigateToEditor(){
+    private async Task NavigateToEditor(Guid testFileId){
         try
         {
-            NavManager.NavigateTo("/projects/" + projectId.ToString());
+            NavManager.NavigateTo("/editor/" + testFileId.ToString());
+            //NavManager.NavigateTo("/projects/" + projectId.ToString());
         }
         catch (System.Exception e)
         {

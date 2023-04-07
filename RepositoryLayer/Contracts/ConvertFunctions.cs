@@ -64,7 +64,7 @@ public static class ConvertFunctions
 
     public static Documentation DocumentationMapToDTO(CreateDocumentationDTO documentation)
     {
-        return new Documentation(documentation.Summary, documentation.Translation);
+        return new Documentation(documentation.Summary, documentation.Translation){TestFileId = documentation.TestFileId};
     }
 
     //-------------------------------------- Util ------------------------------------------//
