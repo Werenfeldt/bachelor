@@ -10,5 +10,7 @@ public interface IProjectService
 
     Task<List<ProjectDTO>> LoadProjectsAsync(Guid userId);
 
+    Task<List<TestFileDTO>> LoadTestFilesForProjectAsync(Guid projectId);
+
     Task<Response> DeleteProject(Guid projectId);
 }
