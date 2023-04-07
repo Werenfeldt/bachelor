@@ -36,6 +36,12 @@ public class ProjectService : IProjectService
         return projects.ToList();
     }
 
+    public async Task<List<TestFileDTO>> LoadTestFilesForProjectAsync(Guid projectId)
+    {
+        var testFiles = await _repoManager.TestFileRepository.ReadAllTestFilesByProjectIdAsync(projectId);
+        return testFiles.ToList();
+    }
+
     public async Task<Response> DeleteProject(Guid projectId)
     {
         return await _repoManager.ProjectRepository.DeleteProjectAsync(projectId);

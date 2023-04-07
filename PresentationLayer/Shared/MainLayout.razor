@@ -16,7 +16,7 @@
         {
             <MudButton StartIcon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
             OnClick="@((e) => DrawerToggle())">Files</MudButton>
-            <MudButton Href="createProject" Color="Color.Inherit" OnClick="@((e) => navigateToCreateProject())">Create
+            <MudButton Href="/createproject" Color="Color.Inherit">Create
                 Project</MudButton>
             <MudButton Href="createProject" Color="Color.Inherit">Download Documentation</MudButton>
             <MudSpacer />
@@ -61,11 +61,6 @@
     {
         await sessionStorage.ClearAsync();
         StateHasChanged();
-    }
-
-    private void navigateToCreateProject()
-    {
-        NavManager.NavigateTo("/createproject");
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

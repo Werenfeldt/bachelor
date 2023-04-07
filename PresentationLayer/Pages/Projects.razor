@@ -15,41 +15,30 @@
 }
 else 
 {
-
-    <MudGrid Justify="Justify.Center">
-
-                    @foreach (var item in projects)
-                    {
-                        <MudItem xs="12" sm="6" md="4" lg="3" >
-                            <MudCard Outlined="true" Class="justify-start">
-                                <MudCardHeader>
-                                    <CardHeaderContent>
-                                        <MudText Typo="Typo.h6">@item.title</MudText>
-                                    </CardHeaderContent>
-                                </MudCardHeader>
-                                <MudCardContent>
-                                    <MudText Typo="Typo.body2">@item.description</MudText>
-                                </MudCardContent>
-                                <MudCardActions>
-                                    <MudButton Variant="Variant.Text" Color="Color.Primary">Add team members</MudButton>
-                                    <MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="@(async () => await DeleteProject(@item.Id))">Delete</MudButton>
-                                </MudCardActions>
-                            </MudCard>
-                        </MudItem>
-                        <!-- Repeat this MudGridItem block for each card -->
-
-
-                    @* <MudCard Outlined="true" Href="/">
+    <MudGrid Justify="Justify.FlexStart">
+        @foreach (var item in projects)
+        {
+            <MudItem xs="4">
+                <MudButton OnClick="@(async() => await NavigateToProject(@item.Id))">
+                    <MudCard Outlined="true" Style="min-width: 250px; max-width: 250px; min-height: 250px; max-height: 250px;">
+                        <MudCardHeader Style="max-height:50%;">
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6" Style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;  overflow: hidden;">
+                                    @item.title
+                                </MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
                         <MudCardContent>
-                            <MudText>@item.title</MudText>
                             <MudText Typo="Typo.body2">@item.description</MudText>
                         </MudCardContent>
-                        <MudCardActions>
-                            <MudButton Variant="Variant.Text" Color="Color.Primary">Add users</MudButton>
+                        <MudCardActions Class="align-content-end">
+                            <MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="@(async () => await DeleteProject(@item.Id))">Delete</MudButton>
+                            <MudButton Variant="Variant.Text" Color="Color.Primary">Add team members</MudButton>
                         </MudCardActions>
-                    </MudCard> *@
-                    }
-
+                    </MudCard>
+                </MudButton>
+            </MudItem>
+        }
     </MudGrid>
 }
 
@@ -58,9 +47,22 @@ else
     List<ProjectDTO>? projects { get; set; }
     private UserDTO? user { get; set; }
 
+    [Inject] ISnackbar Snackbar { get; set; }
+
     bool IsLoading { get; set; } = true;
 
-    [Inject] ISnackbar Snackbar { get; set; }
+    private async Task NavigateToProject(Guid projectId)
+    {
+        try
+        {
+            NavManager.NavigateTo("/projects/" + projectId.ToString());
+        }
+        catch (System.Exception e)
+        {
+            Snackbar.Add(e.Message, Severity.Warning);
+        }
+      StateHasChanged();
+    }
 
 
     public async Task<List<ProjectDTO>> GetEntitiesAsync(Guid userId)
@@ -115,24 +117,5 @@ else
 
         }
     }
-
-
-
-    @* protected override async Task OnParametersSetAsync()
-    {
-        if(user != null)
-        {
-            projects = await serviceManager.ProjectService.LoadProjectsAsync(user.Id);
-        }
-
-        await base.OnParametersSetAsync();
-    } *@
-
-    @* protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
-        projects = await serviceManager.ProjectService.LoadProjectsAsync(user.Id);
-        StateHasChanged();
-    }  *@
 }
 
