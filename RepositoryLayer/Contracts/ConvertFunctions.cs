@@ -6,17 +6,25 @@ public static class ConvertFunctions
     // -------------------------------------- Project mappings ------------------------------------------//
     public static ProjectDTO ProjectMapToDTO(Project project)
     {
-        return new ProjectDTO(project.Id, project.Title, project.GitRepoName, project.GitRepoOwner, project.Description, project.CreatedDate);
+        return new ProjectDTO(project.Id, project.Title, project.GitUrl, project.Description, project.CreatedDate);
     }
 
     public static Project ProjectMapToEntity(CreateProjectDTO project)
     {
-        return new Project(project.Title, project.GitRepoName, project.GitRepoOwner) { TestFiles = GetTestFiles(project.TestFileToBeCreatedDTOs) };
+        return new Project(project.Title, project.GitUrl)
+        {
+            Description = project.Description,
+            TestFiles = GetTestFiles(project.TestFileToBeCreatedDTOs)
+        };
     }
 
     public static Project ProjectMapToEntity(UpdateProjectDTO project)
     {
-        return new Project(project.Title, project.GitRepoName, project.GitRepoOwner) { TestFiles = GetTestFiles(project.TestFileToBeUpdatedDTOs) };
+        return new Project(project.Title, project.GitUrl)
+        {
+            Description = project.Description,
+            TestFiles = GetTestFiles(project.TestFileToBeUpdatedDTOs)
+        };
     }
 
     //-------------------------------------- TestFile mappings ------------------------------------------//

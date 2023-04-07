@@ -1,7 +1,7 @@
 
 
 namespace DomainLayer;
-[Index(nameof(GitRepoName), nameof(GitRepoOwner), IsUnique = true)]
+[Index(nameof(GitUrl), IsUnique = true)]
 //TODO set up deletion cascade. 
 public class Project
 {
@@ -10,9 +10,7 @@ public class Project
     public Guid Id { get; set; }
     public string Title { get; set; }
 
-    public string GitRepoName { get; set; }
-
-    public string GitRepoOwner { get; set; }
+    public string GitUrl { get; set; }
 
     public string? Description { get; set; }
 
@@ -28,11 +26,10 @@ public class Project
     //Principal entity to TestFiles
     public ICollection<TestFile>? TestFiles { get; set; }
 
-    public Project(string title, string gitRepoName, string gitRepoOwner)
+    public Project(string title, string gitUrl)
     {
         Title = title;
-        GitRepoName = gitRepoName;
-        GitRepoOwner = gitRepoOwner;
+        GitUrl = gitUrl;
         Users = new List<User>();
     }
 }

@@ -15,7 +15,6 @@
 }
 else 
 {
-
     <MudGrid Justify="Justify.FlexStart">
         @foreach (var item in projects)
         {
@@ -33,6 +32,7 @@ else
                             <MudText Typo="Typo.body2">@item.description</MudText>
                         </MudCardContent>
                         <MudCardActions Class="align-content-end">
+                            <MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="@(async () => await DeleteProject(@item.Id))">Delete</MudButton>
                             <MudButton Variant="Variant.Text" Color="Color.Primary">Add team members</MudButton>
                         </MudCardActions>
                     </MudCard>
@@ -72,11 +72,33 @@ else
         return listOfProjects;
     }
 
+    public async Task DeleteProject(Guid projectId)
+    {
+        try
+        {
+            var response = await serviceManager.ProjectService.DeleteProject(projectId);
+            
+            if(response == Response.Deleted)
+            {
+                Snackbar.Add("Project was deleted", Severity.Success);
+            }
+
+            
+        } 
+        catch (System.Exception e)
+        {
+            Snackbar.Add(e.Message, Severity.Warning);
+        }
+
+        NavManager.NavigateTo("/projects");
+
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender)
         {
-            IsLoading = true;
+            IsLoading = false;
             // Retrieve user from the session storage
             var user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
 

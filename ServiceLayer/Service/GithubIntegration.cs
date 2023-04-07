@@ -20,7 +20,7 @@ internal sealed class GithubIntegration : IGithubIntegration
         gitHub.Credentials = new Credentials(username, password);
     }
 
-    public async Task<(string GitRepositoryOwner, string GitRepositoryName, IReadOnlyList<RepositoryContent>)> Request(string url)
+    public async Task<IReadOnlyList<RepositoryContent>> Request(string url)
     {
         var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
         var repositoryOwner = splittedString[0];
@@ -44,7 +44,7 @@ internal sealed class GithubIntegration : IGithubIntegration
             content.Add(listOfContent[0]);
         }
 
-        return (repositoryOwner, repositoryName, content);
+        return content;
     }
 
 

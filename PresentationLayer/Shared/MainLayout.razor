@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage;
+@inject NavigationManager NavManager;
 
 <MudThemeProvider />
 <MudDialogProvider />
@@ -7,34 +8,37 @@
 
 <MudLayout>
     <MudAppBar>
-        @if(!loggedIn)
+        @if (!loggedIn)
         {
             <MudSpacer />
         }
-        else 
+        else
         {
-            <MudButton StartIcon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())">Files</MudButton>
-            <MudButton Href="createProject" Color="Color.Inherit">Create Project</MudButton>
+            <MudButton StartIcon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
+            OnClick="@((e) => DrawerToggle())">Files</MudButton>
+            <MudButton Href="/createproject" Color="Color.Inherit">Create
+                Project</MudButton>
             <MudButton Href="createProject" Color="Color.Inherit">Download Documentation</MudButton>
             <MudSpacer />
         }
-            <MudButton Href="/login" Edge="Edge.End" Color="Color.Inherit">API</MudButton>
-            <MudButton Href="/login" Edge="Edge.End" Color="Color.Inherit">Help</MudButton>
-            @if(!loggedIn)
-            {
+        <MudButton Href="/login" Edge="Edge.End" Color="Color.Inherit">API</MudButton>
+        <MudButton Href="/login" Edge="Edge.End" Color="Color.Inherit">Help</MudButton>
+        @if (!loggedIn)
+        {
             <MudButton Href="/login" Color="Color.Inherit">Login</MudButton>
             <MudButton Href="/createuser" Color="Color.Inherit" Variant="Variant.Outlined">Sign Up</MudButton>
-            }
-            else 
-            {
-            <MudButton Href="/" StartIcon="@Icons.Material.Filled.Logout" Edge="Edge.End" Color="Color.Inherit" OnClick="@(async () => await Logout())"> 
-            Logout
-            </MudButton>  
-            }
+        }
+        else
+        {
+            <MudButton Href="/" StartIcon="@Icons.Material.Filled.Logout" Edge="Edge.End" Color="Color.Inherit"
+            OnClick="@(async () => await Logout())">
+                Logout
+            </MudButton>
+        }
 
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen">
-        <NavMenu/>
+        <NavMenu />
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-10">
@@ -53,7 +57,7 @@
         _drawerOpen = !_drawerOpen;
     }
 
-     private async Task Logout()
+    private async Task Logout()
     {
         await sessionStorage.ClearAsync();
         StateHasChanged();
@@ -63,5 +67,5 @@
         loggedIn = await sessionStorage.ContainKeyAsync("SessionUser");
 
         StateHasChanged();
-    } 
+    }
 }
