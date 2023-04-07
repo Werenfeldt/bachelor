@@ -1,10 +1,10 @@
-@page "/projects"
+@page "/projects/{projectId:guid}"
 @layout MainLayout
 @inject IServiceManager serviceManager;
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage;
 @inject NavigationManager NavManager;
 
-<MudText Typo="Typo.h3" Align="Align.Center" Class="mb-5">Your Projects</MudText>
+<MudText Typo="Typo.h3" Align="Align.Center" Class="mb-5">TestFiles for Projects: </MudText>
 @if(IsLoading)
 {
     <MudGrid>
@@ -17,22 +17,19 @@ else
 {
 
     <MudGrid Justify="Justify.FlexStart">
-        @foreach (var item in projects)
+        @foreach (var item in testfiles)
         {
             <MudItem xs="12" sm="6" md="4" lg="3" >
-                <MudButton OnClick="@(async() => await NavigateToProject(@item.Id))">
+                <MudButton OnClick="@(async() => await NavigateToEditor())">
                     <MudCard Outlined="true" >
                         <MudCardHeader>
                             <CardHeaderContent>
-                                <MudText Typo="Typo.h6">@item.title</MudText>
+                                <MudText Typo="Typo.h6">@item.Name</MudText>
                             </CardHeaderContent>
                         </MudCardHeader>
                         <MudCardContent>
-                            <MudText Typo="Typo.body2">@item.description</MudText>
+                            <MudText Typo="Typo.body2">@item.Path</MudText>
                         </MudCardContent>
-                        <MudCardActions>
-                            <MudButton Variant="Variant.Text" Color="Color.Primary">Add team members</MudButton>
-                        </MudCardActions>
                     </MudCard>
                 </MudButton>
             </MudItem>
@@ -40,17 +37,35 @@ else
     </MudGrid>
 }
 
-@code
-{
-    List<ProjectDTO>? projects { get; set; }
-    private UserDTO? user { get; set; }
-
+@code {
     [Inject] ISnackbar Snackbar { get; set; }
+
+    [Parameter]
+    public Guid projectId { get; set; }
+
+    public List<TestFileDTO>? testfiles { get; set; }
 
     bool IsLoading { get; set; } = true;
 
-    private async Task NavigateToProject(Guid projectId)
+    protected override async Task OnParametersSetAsync()
     {
+        testfiles = await GetTestFilesAsync();
+
+        IsLoading = false;
+
+        StateHasChanged();
+
+        //await base.OnParametersSetAsync();
+    }
+
+        public async Task<List<TestFileDTO>> GetTestFilesAsync()
+    {
+        // Retrieve entities from the database and return them
+        var listOfTestfiles = await serviceManager.ProjectService.LoadTestFilesForProjectAsync(projectId);
+        return listOfTestfiles;
+    }
+
+    private async Task NavigateToEditor(){
         try
         {
             NavManager.NavigateTo("/projects/" + projectId.ToString());
@@ -61,37 +76,23 @@ else
         }
       StateHasChanged();
     }
-
-
-    public async Task<List<ProjectDTO>> GetEntitiesAsync(Guid userId)
-    {
-        // Retrieve entities from the database and return them
-        var listOfProjects = await serviceManager.ProjectService.LoadProjectsAsync(userId);
-        return listOfProjects;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    @* protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender)
         {
-            IsLoading = true;
+            IsLoading = false;
             // Retrieve user from the session storage
             var user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
 
             // If the user is set, retrieve entities from the database
             if (user != null)
             {
-                projects = await GetEntitiesAsync(user.Id);
-
-                // Store entities in the session storage
-                await sessionStorage.SetItemAsync("Projects", projects);
+                testfiles = await GetTestFilesAsync();
                 
                 IsLoading = false;
 
                 StateHasChanged();
             }
-
         }
-    }
+    } *@
 }
-

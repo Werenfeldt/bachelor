@@ -37,6 +37,12 @@ public class ProjectService : IProjectService
         return projects.ToList();
     }
 
+    public async Task<List<TestFileDTO>> LoadTestFilesForProjectAsync(Guid projectId)
+    {
+        var testFiles = await _repoManager.TestFileRepository.ReadAllTestFilesByProjectIdAsync(projectId);
+        return testFiles.ToList();
+    }
+
     private async Task<ProjectDTO> sendRequest(Guid userId, string url)
     {
         var (gitRepositoryOwner, gitRepositoryName, repositoryContent) = await GithubIntegration.Request(url);
@@ -51,7 +57,7 @@ public class ProjectService : IProjectService
             UserId = userId,
             TestFileToBeCreatedDTOs = listCreateTestFileDTO
         };
-        
+
         return await _repoManager.ProjectRepository.CreateProjectAsync(projectDTO);
     }
 
