@@ -12,20 +12,17 @@ public class TranslationService : ITranslationService
         _lazyOpenAIIntegration = new Lazy<IOpenAIIntegration>(() => new OpenAIIntegration(openAiIntegration));
     }
 
-    public async Task<DocumentationDTO> translateTestfile(string prompt, TestFileDTO testFile)
+    public async Task<DocumentationDTO> translateTestfile(TestFileDTO testFile, string prompt)
     {
         try
         {
             var input = prompt + testFile.Content;
-            Console.WriteLine(input);
-            var output = await OpenAIIntegration.Request(input);
-            Console.WriteLine(output);
-            var splitOutput = output.Split("Summary");
+            var (translation, summary) = await OpenAIIntegration.Request(input);
 
             var docDTO = new CreateDocumentationDTO
             {
-                Summary = splitOutput[1],
-                Translation = splitOutput[0],
+                Summary = summary,
+                Translation = translation,
                 TestFileId = testFile.Id
             };
 

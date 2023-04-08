@@ -2,5 +2,5 @@ namespace ServiceLayer;
 
 public interface IOpenAIIntegration
 {
-    Task<string> Request(string s);
+    Task<(string,string)> Request(string s);
 }
