@@ -33,5 +33,6 @@ public class TranslationService : ITranslationService
             throw chatGPTException;
         }
     }
+
     private IOpenAIIntegration OpenAIIntegration => _lazyOpenAIIntegration.Value;
 }

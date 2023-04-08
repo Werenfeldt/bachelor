@@ -24,7 +24,7 @@ internal sealed class DocumentationRepository : IDocumentationRepository
 
     public async Task<Option<DocumentationDTO>> ReadDocumentationByTestFileIdAsync(Guid testFileId, CancellationToken cancellationToken = default)
     {
-        var docu = await _dbContext.Documentation.FirstOrDefaultAsync(doc => doc.TestFileId == testFileId);
+        var docu = await _dbContext.Documentation.Where(doc => doc.TestFileId == testFileId).FirstOrDefaultAsync();
         return ConvertFunctions.DocumentationMapToDTO(docu);
     }
 
@@ -32,7 +32,8 @@ internal sealed class DocumentationRepository : IDocumentationRepository
     {
         var entity = await _dbContext.Documentation.FindAsync(documentationDTO.Id);
 
-        if (entity != null) {
+        if (entity != null)
+        {
             var updatedEntity = ConvertFunctions.DocumentationMapToDTO(documentationDTO);
             _dbContext.Documentation.Update(updatedEntity);
             await _dbContext.SaveChangesAsync();

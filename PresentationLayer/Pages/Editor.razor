@@ -37,18 +37,18 @@ else
                     <MudStack Row="true" Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.h5">Steps: </MudText>
                         
-                        @if(!Locked)
+                        @if(!TranslationLocked)
                         {
-                            <MudIconButton OnClick="@(async () => await Save())" Icon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
+                            <MudIconButton OnClick="@(async () => await Save(false))" Icon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
                         }
                         else 
                         {
-                            <MudIconButton OnClick="@(() => StartEdit())" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
+                            <MudIconButton OnClick="@(() => StartEdit(false))" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
                         }
                     </MudStack>
                     @if(documentation != null)
                     {
-                        <MudInput Value="@documentation.Translation"  Disabled="@Locked" Lines="20" DisableUnderLine="true" />
+                        <MudInput Value="@documentation.Translation"  Disabled="@TranslationLocked" Lines="20" DisableUnderLine="true" />
 
                     }
                     else 
@@ -63,18 +63,18 @@ else
                 <MudStack Style="min-height:30%;" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Stretch">
                     <MudStack Row="true" Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.h5">Summary: </MudText>
-                        @if(!Locked)
+                        @if(!SummaryLocked)
                         {
-                            <MudIconButton OnClick="@(async () => await Save())" Icon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
+                            <MudIconButton OnClick="@(async () => await Save(true))" Icon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
                         }
                         else 
                         {
-                            <MudIconButton OnClick="@(() => StartEdit())" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
+                            <MudIconButton OnClick="@(() => StartEdit(true))" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
                         }
                     </MudStack>
                     @if(documentation != null)
                     {
-                        <MudInput Value="@documentation.Summary"  Disabled="@Locked" Lines="20" DisableUnderLine="true" />
+                        <MudInput Value="@documentation.Summary"  Disabled="@SummaryLocked" Lines="20" DisableUnderLine="true" />
                     }
                     else 
                     {
@@ -95,9 +95,10 @@ else
     private DocumentationDTO? documentation { get; set; }
 
     [Inject] ISnackbar Snackbar { get; set; }
+    
+    public bool SummaryLocked = true;
 
-    //TODO lav to forskellige locked - en for summary og en for translation. 
-      public bool Locked = true;
+    public bool TranslationLocked = true;
 
     bool IsLoading { get; set; } = true;
 
@@ -113,6 +114,18 @@ else
     {
         return await serviceManager.ProjectService.LoadTestFileByIdAsync(testFileId);
     }
+    public async Task<DocumentationDTO> GetDocumentation(Guid testFileId)
+    {
+        try
+        {
+            return await serviceManager.ProjectService.LoadDocumentationByTestFilesIdAsync(testFileId);
+        }
+        catch (System.Exception)
+        {
+            
+            throw;
+        }
+    }
 
     //TODO lav loader imens den translater. 
     public async Task Translate()
@@ -122,16 +135,30 @@ else
         StateHasChanged();
     }
 
-    private void StartEdit()
+    private void StartEdit(bool summary)
     {
-        Locked = false;
+        if(summary)
+        {
+            SummaryLocked = false;
+        }
+        else 
+        {
+            TranslationLocked = false;
+        }
     }
 
-    private async Task Save()
+    private async Task Save(bool summary)
     {
-        //save
 
-        Locked = true;
+        //save
+        if(summary)
+        {
+            SummaryLocked = true;
+        }
+        else 
+        {
+            TranslationLocked = true;
+        }
 
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -146,6 +173,16 @@ else
             if (user != null)
             {
                 testFile = await GetTestFile(testFileId);
+
+                try
+                {
+                    documentation = await GetDocumentation(testFileId);
+                }
+                catch (System.Exception)
+                {
+                    
+                    documentation = null;
+                }
 
                 // Store entities in the session storage
                 await sessionStorage.SetItemAsync("TestFile", testFile);
