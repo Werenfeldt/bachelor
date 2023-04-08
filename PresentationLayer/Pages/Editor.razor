@@ -117,7 +117,7 @@ else
     //TODO lav loader imens den translater. 
     public async Task Translate()
     {
-        documentation = await serviceManager.TranslationService.translateTestfile("Translate this cypress script into steps and a summary. Seperate the two by a '*' character: ", testFile);
+        documentation = await serviceManager.TranslationService.translateTestfile(testFile);
 
         StateHasChanged();
     }
