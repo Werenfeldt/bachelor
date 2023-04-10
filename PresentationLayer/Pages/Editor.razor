@@ -178,6 +178,7 @@ else
     public async Task Translate()
     {
         SetTranslating(true);
+
         documentation = await serviceManager.TranslationService.translateTestfile(testFile);
 
         SetTranslating(false);
