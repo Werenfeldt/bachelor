@@ -150,10 +150,7 @@ else
         {
             documentation = await serviceManager.ProjectService.LoadDocumentationByTestFilesIdAsync(testFileId);
 
-            updateDocumentationDTO.Id = documentation.Id;
-            updateDocumentationDTO.TestFileId = documentation.TestFileId; 
-            updateDocumentationDTO.Summary = documentation.Summary;
-            updateDocumentationDTO.Translation = documentation.Translation;
+            SetDocumentation();
         }
         catch (System.Exception)
         {   
@@ -180,6 +177,8 @@ else
         SetTranslating(true);
 
         documentation = await serviceManager.TranslationService.TranslateTestfile(testFile);
+
+        SetDocumentation();
 
         SetTranslating(false);
         StateHasChanged();
@@ -236,6 +235,14 @@ else
             }
 
         }
+    }
+
+    private void SetDocumentation()
+    {
+            updateDocumentationDTO.Id = documentation.Id;
+            updateDocumentationDTO.TestFileId = documentation.TestFileId; 
+            updateDocumentationDTO.Summary = documentation.Summary;
+            updateDocumentationDTO.Translation = documentation.Translation;
     }
 }
 

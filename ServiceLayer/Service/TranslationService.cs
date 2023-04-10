@@ -19,19 +19,47 @@ public class TranslationService : ITranslationService
             var input = prompt + testFile.Content;
             var (translation, summary) = await OpenAIIntegration.Request(input);
 
-            var docDTO = new CreateDocumentationDTO
-            {
-                Summary = summary,
-                Translation = translation,
-                TestFileId = testFile.Id
-            };
+            var existingDoc = await _repoManager.DocumentationRepository.ReadDocumentationByTestFileIdAsync(testFile.Id);
 
-            return await _repoManager.DocumentationRepository.CreateDocumentationAsync(docDTO);
+            if (existingDoc.IsSome)
+            {
+                var updateDocDTO = new UpdateDocumentationDTO
+                {
+                    Id = existingDoc.Value.Id,
+                    Summary = summary,
+                    Translation = translation,
+                    TestFileId = testFile.Id
+                };
+
+                await UpdateDocumentation(updateDocDTO);
+
+                var updatedDoc = await _repoManager.DocumentationRepository.ReadDocumentationByTestFileIdAsync(testFile.Id);
+
+                return updatedDoc.Value;
+
+            }
+            else
+            {
+                var docDTO = new CreateDocumentationDTO
+                {
+                    Summary = summary,
+                    Translation = translation,
+                    TestFileId = testFile.Id
+                };
+
+                return await CreateDocumentation(docDTO);
+            }
+
         }
         catch (Exception chatGPTException)
         {
             throw chatGPTException;
         }
+    }
+
+    private async Task<DocumentationDTO> CreateDocumentation(CreateDocumentationDTO createDocumentationDTO)
+    {
+        return await _repoManager.DocumentationRepository.CreateDocumentationAsync(createDocumentationDTO);
     }
 
     public async Task<Response> UpdateDocumentation(UpdateDocumentationDTO documentation)

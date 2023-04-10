@@ -25,7 +25,12 @@ internal sealed class DocumentationRepository : IDocumentationRepository
     public async Task<Option<DocumentationDTO>> ReadDocumentationByTestFileIdAsync(Guid testFileId, CancellationToken cancellationToken = default)
     {
         var docu = await _dbContext.Documentation.Where(doc => doc.TestFileId == testFileId).FirstOrDefaultAsync();
-        return ConvertFunctions.DocumentationMapToDTO(docu);
+        
+        if(docu != null)
+        {
+            return ConvertFunctions.DocumentationMapToDTO(docu);
+        }
+        return null;
     }
 
     public async Task<Response> UpdateDocumentationAsync(UpdateDocumentationDTO documentationDTO)
