@@ -179,7 +179,7 @@ else
     {
         SetTranslating(true);
 
-        documentation = await serviceManager.TranslationService.translateTestfile(testFile);
+        documentation = await serviceManager.TranslationService.TranslateTestfile(testFile);
 
         SetTranslating(false);
         StateHasChanged();
@@ -199,7 +199,7 @@ else
 
     async Task Save(bool summary)
     {
-        var response = await serviceManager.TranslationService.UpdateSummary(updateDocumentationDTO);
+        var response = await serviceManager.TranslationService.UpdateDocumentation(updateDocumentationDTO);
 
         if(response == Response.Updated)
         {

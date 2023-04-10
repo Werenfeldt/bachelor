@@ -12,7 +12,7 @@ public class TranslationService : ITranslationService
         _lazyOpenAIIntegration = new Lazy<IOpenAIIntegration>(() => new OpenAIIntegration(openAiIntegration));
     }
 
-    public async Task<DocumentationDTO> translateTestfile(TestFileDTO testFile, string prompt)
+    public async Task<DocumentationDTO> TranslateTestfile(TestFileDTO testFile, string prompt)
     {
         try
         {
@@ -34,7 +34,7 @@ public class TranslationService : ITranslationService
         }
     }
 
-    public async Task<Response> UpdateSummary(UpdateDocumentationDTO documentation)
+    public async Task<Response> UpdateDocumentation(UpdateDocumentationDTO documentation)
     {
         return await _repoManager.DocumentationRepository.UpdateDocumentationAsync(documentation);
     }
