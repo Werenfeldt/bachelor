@@ -34,5 +34,10 @@ public class TranslationService : ITranslationService
         }
     }
 
+    public async Task<Response> UpdateSummary(UpdateDocumentationDTO documentation)
+    {
+        return await _repoManager.DocumentationRepository.UpdateDocumentationAsync(documentation);
+    }
+
     private IOpenAIIntegration OpenAIIntegration => _lazyOpenAIIntegration.Value;
 }

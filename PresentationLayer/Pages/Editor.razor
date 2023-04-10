@@ -14,11 +14,12 @@
 }
 else 
 {
-    <MudText Typo="Typo.h3" Align="Align.Center" Class="mb-5">View the code, translation and documentation for @testFile.Name</MudText>
-    <MudGrid>
-        <MudItem xs="12" sm="6">
-             <MudPaper Height="700px" Width="100%" Style="background-color: rgba(217, 217, 217, 1);">
-                <MudStack Style="min-height:100%;" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Stretch">
+    <MudText Typo="Typo.h3" Align="Align.Center" Class="mb-5">Documentation for @testFile.Name</MudText>
+    
+    <MudContainer MaxWidth="MaxWidth.Medium" Style="max-height:700px; min-height:700px;" >
+        <MudStack Row="true" Style="max-height:700px; min-height:700px;"  >
+            <MudPaper MaxHeight="100%!" Width="50%" Style="background-color: rgba(217, 217, 217, 1);">
+                <MudStack Style="height:100%;" Justify="Justify.SpaceBetween" >
                         <MudText Typo="Typo.h5">
                             Content:
                         </MudText>
@@ -28,77 +29,83 @@ else
                         <MudButton Variant="Variant.Filled" Color="Color.Dark" Size="Size.Large" OnClick="@(async () => await Translate())">Translate</MudButton>
                 </MudStack>
              </MudPaper>
-            
-        </MudItem>
-        <MudItem xs="12" sm="6">
-             <MudPaper Height="70%" Width="100%" Style="background-color: rgba(217, 217, 217, 0.56)" Class="mb-2">
-                <MudStack Style="min-height:70%;" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Stretch">
-                    <MudStack Row="true" Justify="Justify.SpaceBetween">
-                        <MudText Typo="Typo.h5">Steps: </MudText>
-                        @if(!TranslationLocked)
-                        {
-                            <MudIconButton OnClick="@(async () => await Save(false))" Icon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
-                        }
-                        else 
-                        {
-                            <MudIconButton OnClick="@(() => StartEdit(false))" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
-                        }
-                    </MudStack>
-                    @if(IsTranslating)
-                    {
-                        <MudGrid>
-                            <MudItem Class="d-flex align-center justify-center mud-width-full">
-                                <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
-                            </MudItem>
-                        </MudGrid>
-                    }
-                    @if(documentation != null)
-                    {
-                        <MudInput Value="@documentation.Translation"  Disabled="@TranslationLocked" Lines="20" DisableUnderLine="true" />
 
-                    }
-                    else 
-                    {
-                        <MudInput Value="@("")"  Disabled="true" Lines="20" DisableUnderLine="true" />
-                    }
-
+             <MudStack Style="width:50%;">
+                <MudStack Style="height:70%;" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Stretch">
+                    <MudPaper Height="100%" Width="100%" Style="background-color: rgba(217, 217, 217, 0.56)" Class="mb-2">
+                        <MudStack Justify="Justify.SpaceBetween">
+                            <MudStack Row="true" Justify="Justify.SpaceBetween">
+                                <MudText Typo="Typo.h5">Steps: </MudText>
+                                @if(!TranslationLocked)
+                                {
+                                    <MudIconButton OnClick="@(async () => await Save(false))" Icon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
+                                }
+                                else
+                                {
+                                    <MudIconButton OnClick="@(() => StartEdit(false))" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />    
+                                }
+                            </MudStack>
+                            @if(IsTranslating)
+                            {
+                                <MudGrid>
+                                    <MudItem Class="d-flex align-center justify-center mud-width-full">
+                                        <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+                                    </MudItem>
+                                </MudGrid>
+                            }
+                            @if(documentation != null)
+                            {
+                                <MudForm Model="@updateDocumentationDTO" @ref="form">
+                                    <MudInput @bind-Value="updateDocumentationDTO.Translation" Disabled="@TranslationLocked" Lines="20" DisableUnderLine="true"  style="width: 100%;" />
+                                </MudForm>
+                            }
+                            else 
+                            {
+                                <MudInput Value="@("")"  Disabled="true" Lines="20" DisableUnderLine="true" />
+                            }
+                        </MudStack>
+                    </MudPaper>
                 </MudStack>
-                
-             </MudPaper>
-              <MudPaper Height="30%" Width="100%" Style="background-color: rgba(217, 217, 217, 0.56)">
-                <MudStack Style="min-height:30%;" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Stretch">
-                    <MudStack Row="true" Justify="Justify.SpaceBetween">
-                        <MudText Typo="Typo.h5">Summary: </MudText>
- 
-                        @if(!SummaryLocked)
-                        {
-                            <MudIconButton OnClick="@(async () => await Save(true))" Icon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
-                        }
-                        else 
-                        {
-                            <MudIconButton OnClick="@(() => StartEdit(true))" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
-                        }
-                    </MudStack>
-                    @if(IsTranslating)
-                    {
-                        <MudGrid>
-                            <MudItem Class="d-flex align-center justify-center mud-width-full">
-                                <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
-                            </MudItem>
-                        </MudGrid>
-                    }
-                    @if(documentation != null)
-                    {
-                        <MudInput Value="@documentation.Summary"  Disabled="@SummaryLocked" Lines="20" DisableUnderLine="true" />
-                    }
-                    else 
-                    {
-                        <MudInput Value="@("")"  Disabled="true" Lines="20" DisableUnderLine="true" />
-                    }
+                    
+                <MudStack Style="height:30%;" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Stretch">
+                    <MudPaper Height="100%" Width="100%" Style="background-color: rgba(217, 217, 217, 0.56)">
+                        <MudStack Justify="Justify.SpaceBetween">
+                            <MudStack Row="true" Justify="Justify.SpaceBetween">
+                                <MudText Typo="Typo.h5">Summary: </MudText>
+        
+                                @if(!SummaryLocked)
+                                {
+                                    <MudIconButton OnClick="@(async () => await Save(true))" Icon="@Icons.Material.Filled.Save" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
+                                }
+                                else 
+                                {
+                                    <MudIconButton OnClick="@(() => StartEdit(true))" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
+                                }
+                            </MudStack>
+                            @if(IsTranslating)
+                            {
+                                <MudGrid>
+                                    <MudItem Class="d-flex align-center justify-center mud-width-full">
+                                        <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+                                    </MudItem>
+                                </MudGrid>
+                            }
+                            @if(documentation != null)
+                            {
+                                <MudForm Model="@updateDocumentationDTO" @ref="form">
+                                    <MudInput @bind-Value="updateDocumentationDTO.Summary"  Disabled="@SummaryLocked" Lines="20" DisableUnderLine="true"  style="width: 100%;" />
+                                </MudForm>
+                            }
+                            else 
+                            {
+                                <MudInput Value="@("")"  Disabled="true" Lines="20" DisableUnderLine="true" />
+                            }
+                        </MudStack>
+                    </MudPaper>
                 </MudStack>              
-              </MudPaper>
-        </MudItem>
-    </MudGrid>
+            </MudStack>
+        </MudStack>
+    </MudContainer>
 }
 
 
@@ -107,13 +114,17 @@ else
 {
     private UserDTO? user { get; set; }
 
+    MudForm form;
+
     private DocumentationDTO? documentation { get; set; }
+
+    private UpdateDocumentationDTO updateDocumentationDTO = new();
 
     [Inject] ISnackbar Snackbar { get; set; }
 
-    public bool SummaryLocked = true;
+    public bool SummaryLocked { get; set; } = true;
 
-    public bool TranslationLocked = true;
+    public bool TranslationLocked { get; set; } = true;
 
     bool IsLoading { get; set; } = true;
 
@@ -138,10 +149,14 @@ else
         try
         {
             documentation = await serviceManager.ProjectService.LoadDocumentationByTestFilesIdAsync(testFileId);
+
+            updateDocumentationDTO.Id = documentation.Id;
+            updateDocumentationDTO.TestFileId = documentation.TestFileId; 
+            updateDocumentationDTO.Summary = documentation.Summary;
+            updateDocumentationDTO.Translation = documentation.Translation;
         }
         catch (System.Exception)
-        {
-            
+        {   
             documentation = null;
         }
     }
@@ -152,13 +167,12 @@ else
         {
             documentation = null;
             IsTranslating = !IsTranslating;
-
+            StateHasChanged();
         } 
         else 
         {
             IsTranslating = !IsTranslating;
         }
-        StateHasChanged();
     }
 
     public async Task Translate()
@@ -182,9 +196,14 @@ else
         }
     }
 
-    private async Task Save(bool summary)
+    async Task Save(bool summary)
     {
+        var response = await serviceManager.TranslationService.UpdateSummary(updateDocumentationDTO);
 
+        if(response == Response.Updated)
+        {
+            Snackbar.Add("Documentation updated", Severity.Success);
+        }
         //save
         if(summary)
         {
@@ -194,7 +213,6 @@ else
         {
             TranslationLocked = true;
         }
-
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
