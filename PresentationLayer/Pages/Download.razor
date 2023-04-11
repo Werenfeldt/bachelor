@@ -1,0 +1,86 @@
+@page "/download"
+@layout MainLayout
+@using System.Linq
+@inject IServiceManager serviceManager;
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage;
+@inject NavigationManager NavManager;
+
+@if(IsLoading)
+{
+    <MudGrid>
+        <MudItem Class="d-flex align-center justify-center mud-width-full">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+        </MudItem>
+    </MudGrid>
+}
+else 
+{
+    <MudForm>
+        <MudGrid Justify="Justify.Center">
+            <MudItem>
+                <MudCard>
+                    <MudCardContent>
+                        <MudSelect T="ProjectDTO" Label="Projects" MultiSelection="true" @bind-SelectedValues="projectsToDownload">
+                            @foreach (var item in projects)
+                            {
+                                <MudSelectItem T="ProjectDTO" Value="@item">@item.title</MudSelectItem>
+                            }
+                        </MudSelect>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+            @* <MudItem xs="6">
+                <MudText Typo="Typo.subtitle2">SelectedValues: HashSet&lt;string&gt;</MudText>
+                <MudText Typo="Typo.subtitle2">{</MudText>
+                <MudText Typo="Typo.body2" Class="pl-4">@(string.Join(", ", projectsToDownload.Select(x=>$"\"{x.title}\"")))</MudText>
+                <MudText Typo="Typo.subtitle2">}</MudText>
+            </MudItem> *@
+        </MudGrid>
+    </MudForm>
+}
+
+@code {
+    private IEnumerable<ProjectDTO> projectsToDownload { get; set; } = new HashSet<ProjectDTO>() {};
+
+    private ProjectDTO value { get; set; }
+    
+    private List<ProjectDTO>? projects { get; set; }
+    
+    
+    bool IsLoading { get; set; } = true;
+    
+    public async Task<List<ProjectDTO>> GetProjectsAsync(Guid userId)
+    {
+        // Retrieve entities from the database and return them
+        var listOfProjects = await serviceManager.ProjectService.LoadProjectsAsync(userId);
+        return listOfProjects;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            IsLoading = false;
+            // Retrieve user from the session storage
+            var user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
+
+            // If the user is set, retrieve entities from the database
+            if (user != null)
+            {
+                projects = await GetProjectsAsync(user.Id);
+                
+                IsLoading = false;
+
+                StateHasChanged();
+            }
+
+        }
+    }
+
+    @* MultiSelectionTextFunc="@(new Func<List<ProjectDTO>, string>(GetSelectionTitles))" *@
+
+    private string GetSelectionTitles(List<ProjectDTO> selected)
+    {
+        return string.Join(", ", selected.Select(x => x.title));
+    }
+}
