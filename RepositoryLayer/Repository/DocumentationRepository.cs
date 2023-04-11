@@ -24,15 +24,21 @@ internal sealed class DocumentationRepository : IDocumentationRepository
 
     public async Task<Option<DocumentationDTO>> ReadDocumentationByTestFileIdAsync(Guid testFileId, CancellationToken cancellationToken = default)
     {
-        var docu = await _dbContext.Documentation.FirstOrDefaultAsync(doc => doc.TestFileId == testFileId);
-        return ConvertFunctions.DocumentationMapToDTO(docu);
+        var docu = await _dbContext.Documentation.Where(doc => doc.TestFileId == testFileId).FirstOrDefaultAsync();
+        
+        if(docu != null)
+        {
+            return ConvertFunctions.DocumentationMapToDTO(docu);
+        }
+        return null;
     }
 
     public async Task<Response> UpdateDocumentationAsync(UpdateDocumentationDTO documentationDTO)
     {
         var entity = await _dbContext.Documentation.FindAsync(documentationDTO.Id);
 
-        if (entity != null) {
+        if (entity != null)
+        {
             var updatedEntity = ConvertFunctions.DocumentationMapToDTO(documentationDTO);
             _dbContext.Documentation.Update(updatedEntity);
             await _dbContext.SaveChangesAsync();

@@ -47,6 +47,11 @@ public class ProjectService : IProjectService
         return await _repoManager.TestFileRepository.ReadTestFileByIdAsync(testFileId);
     }
 
+    public async Task<DocumentationDTO> LoadDocumentationByTestFilesIdAsync(Guid testFileId)
+    {
+        return await _repoManager.DocumentationRepository.ReadDocumentationByTestFileIdAsync(testFileId);
+    }
+
     public async Task<Response> DeleteProject(Guid projectId)
     {
         return await _repoManager.ProjectRepository.DeleteProjectAsync(projectId);
