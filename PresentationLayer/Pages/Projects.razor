@@ -20,26 +20,26 @@ else
         {
             <MudItem xs="4">
                 <MudButton OnClick="@(async() => await NavigateToProject(@item.Id))">
-                    <MudCard Outlined="true" Style="min-width: 250px; max-width: 250px; min-height: 250px; max-height: 250px;">
-                        <MudCardHeader Style="max-height:50%;">
-                            <CardHeaderContent>
-                                <MudText Typo="Typo.h6" Style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;  overflow: hidden;">
-                                    @item.title
-                                </MudText>
-                            </CardHeaderContent>
-                        </MudCardHeader>
-                        <MudCardContent>
-                            <MudText Typo="Typo.body2">@item.description</MudText>
-                        </MudCardContent>
-                        <MudCardActions Class="align-content-end">
-                            <MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="@(async () => await DeleteProject(@item.Id))">Delete</MudButton>
+                    <MudPaper Outlined="true" Style="min-width: 400px; max-width: 400px; min-height: 400px; max-height: 400px;">
+                    <MudStack Justify="Justify.SpaceBetween" Style="min-height:400px;"  >
+                            <MudStack Row="true" Style="max-height:50%;" Justify="Justify.SpaceBetween">
+                                    <MudSpacer/>
+                                    <MudText Typo="Typo.h6" Class="mt-2" Style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;  overflow: hidden;">
+                                        @item.title
+                                    </MudText>
+                                    <MudSpacer/>
+                                    <MudMenu Icon="@Icons.Material.Filled.Settings" Color="Color.Default" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+                                        <MudMenuItem Icon="@Icons.Material.Filled.Delete" OnClick="@(async () => await DeleteProject(@item.Id))" IconColor="Color.Error"/>
+                                    </MudMenu>
+                            </MudStack>
+                            <MudText Class="align-stretch" Typo="Typo.body2">@item.description</MudText>
                             <MudButton Variant="Variant.Text" Color="Color.Primary">Add team members</MudButton>
-                        </MudCardActions>
-                    </MudCard>
+                    </MudStack>
+                    </MudPaper>
                 </MudButton>
             </MudItem>
         }
-    </MudGrid>
+    </MudGrid> 
 }
 
 @code

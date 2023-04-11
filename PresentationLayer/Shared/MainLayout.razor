@@ -2,12 +2,12 @@
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage;
 @inject NavigationManager NavManager;
 
-<MudThemeProvider />
+<MudThemeProvider Theme="CustomTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar>
+    <MudAppBar Color="Color.Primary">
         @if (!loggedIn)
         {
             <MudSpacer />
@@ -68,4 +68,20 @@
 
         StateHasChanged();
     }
+
+    MudTheme CustomTheme = new MudTheme()
+    {
+        Palette = new Palette()
+        {
+            Primary = "rgba(225, 150, 92, 1);",
+            @* PrimaryContrastText = "#272c34ff",
+            TextPrimary = "#272c34ff",
+            PrimaryLighten = "rgb(255,255,255)",
+            PrimaryDarken = "rgb(193,181,175)",
+            
+            Secondary = Colors.DeepPurple.Lighten4,
+            TextSecondary = "#272c34ff",
+            SecondaryContrastText = "#272c34ff", *@
+        },
+    };
 }

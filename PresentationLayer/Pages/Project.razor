@@ -15,28 +15,24 @@
 }
 else 
 {
-
     <MudGrid Justify="Justify.FlexStart">
         @foreach (var item in testfiles)
         {
-            <MudItem xs="2"  >
+            <MudItem xs="2">
                 <MudButton OnClick="@(async() => await NavigateToEditor(@item.Id))">
-                    <MudCard Outlined="true" Style="min-width: 150px; max-width: 150px; min-height: 150px; max-height: 150px;">
-                        <MudCardHeader>
-                            <CardHeaderContent>
-                                <MudText Typo="Typo.h6" Style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1;  overflow: hidden;">
-                                    @item.Name
-                                </MudText>
-                            </CardHeaderContent>
-                        </MudCardHeader>
-                        <MudCardContent>
-                            <MudText Typo="Typo.body2">@item.Path</MudText>
-                        </MudCardContent>
-                    </MudCard>
+                    <MudPaper Outlined="true" Style="min-width: 150px; max-width: 150px; min-height: 150px; max-height: 150px;">
+                    <MudStack  Style="min-height:150px;" Justify="Justify.Center" AlignItems="AlignItems.Center">
+                            <MudStack Row="true" Style="max-height:30%;">
+                                    <MudText Typo="Typo.h6" Style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;  overflow: hidden;">
+                                        @item.Name 
+                                    </MudText>
+                            </MudStack>
+                    </MudStack>
+                    </MudPaper>
                 </MudButton>
             </MudItem>
         }
-    </MudGrid>
+    </MudGrid> 
 }
 
 @code {
