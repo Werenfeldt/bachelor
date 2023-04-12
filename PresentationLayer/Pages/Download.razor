@@ -1,64 +1,89 @@
 @page "/download"
 @layout MainLayout
-@using System.Linq
 @inject IServiceManager serviceManager;
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage;
 @inject NavigationManager NavManager;
+@inject IJSRuntime js;
 
-@if(IsLoading)
+@if (IsLoading)
 {
     <MudGrid>
-        <MudItem Class="d-flex align-center justify-center mud-width-full">
-            <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
-        </MudItem>
-    </MudGrid>
+    <MudItem Class="d-flex align-center justify-center mud-width-full">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    </MudItem>
+</MudGrid>
 }
-else 
+else
 {
-    <MudForm>
-        <MudGrid Justify="Justify.Center">
-            <MudItem>
-                <MudCard>
-                    <MudCardContent>
-                        <MudSelect T="ProjectDTO" Label="Projects" MultiSelection="true" @bind-SelectedValues="projectsToDownload">
-                            @foreach (var item in projects)
+    <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12" sm="7">
+            <MudText Typo="Typo.h3" Align="Align.Center">Download project</MudText>
+        </MudItem>
+        <MudItem xs="12" sm="7">
+            <MudCard Outlined="true" class="rounded-xl" Justify="Justify.Center">
+                <MudCardContent>
+                    <MudSelect T="ProjectDTO" Label="Project" AnchorOrigin="Origin.BottomCenter" Required="true"
+                        @bind-SelectedValue="@projectToDownload">
+                        @foreach (var item in currentUsersProjects)
                             {
                                 <MudSelectItem T="ProjectDTO" Value="@item">@item.title</MudSelectItem>
                             }
                         </MudSelect>
+
+                        <MudPaper Elevation="2" Rounded="Round.Lg" Class="mt-4" Outlined="true">
+                            <MudGrid>
+                                <MudItem xs="12" md="4">
+                                    <MudCheckBox @bind-Checked="@includeScript" Label="Script"></MudCheckBox>
+                                </MudItem>
+                                <MudItem xs="12" md="4">
+                                    <MudCheckBox @bind-Checked="@includeTranslation" Label="Translation"></MudCheckBox>
+                                </MudItem>
+                                <MudItem xs="12" md="4">
+                                    <MudCheckBox @bind-Checked="@includeSummary" Label="Summary"></MudCheckBox>
+                                </MudItem>
+                            </MudGrid>
+                        </MudPaper> 
+
                     </MudCardContent>
+                    <MudCardActions Class="pl-4 pr-4 pt-0">
+                        <MudButton FullWidth="true" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                         Disabled="@(!success || !HasCheckedBoxes())" OnClick="@(async () => await OnValidSubmit())">Download
+                        </MudButton>
+                    </MudCardActions>
                 </MudCard>
             </MudItem>
-            @* <MudItem xs="6">
-                <MudText Typo="Typo.subtitle2">SelectedValues: HashSet&lt;string&gt;</MudText>
-                <MudText Typo="Typo.subtitle2">{</MudText>
-                <MudText Typo="Typo.body2" Class="pl-4">@(string.Join(", ", projectsToDownload.Select(x=>$"\"{x.title}\"")))</MudText>
-                <MudText Typo="Typo.subtitle2">}</MudText>
-            </MudItem> *@
         </MudGrid>
     </MudForm>
 }
 
 @code {
-    private IEnumerable<ProjectDTO> projectsToDownload { get; set; } = new HashSet<ProjectDTO>() {};
-
-    private ProjectDTO value { get; set; }
-    
-    private List<ProjectDTO>? projects { get; set; }
-    
-    
-    bool IsLoading { get; set; } = true;
-    
-    public async Task<List<ProjectDTO>> GetProjectsAsync(Guid userId)
+    [Inject] ISnackbar Snackbar { get; set; }
+    bool IsLoading = true;
+    MudForm form;
+    bool success;
+    string[] errors = { };
+    List<ProjectDTO>? currentUsersProjects;
+    ProjectDTO? projectToDownload = null;
+    bool includeScript = false;
+    bool includeTranslation = false;
+    bool includeSummary = false;
+    async Task OnValidSubmit()
     {
-        // Retrieve entities from the database and return them
-        var listOfProjects = await serviceManager.ProjectService.LoadProjectsAsync(userId);
-        return listOfProjects;
+        success = true;
+        try
+        {   
+            Console.WriteLine("Helooo");
+            serviceManager.ExportService.DownloadPDF(js, "report.pdf");
+        }
+        catch (System.Exception)
+        {
+            Snackbar.Add("Could not download", Severity.Warning);
+        }
     }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if(firstRender)
+        if (firstRender)
         {
             IsLoading = false;
             // Retrieve user from the session storage
@@ -67,8 +92,8 @@ else
             // If the user is set, retrieve entities from the database
             if (user != null)
             {
-                projects = await GetProjectsAsync(user.Id);
-                
+                currentUsersProjects = await serviceManager.ProjectService.LoadProjectsAsync(user.Id);
+
                 IsLoading = false;
 
                 StateHasChanged();
@@ -76,11 +101,8 @@ else
 
         }
     }
-
-    @* MultiSelectionTextFunc="@(new Func<List<ProjectDTO>, string>(GetSelectionTitles))" *@
-
-    private string GetSelectionTitles(List<ProjectDTO> selected)
+    bool HasCheckedBoxes()
     {
-        return string.Join(", ", selected.Select(x => x.title));
+        return includeScript || includeTranslation || includeSummary;
     }
 }

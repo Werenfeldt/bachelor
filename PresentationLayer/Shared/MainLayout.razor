@@ -16,13 +16,14 @@
         {
             <MudButton StartIcon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
             OnClick="@((e) => DrawerToggle())">Files</MudButton>
-            <MudButton Href="/createproject" Color="Color.Inherit">Create
-                Project</MudButton>
-            <MudButton Href="/download" Color="Color.Inherit">Download Documentation</MudButton>
+            <MudButton Href="/projects" Color="Color.Inherit">My
+                Projects</MudButton>
+            <MudButton StartIcon="@Icons.Material.Filled.Add" Href="/createproject" Color="Color.Inherit"
+            Variant="Variant.Outlined" Class="ml-4">Add</MudButton>
+            <MudButton StartIcon="@Icons.Material.Filled.Download" Href="/download" Color="Color.Inherit"
+            Variant="Variant.Outlined" Class="ml-4">Download</MudButton>
             <MudSpacer />
         }
-        <MudButton Href="/login" Edge="Edge.End" Color="Color.Inherit">API</MudButton>
-        <MudButton Href="/login" Edge="Edge.End" Color="Color.Inherit">Help</MudButton>
         @if (!loggedIn)
         {
             <MudButton Href="/login" Color="Color.Inherit">Login</MudButton>
@@ -70,18 +71,18 @@
     }
 
     MudTheme CustomTheme = new MudTheme()
-    {
-        Palette = new Palette()
         {
-            Primary = "rgba(225, 150, 92, 1);",
+            Palette = new Palette()
+            {
+                Primary = "rgba(225, 150, 92, 1);",
             @* PrimaryContrastText = "#272c34ff",
-            TextPrimary = "#272c34ff",
-            PrimaryLighten = "rgb(255,255,255)",
-            PrimaryDarken = "rgb(193,181,175)",
-            
-            Secondary = Colors.DeepPurple.Lighten4,
-            TextSecondary = "#272c34ff",
-            SecondaryContrastText = "#272c34ff", *@
-        },
-    };
+TextPrimary = "#272c34ff",
+PrimaryLighten = "rgb(255,255,255)",
+PrimaryDarken = "rgb(193,181,175)",
+
+Secondary = Colors.DeepPurple.Lighten4,
+TextSecondary = "#272c34ff",
+SecondaryContrastText = "#272c34ff", *@
+},
+};
 }
