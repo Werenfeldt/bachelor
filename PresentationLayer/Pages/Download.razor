@@ -23,11 +23,10 @@ else
         <MudItem xs="12" sm="7">
             <MudCard Outlined="true" class="rounded-xl" Justify="Justify.Center">
                 <MudCardContent>
-                    <MudSelect T="ProjectDTO" Label="Project" AnchorOrigin="Origin.BottomCenter" Required="true"
-                        @bind-SelectedValue="@projectToDownload">
+                    <MudSelect @bind-Value="projectToDownload" Label="Project" AnchorOrigin="Origin.BottomCenter" Required="true">
                         @foreach (var item in currentUsersProjects)
                             {
-                                <MudSelectItem T="ProjectDTO" Value="@item">@item.title</MudSelectItem>
+                                <MudSelectItem Value="@item">@item.title</MudSelectItem>
                             }
                         </MudSelect>
 
@@ -43,12 +42,13 @@ else
                                     <MudCheckBox @bind-Checked="@includeSummary" Label="Summary"></MudCheckBox>
                                 </MudItem>
                             </MudGrid>
-                        </MudPaper> 
+                        </MudPaper>
 
                     </MudCardContent>
                     <MudCardActions Class="pl-4 pr-4 pt-0">
-                        <MudButton FullWidth="true" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
-                         Disabled="@(!success || !HasCheckedBoxes())" OnClick="@(async () => await OnValidSubmit())">Download
+                        <MudButton FullWidth="true" Variant="Variant.Filled"
+                        Color="Color.Primary" Disabled="@(!success || !HasCheckedBoxes())" @onclick="DownloadPDF">
+                            Download
                         </MudButton>
                     </MudCardActions>
                 </MudCard>
@@ -63,23 +63,27 @@ else
     MudForm form;
     bool success;
     string[] errors = { };
-    List<ProjectDTO>? currentUsersProjects;
-    ProjectDTO? projectToDownload = null;
+    List<ProjectDTO>? currentUsersProjects { get; set; }
+    ProjectDTO? projectToDownload { get; set; }
     bool includeScript = false;
     bool includeTranslation = false;
     bool includeSummary = false;
-    async Task OnValidSubmit()
+
+    public void DownloadPDF()
     {
-        success = true;
         try
-        {   
-            Console.WriteLine("Helooo");
-            serviceManager.ExportService.DownloadPDF(js, "report.pdf");
+        {
+            serviceManager.ExportService.SaveAsPDF(js, projectToDownload,includeScript, includeTranslation, includeSummary);
+            StateHasChanged();
         }
         catch (System.Exception)
         {
             Snackbar.Add("Could not download", Severity.Warning);
         }
+    }
+    void OnValidSubmit()
+    {
+        success = true;
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
