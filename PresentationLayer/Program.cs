@@ -10,7 +10,6 @@ using MudBlazor.Services;
 using Blazored.SessionStorage;
 using System;
 using MudBlazor;
-using BlazorPrettyCode;
 
 var builder = WebApplication.CreateBuilder(args);
 
