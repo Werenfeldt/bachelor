@@ -7,4 +7,7 @@ public interface IServiceManager
     IProjectService ProjectService { get; }
 
     ITranslationService TranslationService { get; }
+
+    IExportService ExportService { get; }
+
 }
