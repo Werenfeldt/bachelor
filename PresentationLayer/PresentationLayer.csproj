@@ -18,9 +18,9 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
+    <PackageReference Include="MudBlazor.Markdown" Version="0.1.0" />
     <PackageReference Include="Octokit" Version="5.0.2" />
     <PackageReference Include="MudBlazor" Version="6.2.0" />
-    <PackageReference Include="PSC.Blazor.Components.CodeSnippet" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>

@@ -37,9 +37,12 @@
         }
 
     </MudAppBar>
-    <MudDrawer @bind-Open="@_drawerOpen">
-        <NavMenu />
-    </MudDrawer>
+    @if(loggedIn & _drawerOpen)
+    {
+        <MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Always">
+            <NavMenu />
+        </MudDrawer>
+    }
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Large" Class="mt-10">
             @Body
@@ -51,6 +54,8 @@
     bool _drawerOpen = false;
 
     bool loggedIn = false;
+
+    Guid userId {get; set;}
 
     void DrawerToggle()
     {

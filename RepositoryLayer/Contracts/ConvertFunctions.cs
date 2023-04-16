@@ -9,6 +9,17 @@ public static class ConvertFunctions
         return new ProjectDTO(project.Id, project.Title, project.GitUrl, project.Description, project.CreatedDate);
     }
 
+    public static ProjectWithTestFilesDTO ProjectWithTestFilesMapToDTO(Project project)
+    {
+        var testFiles = new List<TestFileDTO>();
+
+        foreach (var testFile in project.TestFiles)
+        {
+            testFiles.Add(TestFileMapToDTO(testFile));
+        }
+        return new ProjectWithTestFilesDTO(project.Id, project.Title, testFiles);
+    }
+
     public static Project ProjectMapToEntity(CreateProjectDTO project)
     {
         return new Project(project.Title, project.GitUrl)
@@ -64,7 +75,7 @@ public static class ConvertFunctions
 
     public static Documentation DocumentationMapToDTO(CreateDocumentationDTO documentation)
     {
-        return new Documentation(documentation.Summary, documentation.Translation){TestFileId = documentation.TestFileId};
+        return new Documentation(documentation.Summary, documentation.Translation) { TestFileId = documentation.TestFileId };
     }
 
     //-------------------------------------- Util ------------------------------------------//

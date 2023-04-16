@@ -45,6 +45,14 @@ internal sealed class ProjectRepository : IProjectRepository
         return user.Projects.Select(p => ConvertFunctions.ProjectMapToDTO(p));
     }
 
+    public async Task<IEnumerable<ProjectWithTestFilesDTO>> ReadAllProjectsWithTestFilesByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        var user = await _dbContext.Users.Include(user => user.Projects).ThenInclude(project => project.TestFiles).Where(user => user.Id == userId).FirstOrDefaultAsync();
+
+
+        return user.Projects.Select(p => ConvertFunctions.ProjectWithTestFilesMapToDTO(p));
+    }
+
     public async Task<Response> UpdateProjectAsync(UpdateProjectDTO project)
     {
         var entity = await _dbContext.Projects.FindAsync(project.Id);

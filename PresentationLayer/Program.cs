@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using Blazored.SessionStorage;
 using System;
+using MudBlazor;
+using BlazorPrettyCode;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,7 @@ builder.Configuration.AddKeyPerFile("/run/secrets", optional: true);
 
 // Add services to the container.
 builder.Services.AddMudServices();
+builder.Services.AddMudMarkdownServices();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 

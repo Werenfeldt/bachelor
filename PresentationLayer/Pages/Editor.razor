@@ -22,13 +22,13 @@ else
                 <MudPaper MaxHeight="100%" MaxWidth="100%" Style="background-color: rgba(251, 235, 212, 1); min-width=100%; min-height:700px;">
                     <MudStack Style="min-height:700px;" Justify="Justify.SpaceBetween" >
                             <MudText Typo="Typo.h5">
-                                Content:
+                                Content:  
                             </MudText>
-                            <MudText Class="align-stretch">
-                                <CodeSnippet Language="Language.javascript" Style="Style.kimbie_light">
-                                    @testFile.Content
-                                </CodeSnippet>
-                            </MudText>
+                            
+                            <MudContainer> 
+                                <MudMarkdown Value="@testFile.Content" CodeBlockTheme="CodeBlockTheme.KimbieLight"/>
+                            </MudContainer>
+
                             <MudButton Variant="Variant.Filled" Color="Color.Dark" Size="Size.Large" OnClick="@(async () => await Translate())">Translate</MudButton>
                     </MudStack>
                 </MudPaper>
@@ -115,8 +115,6 @@ else
 
 @code
 {
-    private UserDTO? user { get; set; }
-
     MudForm form;
 
     private DocumentationDTO? documentation { get; set; }
@@ -136,15 +134,16 @@ else
     [Parameter]
     public Guid testFileId { get; set; }
 
-    private TestFileDTO testFile { get; set; }
+    
+    public TestFileDTO testFile { get; set; }
 
-    private string testContent;
-    public EventCallback<string> ValueChanged {get;set;}
 
     public async Task GetTestFile(Guid testFileId)
     {   
 
         testFile = await serviceManager.ProjectService.LoadTestFileByIdAsync(testFileId);
+
+        Console.WriteLine(testFile.Content);
         
     }
     public async Task GetDocumentation(Guid testFileId)
@@ -217,7 +216,24 @@ else
             TranslationLocked = true;
         }
     }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
+        
+        Console.WriteLine("Inside Editor: " + testFileId.ToString());
+
+        await GetTestFile(testFileId);
+
+        await GetDocumentation(testFileId);
+
+        IsLoading = false;
+
+        StateHasChanged();
+    }
+
+
+    @* protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if(firstRender)
         {
@@ -238,7 +254,7 @@ else
             }
 
         }
-    }
+    } *@
 
     private void SetDocumentation()
     {

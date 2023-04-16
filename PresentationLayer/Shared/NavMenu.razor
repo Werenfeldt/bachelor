@@ -1,28 +1,48 @@
 ﻿@inject Blazored.SessionStorage.ISessionStorageService sessionStorage;
+@inject IServiceManager serviceManager;
+@inject NavigationManager NavManager;
 
 
-<MudPaper Width="250px" Class="d-inline-flex py-3" Elevation="0">
-    <MudNavMenu Class="mud-width-full">
-        <MudText Typo="Typo.h6" Class="px-4">CODE2LULZ</MudText>
-        <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Your way to understanding lulz</MudText>
-        <MudDivider Class="my-2" />
-        <MudNavLink Href="/" Icon="@Icons.Material.Filled.Dashboard">Welcome</MudNavLink>
-        @if(loggedIn)
-        {
-            <MudNavGroup Title="ChatGPT" Icon="@Icons.Material.Filled.SwapHoriz" Expanded="true">
-                <MudNavLink Href="/gpt" Icon="@Icons.Material.Filled.CloudUpload" IconColor="Color.Success">Upload scripts</MudNavLink>
-                <MudNavLink Href="/gpt" Icon="@Icons.Material.Filled.Description" IconColor="Color.Info">Your scripts</MudNavLink>
-            </MudNavGroup>
-        }
-    </MudNavMenu>
-</MudPaper>
-
-@code {
-    bool loggedIn = false;
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+<MudNavMenu Bordered="true" Color="Color.Primary" Rounded="true" Margin="Margin.Dense">
+    @if(IsLoading)
     {
-        loggedIn = await sessionStorage.ContainKeyAsync("SessionUser");
+        <MudGrid>
+            <MudItem Class="d-flex align-center justify-center mud-width-full">
+                <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+            </MudItem>
+        </MudGrid>
+    }
+    else 
+    {
+        @foreach (var project in projects)
+        {
+            <MudNavGroup Title="@project.Title" > 
+                    @foreach (var testfile in project.testfiles)
+                    {
+                        <MudNavLink Href="@("/editor/" + @testfile.Id.ToString())">@testfile.Name</MudNavLink>
+                    }
+            </MudNavGroup>   
+        }
+    }
+</MudNavMenu>
+
+
+
+@code
+{
+    List<ProjectWithTestFilesDTO>? projects { get; set; }
+
+    bool IsLoading { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        var user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
+        
+        projects = await serviceManager.ProjectService.LoadSideBar(user.Id);
+
+        IsLoading = false;
 
         StateHasChanged();
-    } 
+    }
 }
