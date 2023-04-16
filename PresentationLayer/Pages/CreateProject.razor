@@ -9,7 +9,7 @@
         <DataAnnotationsValidator />
         <MudGrid Justify="Justify.Center">
             <MudItem xs="12" sm="7">
-                <MudText Typo="Typo.h3" Align="Align.Center">Create project</MudText>
+                <MudText Typo="Typo.h3" Align="Align.Center">Add project</MudText>
             </MudItem>
             <MudItem xs="12" sm="7">
                 <MudCard Outlined="true" class="rounded-xl" Justify="Justify.Center">
@@ -57,9 +57,8 @@
                         }
 
                     </MudCardContent>
-                    <MudCardActions>
-                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
-                            Justify="Justify.Center" Disabled="@(!success)">Create Project</MudButton>
+                    <MudCardActions Class="pl-4 pr-4 pt-0">
+                        <MudButton FullWidth="true" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)">Create Project</MudButton>
                     </MudCardActions>
                 </MudCard>
             </MudItem>
