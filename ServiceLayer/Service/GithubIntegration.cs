@@ -35,7 +35,8 @@ internal sealed class GithubIntegration : IGithubIntegration
 
         var request = new SearchCodeRequest()
         {
-            Repos = repos
+            Repos = repos,
+            FileName = ".cy"
         };
 
         var result = await gitHub.Search.SearchCode(request);
