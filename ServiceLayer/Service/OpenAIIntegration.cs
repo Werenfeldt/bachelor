@@ -23,6 +23,8 @@ internal sealed class OpenAIIntegration : IOpenAIIntegration
             MaxTokens = 200//optional
         });
 
+        Console.WriteLine("Translation of steps is successful: " + translation.Successful.ToString());
+
         if (translation.Successful)
         {
             var summary = await _openAiService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest
@@ -36,7 +38,7 @@ internal sealed class OpenAIIntegration : IOpenAIIntegration
                 Model = Models.ChatGpt3_5Turbo,
                 MaxTokens = 400
             });
-
+            Console.WriteLine("Translation of summary is successful:" + summary.Successful.ToString());
             if (summary.Successful)
             {
                 return (translation.Choices.First().Message.Content, summary.Choices.First().Message.Content);

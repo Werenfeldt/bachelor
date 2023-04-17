@@ -16,8 +16,8 @@
 else 
 {
     <MudGrid Justify="Justify.Center">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await TranslateAllTestFiles())">Translate All Testfiles</MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary">Update Translations</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@(async () => await TranslateAllTestFiles())">Translate All Testfiles</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Update Translations</MudButton>
     </MudGrid>
     <MudGrid Justify="Justify.FlexStart">
         @foreach (var item in testfiles)
@@ -83,7 +83,7 @@ else
     {
         foreach (var test in testfiles)
         {
-            await serviceManager.TranslationService.TranslateTestfile(test, "please append this string with HELLO WORLD");
+            await serviceManager.TranslationService.TranslateTestfile(test);
         }
 
         StateHasChanged();
