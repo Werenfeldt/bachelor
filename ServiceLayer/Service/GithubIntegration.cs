@@ -22,7 +22,7 @@ internal sealed class GithubIntegration : IGithubIntegration
 
     public async Task<IReadOnlyList<RepositoryContent>> Request(string url)
     {
-        if(gitHub == null) 
+        if (gitHub == null)
         {
             SetUpClient();
         }

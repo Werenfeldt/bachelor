@@ -16,6 +16,7 @@
 else 
 {
     <MudGrid Justify="Justify.Center">
+        <MudProgressLinear Color="Color.Secondary" Value="@Value" Class="my-7" />
         <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@(async () => await TranslateAllTestFiles())">Translate All Testfiles</MudButton>
         <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Update Translations</MudButton>
     </MudGrid>
@@ -81,11 +82,45 @@ else
 
     public async Task TranslateAllTestFiles()
     {
+        Value = 0;
         foreach (var test in testfiles)
         {
+            if(Value==99){
+                Console.WriteLine("Delay start");
+                await Task.Delay(60000);
+                Console.WriteLine("Delay stop");
+
+                Value = 0;
+            }
             await serviceManager.TranslationService.TranslateTestfile(test);
+            Value += 33;
+			StateHasChanged();
         }
 
         StateHasChanged();
     }
+
+    public int Value { get; set; }
+
+	public async void SimulateProgress()
+	{
+		Value = 0;
+		do
+		{
+			if (_disposed)
+			{
+				return;
+			}
+
+			Value += 4;
+			StateHasChanged();
+			await Task.Delay(500);
+
+		} while (Value < 100);
+
+		SimulateProgress();
+	}
+
+	bool _disposed;
+	public void Dispose() => _disposed = true;
 }
