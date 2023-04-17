@@ -24,10 +24,11 @@ else
                             <MudText Typo="Typo.h5">
                                 Content:  
                             </MudText>
-                            
-                            <MudContainer> 
-                                <MudMarkdown Value="@testFile.Content" CodeBlockTheme="CodeBlockTheme.KimbieLight"/>
-                            </MudContainer>
+                            <pre>
+                                <code>
+                                    @testFile.Content
+                                </code>
+                            </pre>
 
                             <MudButton Variant="Variant.Filled" Color="Color.Dark" Size="Size.Large" OnClick="@(async () => await Translate())">Translate</MudButton>
                     </MudStack>
