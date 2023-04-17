@@ -15,6 +15,10 @@
 }
 else 
 {
+    <MudGrid Justify="Justify.Center">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">Translate All Testfiles</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary">Update Translations</MudButton>
+    </MudGrid>
     <MudGrid Justify="Justify.FlexStart">
         @foreach (var item in testfiles)
         {
@@ -53,7 +57,6 @@ else
 
         StateHasChanged();
 
-        //await base.OnParametersSetAsync();
     }
 
         public async Task<List<TestFileDTO>> GetTestFilesAsync()
@@ -75,23 +78,4 @@ else
         }
       StateHasChanged();
     }
-    @* protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if(firstRender)
-        {
-            IsLoading = false;
-            // Retrieve user from the session storage
-            var user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
-
-            // If the user is set, retrieve entities from the database
-            if (user != null)
-            {
-                testfiles = await GetTestFilesAsync();
-                
-                IsLoading = false;
-
-                StateHasChanged();
-            }
-        }
-    } *@
 }
