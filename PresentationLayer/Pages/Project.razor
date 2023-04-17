@@ -16,8 +16,8 @@
 else 
 {
     <MudGrid Justify="Justify.Center">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary">Translate All Testfiles</MudButton>
-        <MudButton Variant="Variant.Outlined" Color="Color.Primary">Update Translations</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await TranslateAllTestFiles())">Translate All Testfiles</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary">Update Translations</MudButton>
     </MudGrid>
     <MudGrid Justify="Justify.FlexStart">
         @foreach (var item in testfiles)
@@ -59,7 +59,7 @@ else
 
     }
 
-        public async Task<List<TestFileDTO>> GetTestFilesAsync()
+    public async Task<List<TestFileDTO>> GetTestFilesAsync()
     {
         // Retrieve entities from the database and return them
         var listOfTestfiles = await serviceManager.ProjectService.LoadTestFilesForProjectAsync(projectId);
@@ -77,5 +77,15 @@ else
             Snackbar.Add(e.Message, Severity.Warning);
         }
       StateHasChanged();
+    }
+
+    public async Task TranslateAllTestFiles()
+    {
+        foreach (var test in testfiles)
+        {
+            await serviceManager.TranslationService.TranslateTestfile(test, "please append this string with HELLO WORLD");
+        }
+
+        StateHasChanged();
     }
 }
