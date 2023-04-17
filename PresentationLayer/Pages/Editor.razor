@@ -18,23 +18,25 @@ else
     
     <MudContainer MaxWidth="MaxWidth.Large" Style="max-height:700px; min-height:700px;" >
         <MudStack Row="true">
-            <MudContainer Style="width:50%; min-height:700px; max-height:700px;" Class="pr-1 pl-0">
+            <MudContainer Style="width:60%; min-height:700px; max-height:700px;" Class="pr-1 pl-0">
                 <MudPaper MaxHeight="100%" MaxWidth="100%" Style="background-color: rgba(251, 235, 212, 1); min-width=100%; min-height:700px;">
                     <MudStack Style="min-height:700px;" Justify="Justify.SpaceBetween" >
                             <MudText Typo="Typo.h5">
                                 Content:  
                             </MudText>
-                            <pre>
-                                <code>
-                                    @testFile.Content
-                                </code>
-                            </pre>
+                            <MudContainer Style="max-height:600px;" Class="overflow-auto">
+                                <pre>
+                                    <code>
+                                        @testFile.Content
+                                    </code>
+                                </pre>
+                            </MudContainer>
 
                             <MudButton Variant="Variant.Filled" Color="Color.Dark" Size="Size.Large" OnClick="@(async () => await Translate())">Translate</MudButton>
                     </MudStack>
                 </MudPaper>
             </MudContainer>
-            <MudContainer Style="width:50%; min-height:700px; max-height:700px;" Class="pr-0 pl-1">
+            <MudContainer Style="width:40%; min-height:700px; max-height:700px;" Class="pr-0 pl-1">
                     <MudStack Style="height:70%;" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Stretch">
                         <MudPaper Height="100%" Width="100%" Style="background-color: rgba(251, 235, 212, 0.56)" Class="mb-2">
                             <MudStack Justify="Justify.SpaceBetween">
