@@ -22,6 +22,10 @@ internal sealed class GithubIntegration : IGithubIntegration
 
     public async Task<IReadOnlyList<RepositoryContent>> Request(string url)
     {
+        if(gitHub == null) 
+        {
+            SetUpClient();
+        }
         var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
         var repositoryOwner = splittedString[0];
         var repositoryName = splittedString[1];

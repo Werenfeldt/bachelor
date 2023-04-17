@@ -2,6 +2,8 @@ namespace RepositoryLayer;
 
 public record ProjectDTO(Guid Id, string title, string gitUrl, string description, DateTime createdDate);
 
+public record ProjectWithTestFilesDTO(Guid Id, string Title, IEnumerable<TestFileDTO> testfiles);
+
 public record CreateProjectDTO
 {
     [Required(ErrorMessage = "A project title is required.")]

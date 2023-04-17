@@ -22,13 +22,14 @@ else
                 <MudPaper MaxHeight="100%" MaxWidth="100%" Style="background-color: rgba(251, 235, 212, 1); min-width=100%; min-height:700px;">
                     <MudStack Style="min-height:700px;" Justify="Justify.SpaceBetween" >
                             <MudText Typo="Typo.h5">
-                                Content:
+                                Content:  
                             </MudText>
-                            <MudText Class="align-stretch">
-                                <CodeSnippet Language="Language.javascript" Style="Style.kimbie_light">
+                            <pre>
+                                <code>
                                     @testFile.Content
-                                </CodeSnippet>
-                            </MudText>
+                                </code>
+                            </pre>
+
                             <MudButton Variant="Variant.Filled" Color="Color.Dark" Size="Size.Large" OnClick="@(async () => await Translate())">Translate</MudButton>
                     </MudStack>
                 </MudPaper>
@@ -115,8 +116,6 @@ else
 
 @code
 {
-    private UserDTO? user { get; set; }
-
     MudForm form;
 
     private DocumentationDTO? documentation { get; set; }
@@ -136,10 +135,9 @@ else
     [Parameter]
     public Guid testFileId { get; set; }
 
-    private TestFileDTO testFile { get; set; }
+    
+    public TestFileDTO testFile { get; set; }
 
-    private string testContent;
-    public EventCallback<string> ValueChanged {get;set;}
 
     public async Task GetTestFile(Guid testFileId)
     {   
@@ -217,27 +215,20 @@ else
             TranslationLocked = true;
         }
     }
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+
+    protected override async Task OnParametersSetAsync()
     {
-        if(firstRender)
-        {
-            IsLoading = false;
-            // Retrieve user from the session storage
-            var user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
+        var user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
+        
+        Console.WriteLine("Inside Editor: " + testFileId.ToString());
 
-            // If the user is set, retrieve entities from the database
-            if (user != null)
-            {
-                await GetTestFile(testFileId);
+        await GetTestFile(testFileId);
 
-                await GetDocumentation(testFileId);
-                
-                IsLoading = false;
+        await GetDocumentation(testFileId);
 
-                StateHasChanged();
-            }
+        IsLoading = false;
 
-        }
+        StateHasChanged();
     }
 
     private void SetDocumentation()
