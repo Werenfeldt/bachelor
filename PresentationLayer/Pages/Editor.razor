@@ -143,8 +143,6 @@ else
     {   
 
         testFile = await serviceManager.ProjectService.LoadTestFileByIdAsync(testFileId);
-
-        Console.WriteLine(testFile.Content);
         
     }
     public async Task GetDocumentation(Guid testFileId)
@@ -232,30 +230,6 @@ else
 
         StateHasChanged();
     }
-
-
-    @* protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if(firstRender)
-        {
-            IsLoading = false;
-            // Retrieve user from the session storage
-            var user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
-
-            // If the user is set, retrieve entities from the database
-            if (user != null)
-            {
-                await GetTestFile(testFileId);
-
-                await GetDocumentation(testFileId);
-                
-                IsLoading = false;
-
-                StateHasChanged();
-            }
-
-        }
-    } *@
 
     private void SetDocumentation()
     {
