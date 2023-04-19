@@ -4,7 +4,7 @@
 @inject NavigationManager NavManager;
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage;
 
-<MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+<MudForm @ref="form" @bind-IsValid="@success">
     <EditForm Model="@projectDTO" OnValidSubmit="OnValidSubmit">
         <DataAnnotationsValidator />
         <MudGrid Justify="Justify.Center">
@@ -70,7 +70,6 @@
     [Inject] ISnackbar Snackbar { get; set; }
     MudForm form;
     bool success;
-    string[] errors = { };
     CreateProjectDTO projectDTO = new CreateProjectDTO();
     bool repositoryIsPrivate = false;
     bool accessWithAuthenticationToken = true;
@@ -80,7 +79,6 @@
 
     async Task OnValidSubmit()
     {
-        success = true;
         try
         {
             if (repositoryIsPrivate)
@@ -115,7 +113,7 @@
         StateHasChanged();
     }
 
-    public class NotEmptyValidator
+    @* public class NotEmptyValidator
     {
         public string ErrorMessage { get; set; }
 
@@ -126,7 +124,7 @@
                 yield return ErrorMessage ?? "Field is required.";
             }
         }
-    }
+    } *@
 
 
 }
