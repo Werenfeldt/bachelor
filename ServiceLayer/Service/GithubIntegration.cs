@@ -4,28 +4,24 @@ internal sealed class GithubIntegration : IGithubIntegration
 {
     private GitHubClient? gitHub;
 
-    public GithubIntegration() { }
+    public GithubIntegration() {
+        SetUpClient();
+     }
 
     public void SetCredentials(string tokenAuth)
     {
-        SetUpClient();
         //TODO set up try catch
         gitHub.Credentials = new Credentials(tokenAuth);
     }
 
     public void SetCredentials(string username, string password)
     {
-        SetUpClient();
         //TODO set up try catch
         gitHub.Credentials = new Credentials(username, password);
     }
 
     public async Task<IReadOnlyList<RepositoryContent>> Request(string url)
     {
-        if (gitHub == null)
-        {
-            SetUpClient();
-        }
         var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
         var repositoryOwner = splittedString[0];
         var repositoryName = splittedString[1];
