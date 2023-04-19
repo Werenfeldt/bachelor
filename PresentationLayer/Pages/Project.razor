@@ -83,19 +83,20 @@ else
     public async Task TranslateAllTestFiles()
     {
         Value = 0;
-        foreach (var test in testfiles)
-        {
-            if(Value==99){
-                Console.WriteLine("Delay start");
-                await Task.Delay(60000);
-                Console.WriteLine("Delay stop");
+        var ValuetoIncrease = 100/testfiles.Count;
 
-                Value = 0;
+            
+            foreach (var test in testfiles)
+            {
+                await serviceManager.TranslationService.TranslateTestfile(test);
+                
+                do
+                {
+                    Value += ValuetoIncrease;
+                    StateHasChanged();
+
+                } while (Value < 100);
             }
-            await serviceManager.TranslationService.TranslateTestfile(test);
-            Value += 33;
-			StateHasChanged();
-        }
 
         StateHasChanged();
     }
