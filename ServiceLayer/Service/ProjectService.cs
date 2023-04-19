@@ -12,11 +12,6 @@ public class ProjectService : IProjectService
         _repoManager = repoManager;
     }
 
-    public Task<ProjectDTO> CreateProjectAsync(CreateProjectDTO projectDTO)
-    {
-        return sendRequest(projectDTO);
-    }
-
     public Task<ProjectDTO> CreateProjectAsync(CreateProjectDTO projectDTO, string tokenAuth)
     {
         GithubIntegration.SetCredentials(tokenAuth);

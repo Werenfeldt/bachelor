@@ -9,6 +9,7 @@ services:
     environment:
       ConnectionStrings:BachelorDB:
       OpenAIServiceOptions:ApiKey:
+      APIToken:GithubIntegrationToken:
     depends_on:
       - db
     secrets:
@@ -16,6 +17,8 @@ services:
         target: ConnectionStrings:BachelorDB
       - source: openAIServiceOptions
         target: OpenAIServiceOptions:ApiKey
+      - source: gitIntegrationToken
+        target: APIToken:GithubIntegrationToken
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
@@ -32,3 +35,5 @@ secrets:
     file: ./.local/connection_string.txt
   openAIServiceOptions:
     file: ./.local/openAIServiceOptions.txt
+  gitIntegrationToken: 
+    file: ./.local/gitIntegrationToken.txt

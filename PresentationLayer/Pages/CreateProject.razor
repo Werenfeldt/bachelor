@@ -67,6 +67,8 @@
 </MudForm>
 
 @code {
+
+    [Inject] IConfiguration _config { get; set; }
     [Inject] ISnackbar Snackbar { get; set; }
     MudForm form;
     bool success;
@@ -97,7 +99,8 @@
             }
             else
             {
-                await serviceManager.ProjectService.CreateProjectAsync(projectDTO);
+                var gitAuthToken = _config["APIToken:GithubIntegrationToken"];
+                await serviceManager.ProjectService.CreateProjectAsync(projectDTO, gitAuthToken);
             }
             NavManager.NavigateTo("/projects");
         }
