@@ -12,7 +12,7 @@ public class TranslationService : ITranslationService
         _lazyOpenAIIntegration = new Lazy<IOpenAIIntegration>(() => new OpenAIIntegration(openAiIntegration));
     }
 
-    public async Task<DocumentationDTO> TranslateTestfile(TestFileDTO testFile, string prompt);
+    public async Task<DocumentationDTO> TranslateTestfile(TestFileDTO testFile, string prompt)
     {
         try
         {
