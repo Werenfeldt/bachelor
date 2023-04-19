@@ -1,7 +1,5 @@
 namespace RepositoryLayer;
 
-//TODO add simple record if you dont need all information
-
 public record TestFileDTO(Guid Id, string Name, string Path, string Content, Guid ProjectId, DateTime CreatedDate, DateTime? UpdatedDate);
 
 public record CreateTestFileDTO

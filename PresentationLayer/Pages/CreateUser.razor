@@ -4,41 +4,38 @@
 @inject IServiceManager serviceManager; 
 @inject NavigationManager NavManager;
 
-<EditForm Model="@newUser" OnValidSubmit="OnValidSubmit">
-        <DataAnnotationsValidator/>
+<MudForm @ref="form" @bind-IsValid="@success" Model="@newUser">
         <MudGrid Justify="Justify.Center">
             <MudItem xs="12" sm="7">
                 <MudCard>
                     <MudText Align="Align.Center" Typo="Typo.h2" > Create New Account </MudText>
                     <MudCardContent>
                         <MudTextField Label="First name" HelperText="Max. 8 characters"
-                                    @bind-Value="newUser.Name" For="@(() => newUser.Name)"/>
+                                    @bind-Value="newUser.Name" For="@(() => newUser.Name)" Required="true"/>
                         <MudTextField Label="Email" Class="mt-3"
-                                    @bind-Value="newUser.Email" For="@(() => newUser.Email)"/>
+                                    @bind-Value="newUser.Email" For="@(() => newUser.Email)" Required="true"/>
                         <MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
-                                    @bind-Value="newUser.Password" For="@(() => newUser.Password)" InputType="InputType.Password"/>
+                                    @bind-Value="newUser.Password" For="@(() => newUser.Password)" InputType="InputType.Password" Required="true"/>
                     </MudCardContent>
                     <MudCardActions>
-                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Create User</MudButton>
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" Disabled="@(!success)" OnClick="@(async () => await AddUser())">Create User</MudButton>
                     </MudCardActions>
                 </MudCard>
             </MudItem>
         </MudGrid>
-    </EditForm>
+</MudForm>
 
 @code {
-    private CreateUserDTO newUser = new();
-
     [Inject] ISnackbar Snackbar { get; set; }
+    MudForm form;
+    CreateUserDTO newUser = new();
     bool success;
 
-    private async void OnValidSubmit(EditContext context)
+    private async Task AddUser()
     {
-        success = true;
 
         await serviceManager.LoginService.CreateNewUser(newUser);
 
-        //TODO add if the response is success
         Snackbar.Add("The user was succesfully created", Severity.Success);
         
         NavManager.NavigateTo("/login");

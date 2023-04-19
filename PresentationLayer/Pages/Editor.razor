@@ -31,7 +31,6 @@ else
                                     </code>
                                 </pre>
                             </MudContainer>
-
                             <MudButton Variant="Variant.Filled" Color="Color.Dark" Size="Size.Large" OnClick="@(async () => await Translate())">Translate</MudButton>
                     </MudStack>
                 </MudPaper>
@@ -48,7 +47,7 @@ else
                                     }
                                     else
                                     {
-                                        <MudIconButton OnClick="@(() => StartEdit(false))" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />    
+                                        <MudIconButton OnClick="@(() => StartEdit(false))" Disabled="@(!documentationExist)" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />    
                                     }
                                 </MudStack>
                                 @if(IsTranslating)
@@ -85,7 +84,7 @@ else
                                     }
                                     else 
                                     {
-                                        <MudIconButton OnClick="@(() => StartEdit(true))" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
+                                        <MudIconButton OnClick="@(() => StartEdit(true))" Disabled="@(!documentationExist)" Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" Color="Color.Dark" Size="Size.Medium" />
                                     }
                                 </MudStack>
                                 @if(IsTranslating)
@@ -118,50 +117,41 @@ else
 
 @code
 {
-    MudForm form;
-
-    private DocumentationDTO? documentation { get; set; }
-
-    private UpdateDocumentationDTO updateDocumentationDTO = new();
-
     [Inject] ISnackbar Snackbar { get; set; }
-
-    public bool SummaryLocked { get; set; } = true;
-
-    public bool TranslationLocked { get; set; } = true;
-
-    bool IsLoading { get; set; } = true;
-
-    bool IsTranslating { get; set; } = false;
-
     [Parameter]
     public Guid testFileId { get; set; }
+    MudForm form;
+    TestFileDTO testFile { get; set; }
+    DocumentationDTO? documentation { get; set; }
+    UpdateDocumentationDTO updateDocumentationDTO = new();
+    bool SummaryLocked { get; set; } = true;
+    bool TranslationLocked { get; set; } = true;
+    bool IsLoading { get; set; } = true;
+    bool IsTranslating { get; set; } = false;
+    bool documentationExist { get; set; }
 
-    
-    public TestFileDTO testFile { get; set; }
-
-
-    public async Task GetTestFile(Guid testFileId)
+    private async Task GetTestFile(Guid testFileId)
     {   
-
         testFile = await serviceManager.ProjectService.LoadTestFileByIdAsync(testFileId);
-        
     }
-    public async Task GetDocumentation(Guid testFileId)
+    private async Task GetDocumentation(Guid testFileId)
     {
         try
         {
             documentation = await serviceManager.ProjectService.LoadDocumentationByTestFilesIdAsync(testFileId);
+
+            documentationExist = true;
 
             SetDocumentation();
         }
         catch (System.Exception)
         {   
             documentation = null;
+            documentationExist = false;
         }
     }
 
-    public void SetTranslating(bool StartTranslation)
+    private void SetTranslating(bool StartTranslation)
     {
         if(StartTranslation)
         {
@@ -175,13 +165,15 @@ else
         }
     }
 
-    public async Task Translate()
+    private async Task Translate()
     {
         SetTranslating(true);
 
         documentation = await serviceManager.TranslationService.TranslateTestfile(testFile);
 
         SetDocumentation();
+
+        documentationExist = true;
 
         SetTranslating(false);
         StateHasChanged();
@@ -199,7 +191,7 @@ else
         }
     }
 
-    async Task Save(bool summary)
+    private async Task Save(bool summary)
     {
         var response = await serviceManager.TranslationService.UpdateDocumentation(updateDocumentationDTO);
 
@@ -220,10 +212,6 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        var user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
-        
-        Console.WriteLine("Inside Editor: " + testFileId.ToString());
-
         await GetTestFile(testFileId);
 
         await GetDocumentation(testFileId);
@@ -232,7 +220,6 @@ else
 
         StateHasChanged();
     }
-
     private void SetDocumentation()
     {
             updateDocumentationDTO.Id = documentation.Id;

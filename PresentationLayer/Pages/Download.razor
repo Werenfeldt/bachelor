@@ -8,28 +8,27 @@
 @if (IsLoading)
 {
     <MudGrid>
-    <MudItem Class="d-flex align-center justify-center mud-width-full">
-        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
-    </MudItem>
-</MudGrid>
+        <MudItem Class="d-flex align-center justify-center mud-width-full">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+        </MudItem>
+    </MudGrid>
 }
 else
 {
-    <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
-    <MudGrid Justify="Justify.Center">
-        <MudItem xs="12" sm="7">
-            <MudText Typo="Typo.h3" Align="Align.Center">Download project</MudText>
-        </MudItem>
-        <MudItem xs="12" sm="7">
-            <MudCard Outlined="true" class="rounded-xl" Justify="Justify.Center">
-                <MudCardContent>
-                    <MudSelect @bind-Value="projectToDownload" Label="Project" AnchorOrigin="Origin.BottomCenter" Required="true">
-                        @foreach (var item in currentUsersProjects)
-                            {
-                                <MudSelectItem Value="@item">@item.title</MudSelectItem>
-                            }
+    <MudForm @ref="form" @bind-IsValid="@success">
+        <MudGrid Justify="Justify.Center">
+            <MudItem xs="12" sm="7">
+                <MudText Typo="Typo.h3" Align="Align.Center">Download project</MudText>
+            </MudItem>
+            <MudItem xs="12" sm="7">
+                <MudCard Outlined="true" class="rounded-xl" Justify="Justify.Center">
+                    <MudCardContent>
+                        <MudSelect @bind-Value="projectToDownload" Label="Project" AnchorOrigin="Origin.BottomCenter" Required="true">
+                            @foreach (var item in currentUsersProjects)
+                                {
+                                    <MudSelectItem Value="@item">@item.title</MudSelectItem>
+                                }
                         </MudSelect>
-
                         <MudPaper Elevation="2" Rounded="Round.Lg" Class="mt-4" Outlined="true">
                             <MudGrid>
                                 <MudItem xs="12" md="4">
@@ -43,7 +42,6 @@ else
                                 </MudItem>
                             </MudGrid>
                         </MudPaper>
-
                     </MudCardContent>
                     <MudCardActions Class="pl-4 pr-4 pt-0">
                         <MudButton FullWidth="true" Variant="Variant.Filled"
@@ -59,15 +57,14 @@ else
 
 @code {
     [Inject] ISnackbar Snackbar { get; set; }
-    bool IsLoading = true;
     MudForm form;
-    bool success;
-    string[] errors = { };
     List<ProjectDTO>? currentUsersProjects { get; set; }
     ProjectDTO? projectToDownload { get; set; }
+    bool success;
+    bool IsLoading = true;
     bool includeScript = false;
-    bool includeTranslation = false;
     bool includeSummary = false;
+    bool includeTranslation = false;
 
     public void DownloadPDF()
     {
@@ -81,15 +78,11 @@ else
             Snackbar.Add("Could not download", Severity.Warning);
         }
     }
-    void OnValidSubmit()
-    {
-        success = true;
-    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            IsLoading = false;
             // Retrieve user from the session storage
             var user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
 
@@ -102,7 +95,6 @@ else
 
                 StateHasChanged();
             }
-
         }
     }
     bool HasCheckedBoxes()

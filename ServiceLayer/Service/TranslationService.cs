@@ -57,14 +57,13 @@ public class TranslationService : ITranslationService
         }
     }
 
-    private async Task<DocumentationDTO> CreateDocumentation(CreateDocumentationDTO createDocumentationDTO)
-    {
-        return await _repoManager.DocumentationRepository.CreateDocumentationAsync(createDocumentationDTO);
-    }
-
     public async Task<Response> UpdateDocumentation(UpdateDocumentationDTO documentation)
     {
         return await _repoManager.DocumentationRepository.UpdateDocumentationAsync(documentation);
+    }
+    private async Task<DocumentationDTO> CreateDocumentation(CreateDocumentationDTO createDocumentationDTO)
+    {
+        return await _repoManager.DocumentationRepository.CreateDocumentationAsync(createDocumentationDTO);
     }
 
     private IOpenAIIntegration OpenAIIntegration => _lazyOpenAIIntegration.Value;

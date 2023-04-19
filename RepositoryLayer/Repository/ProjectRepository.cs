@@ -31,13 +31,6 @@ internal sealed class ProjectRepository : IProjectRepository
         }
     }
 
-    public async Task<Option<ProjectDTO>> ReadProjectByIdAsync(Guid projectId, CancellationToken cancellationToken = default)
-    {
-        var entity = await _dbContext.Projects.FindAsync(projectId);
-
-        return entity != null ? ConvertFunctions.ProjectMapToDTO(entity) : null;
-    }
-
     public async Task<IEnumerable<ProjectDTO>> ReadAllProjectsByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         var user = await _dbContext.Users.Include(user => user.Projects).Where(user => user.Id == userId).FirstOrDefaultAsync();

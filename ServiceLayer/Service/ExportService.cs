@@ -123,7 +123,7 @@ public class ExportService : IExportService
         return memoryStream.ToArray();
     }
 
-    public ValueTask<object> SaveAs(IJSRuntime js, string filename, byte[] data)
+    private ValueTask<object> SaveAs(IJSRuntime js, string filename, byte[] data)
         => js.InvokeAsync<object>(
             "saveAsFile",
             filename,

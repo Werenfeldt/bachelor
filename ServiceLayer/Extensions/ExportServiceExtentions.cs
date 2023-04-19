@@ -1,6 +1,6 @@
 namespace ServiceLayer;
 
-public static class Extensions
+public static class ExportServiceExtensions
 {
 
     public static float ToDPI(this float centimeter)
