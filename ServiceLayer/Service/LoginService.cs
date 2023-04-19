@@ -19,8 +19,6 @@ public class LoginService : ILoginService
 
     public async Task<UserDTO> CreateNewUser(CreateUserDTO user)
     {
-        //user.CreatedDate = DateTime.UtcNow;
-
         return await _repoManager.UserRepository.CreateUserAsync(user);
     }
 

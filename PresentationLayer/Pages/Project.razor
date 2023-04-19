@@ -23,7 +23,7 @@ else
                 <MudProgressCircular Color="Color.Secondary" Indeterminate="true" Size="Size.Small" />
             </MudItem>
             <MudItem Class="d-flex align-center justify-center mud-width-full">
-                <MudProgressCircular Color="Color.Secondary" Value="@Value" Size="Size.Large" />
+                <MudProgressCircular Color="Color.Secondary" Value="@Progress" Size="Size.Large" />
             </MudItem>
         </MudGrid>
     </MudOverlay>
@@ -58,13 +58,15 @@ else
     [Parameter]
     public Guid projectId { get; set; }
 
-    public List<TestFileDTO>? testfiles { get; set; }
+    List<TestFileDTO>? testfiles { get; set; }
 
     bool IsLoading { get; set; } = true;
 
     bool IsTranslating { get; set; } = false;
 
-    string FileBeingTranslated { get; set; }
+    string? FileBeingTranslated { get; set; }
+
+    int Progress { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -73,21 +75,17 @@ else
         IsLoading = false;
 
         StateHasChanged();
-
     }
 
-    public async Task<List<TestFileDTO>> GetTestFilesAsync()
+    private async Task<List<TestFileDTO>> GetTestFilesAsync()
     {
-        // Retrieve entities from the database and return them
-        var listOfTestfiles = await serviceManager.ProjectService.LoadTestFilesForProjectAsync(projectId);
-        return listOfTestfiles;
+        return await serviceManager.ProjectService.LoadTestFilesForProjectAsync(projectId);
     }
 
     private async Task NavigateToEditor(Guid testFileId){
         try
         {
             NavManager.NavigateTo("/editor/" + testFileId.ToString());
-            //NavManager.NavigateTo("/projects/" + projectId.ToString());
         }
         catch (System.Exception e)
         {
@@ -96,49 +94,23 @@ else
       StateHasChanged();
     }
 
-    public async Task TranslateAllTestFiles()
+    private async Task TranslateAllTestFiles()
     {
         IsTranslating = true;
         
+        Progress = 0;
+        var ValueToIncrease = 100/testfiles.Count;
 
-        Value = 0;
-        var ValuetoIncrease = 100/testfiles.Count;
-
+        foreach (var test in testfiles)
+        {
+            FileBeingTranslated = "Translating: " + test.Name + "...";
+            Progress += ValueToIncrease;
+            await serviceManager.TranslationService.TranslateTestfile(test);
             
-            foreach (var test in testfiles)
-            {
-                FileBeingTranslated = "Translating: " + test.Name + "...";
-                Value += ValuetoIncrease;
-                await serviceManager.TranslationService.TranslateTestfile(test);
-                
-                StateHasChanged();
-            }
+            StateHasChanged();
+        }
 
         IsTranslating = false;
         StateHasChanged();
     }
-
-    public int Value { get; set; }
-
-	public async void SimulateProgress()
-	{
-		Value = 0;
-		do
-		{
-			if (_disposed)
-			{
-				return;
-			}
-
-			Value += 4;
-			StateHasChanged();
-			await Task.Delay(500);
-
-		} while (Value < 100);
-
-		SimulateProgress();
-	}
-
-	bool _disposed;
-	public void Dispose() => _disposed = true;
 }

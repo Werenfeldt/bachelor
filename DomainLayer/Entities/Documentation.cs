@@ -19,8 +19,6 @@ public class Documentation
     //Dependent entity therefore has id to principal entity
     public Guid TestFileId { get; set; }
 
-    //public Guid ProjectId { get; set; }
-
     public TestFile TestFile { get; set; } = null!;
     public Documentation(string summary, string translation)
     {

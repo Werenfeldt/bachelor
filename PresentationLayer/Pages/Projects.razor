@@ -44,11 +44,9 @@ else
 
 @code
 {
-    List<ProjectDTO>? projects { get; set; }
-    private UserDTO? user { get; set; }
-
     [Inject] ISnackbar Snackbar { get; set; }
-
+    List<ProjectDTO>? projects { get; set; }
+    UserDTO? user { get; set; }
     bool IsLoading { get; set; } = true;
 
     private async Task NavigateToProject(Guid projectId)
@@ -65,11 +63,9 @@ else
     }
 
 
-    public async Task<List<ProjectDTO>> GetEntitiesAsync(Guid userId)
+    public async Task<List<ProjectDTO>> GetProjectsAsync(Guid userId)
     {
-        // Retrieve entities from the database and return them
-        var listOfProjects = await serviceManager.ProjectService.LoadProjectsAsync(userId);
-        return listOfProjects;
+        return await serviceManager.ProjectService.LoadProjectsAsync(userId);
     }
 
     public async Task DeleteProject(Guid projectId)
@@ -81,7 +77,7 @@ else
             if(response == Response.Deleted)
             {
                 Snackbar.Add("Project was deleted", Severity.Success);
-                projects = await GetEntitiesAsync(user.Id);
+                projects = await GetProjectsAsync(user.Id);
                 StateHasChanged();
             }
             
@@ -97,14 +93,13 @@ else
     {
         if(firstRender)
         {
-            IsLoading = false;
             // Retrieve user from the session storage
             user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
 
             // If the user is set, retrieve entities from the database
             if (user != null)
             {
-                projects = await GetEntitiesAsync(user.Id);
+                projects = await GetProjectsAsync(user.Id);
                 
                 IsLoading = false;
 

@@ -5,11 +5,6 @@ internal sealed class UserRepository : IUserRepository
     private readonly BachelorDbContext _dbContext;
 
     public UserRepository(BachelorDbContext dbContext) => _dbContext = dbContext;
-    public async Task<Option<UserDTO>> ReadUserByIdAsync(Guid userId, CancellationToken cancellationToken = default)
-    {
-        var user = await _dbContext.Users.FindAsync(userId, cancellationToken);
-        return ConvertFunctions.UserMapToDTO(user);
-    }
 
     public async Task<Option<UserDTO>> ReadUserByEmailAndPasswordAsync(string email, string password, CancellationToken cancellationToken = default)
     {

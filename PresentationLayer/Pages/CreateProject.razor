@@ -82,41 +82,38 @@
     [Inject] IConfiguration _config { get; set; }
     [Inject] ISnackbar Snackbar { get; set; }
     MudForm form;
-    bool success;
     CreateProjectDTO projectDTO = new CreateProjectDTO();
+    bool success;
     bool repositoryIsPrivate = false;
     bool accessWithAuthenticationToken = true;
-
     bool IsTranslating { get; set; } = false;
-    private MudTextField<string> username;
-    private MudTextField<string> password;
-    private MudTextField<string> token;
+    MudTextField<string> username;
+    MudTextField<string> password;
+    MudTextField<string> token;
 
-    async Task OnValidSubmit()
+    private async Task OnValidSubmit()
     {
-
         IsTranslating = true;
+
+        var navigationURL = "/projects/";
+        ProjectDTO projectForNavigation;
 
         try
         {
             if (repositoryIsPrivate)
             {
-                if (accessWithAuthenticationToken)
-                {
-                    Console.WriteLine("Hello 1");
-                    var usesr = await serviceManager.ProjectService.CreateProjectAsync(projectDTO, token.Text);
-                }
-                else
-                {
+                projectForNavigation = accessWithAuthenticationToken ? 
+                    await serviceManager.ProjectService.CreateProjectAsync(projectDTO, token.Text) : 
                     await serviceManager.ProjectService.CreateProjectAsync(projectDTO, username.Text, password.Text);
-                }
             }
             else
             {
                 var gitAuthToken = _config["APIToken:GithubIntegrationToken"];
-                await serviceManager.ProjectService.CreateProjectAsync(projectDTO, gitAuthToken);
+                projectForNavigation = await serviceManager.ProjectService.CreateProjectAsync(projectDTO, gitAuthToken);
+
             }
-            NavManager.NavigateTo("/projects");
+
+            NavManager.NavigateTo(navigationURL + projectForNavigation.Id);
         }
         catch (System.Exception e)
         {
@@ -132,19 +129,4 @@
         projectDTO.UserId = user.Id;
         StateHasChanged();
     }
-
-    @* public class NotEmptyValidator
-    {
-        public string ErrorMessage { get; set; }
-
-        public IEnumerable<string> Validate(string value)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                yield return ErrorMessage ?? "Field is required.";
-            }
-        }
-    } *@
-
-
 }

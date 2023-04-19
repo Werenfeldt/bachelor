@@ -53,25 +53,6 @@ internal sealed class GithubIntegration : IGithubIntegration
         return content;
     }
 
-
-    // public async void AddToGithubActions(string url, string tokenAuth)
-    // {
-    //     //TODO update so it doesnt set the credentials again 
-    //     gitHub.Credentials = new Credentials(tokenAuth);
-
-    //     var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
-    //     var repositoryOwner = splittedString[0];
-    //     var repositoryName = splittedString[1];
-
-
-    //     string commitMessage = "Created new github actions file";
-    //     string fileName = "builds.yml";
-    //     string fileContent = "I am a message";
-
-
-    //     await gitHub.Repository.Content.CreateFile(repositoryOwner, repositoryName, ".github/workflows/" + fileName, new CreateFileRequest(commitMessage, fileContent));
-    // }
-
     private void SetUpClient(InMemoryCredentialStore credentials)
     {
         gitHub = new GitHubClient(new ProductHeaderValue("Client"), credentials);

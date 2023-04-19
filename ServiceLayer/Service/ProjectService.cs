@@ -21,7 +21,6 @@ public class ProjectService : IProjectService
     public Task<ProjectDTO> CreateProjectAsync(CreateProjectDTO projectDTO, string username, string password)
     {
         GithubIntegration.SetCredentials(username, password);
-
         return sendRequest(projectDTO);
     }
 
@@ -73,13 +72,13 @@ public class ProjectService : IProjectService
 
         foreach (var item in repositoryContent)
         {
-            var script = new CreateTestFileDTO
+            var testFile = new CreateTestFileDTO
             {
                 Name = item.Name,
                 Path = item.Path,
                 Content = item.Content,
             };
-            testList.Add(script);
+            testList.Add(testFile);
         }
         return testList;
     }

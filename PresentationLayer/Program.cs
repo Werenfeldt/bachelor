@@ -1,14 +1,10 @@
 using DomainLayer;
 using ServiceLayer;
 using RepositoryLayer;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using OpenAI.GPT3.Extensions;
-using OpenAI.GPT3.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using Blazored.SessionStorage;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,12 +24,6 @@ builder.Services.AddOpenAIService();
 builder.Services.AddBlazoredSessionStorage();
 
 var gitToken = builder.Configuration["APIToken:GithubIntegrationToken"];
-
-
-
-// TODO remember to delete or use
-//Save for later
-//builder.Services.AddOpenAIService().BuildServiceProvider().GetRequiredService<IOpenAIService>();
 
 var app = builder.Build();
 

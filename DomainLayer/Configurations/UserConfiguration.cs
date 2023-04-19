@@ -7,8 +7,6 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(s => s.CreatedDate)
             .HasDefaultValueSql("GETDATE()");
         
-
-
         builder.HasData(
             new User("Jens", "Jens@gmail.com", "1234")
             {
