@@ -1,31 +1,32 @@
 namespace ServiceLayer;
 using Octokit;
+using Octokit.Internal;
+using Octokit.Reactive;
+
+
 internal sealed class GithubIntegration : IGithubIntegration
 {
     private GitHubClient? gitHub;
-
-    public GithubIntegration() { }
+    public GithubIntegration()
+    {
+    }
 
     public void SetCredentials(string tokenAuth)
     {
-        SetUpClient();
         //TODO set up try catch
-        gitHub.Credentials = new Credentials(tokenAuth);
+        var credentials = new InMemoryCredentialStore(new Credentials(tokenAuth));
+        SetUpClient(credentials);
     }
 
     public void SetCredentials(string username, string password)
     {
-        SetUpClient();
         //TODO set up try catch
-        gitHub.Credentials = new Credentials(username, password);
+        var credentials = new InMemoryCredentialStore(new Credentials(username, password));
+        SetUpClient(credentials);
     }
 
     public async Task<IReadOnlyList<RepositoryContent>> Request(string url)
     {
-        if(gitHub == null) 
-        {
-            SetUpClient();
-        }
         var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
         var repositoryOwner = splittedString[0];
         var repositoryName = splittedString[1];
@@ -53,27 +54,27 @@ internal sealed class GithubIntegration : IGithubIntegration
     }
 
 
-    public async void AddToGithubActions(string url, string tokenAuth)
+    // public async void AddToGithubActions(string url, string tokenAuth)
+    // {
+    //     //TODO update so it doesnt set the credentials again 
+    //     gitHub.Credentials = new Credentials(tokenAuth);
+
+    //     var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
+    //     var repositoryOwner = splittedString[0];
+    //     var repositoryName = splittedString[1];
+
+
+    //     string commitMessage = "Created new github actions file";
+    //     string fileName = "builds.yml";
+    //     string fileContent = "I am a message";
+
+
+    //     await gitHub.Repository.Content.CreateFile(repositoryOwner, repositoryName, ".github/workflows/" + fileName, new CreateFileRequest(commitMessage, fileContent));
+    // }
+
+    private void SetUpClient(InMemoryCredentialStore credentials)
     {
-        //TODO update so it doesnt set the credentials again 
-        gitHub.Credentials = new Credentials(tokenAuth);
-
-        var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
-        var repositoryOwner = splittedString[0];
-        var repositoryName = splittedString[1];
-
-
-        string commitMessage = "Created new github actions file";
-        string fileName = "builds.yml";
-        string fileContent = "I am a message";
-
-
-        await gitHub.Repository.Content.CreateFile(repositoryOwner, repositoryName, ".github/workflows/" + fileName, new CreateFileRequest(commitMessage, fileContent));
-    }
-
-    private void SetUpClient()
-    {
-        gitHub = new GitHubClient(new ProductHeaderValue("Client"));
+        gitHub = new GitHubClient(new ProductHeaderValue("Client"), credentials);
     }
     private string StripPrefix(string text, string prefix)
     {

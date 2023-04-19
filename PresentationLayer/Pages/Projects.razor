@@ -81,16 +81,15 @@ else
             if(response == Response.Deleted)
             {
                 Snackbar.Add("Project was deleted", Severity.Success);
+                projects = await GetEntitiesAsync(user.Id);
+                StateHasChanged();
             }
-
             
         } 
         catch (System.Exception e)
         {
             Snackbar.Add(e.Message, Severity.Warning);
         }
-
-        NavManager.NavigateTo("/projects");
 
     }
 
@@ -100,15 +99,12 @@ else
         {
             IsLoading = false;
             // Retrieve user from the session storage
-            var user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
+            user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
 
             // If the user is set, retrieve entities from the database
             if (user != null)
             {
                 projects = await GetEntitiesAsync(user.Id);
-
-                // Store entities in the session storage
-                await sessionStorage.SetItemAsync("Projects", projects);
                 
                 IsLoading = false;
 

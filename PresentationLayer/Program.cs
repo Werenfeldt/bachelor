@@ -27,6 +27,8 @@ builder.Services.AddScoped<IRepoManager, RepoManager>();
 builder.Services.AddOpenAIService();
 builder.Services.AddBlazoredSessionStorage();
 
+var gitToken = builder.Configuration["APIToken:GithubIntegrationToken"];
+
 
 
 // TODO remember to delete or use
@@ -35,7 +37,7 @@ builder.Services.AddBlazoredSessionStorage();
 
 var app = builder.Build();
 
-
+app.MapGet("/createproject", () => gitToken);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
