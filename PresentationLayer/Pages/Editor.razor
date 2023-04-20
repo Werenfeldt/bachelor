@@ -167,16 +167,23 @@ else
 
     private async Task Translate()
     {
-        SetTranslating(true);
+        try
+        {
+            SetTranslating(true);
+            
+            documentation = await serviceManager.TranslationService.TranslateTestfile(testFile);
+            
+            SetDocumentation();
 
-        documentation = await serviceManager.TranslationService.TranslateTestfile(testFile);
+            documentationExist = true;
 
-        SetDocumentation();
-
-        documentationExist = true;
-
-        SetTranslating(false);
-        StateHasChanged();
+            SetTranslating(false);
+            StateHasChanged();
+        }
+        catch (TranslationException e)
+        {
+            Snackbar.Add(e.Message, Severity.Success);
+        }
     }
 
     private void StartEdit(bool summary)

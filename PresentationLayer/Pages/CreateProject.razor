@@ -115,10 +115,13 @@
 
             NavManager.NavigateTo(navigationURL + projectForNavigation.Id);
         }
-        catch (System.Exception e)
+        catch (GitHubRequestException requestError)
         {
-            Console.WriteLine(e);
-            Snackbar.Add("Bad Credentials or Repository Not Found", Severity.Warning);
+            Snackbar.Add(requestError.Message, Severity.Warning);
+        }
+        catch (System.Exception)
+        {
+            Snackbar.Add("The authentication failed, or the GitHub repository does not exist.", Severity.Warning);
         }
         IsTranslating = false;
     }

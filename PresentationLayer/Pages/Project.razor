@@ -70,15 +70,23 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        testfiles = await GetTestFilesAsync();
+        try
+        {
+            testfiles = await GetTestFilesAsync();
+            
+            IsLoading = false;
 
-        IsLoading = false;
-
-        StateHasChanged();
+            StateHasChanged();
+        }
+        catch (TestFileDoesNotExistException e)
+        {
+            Snackbar.Add(e.Message, Severity.Warning);
+        }
     }
 
     private async Task<List<TestFileDTO>> GetTestFilesAsync()
     {
+
         return await serviceManager.ProjectService.LoadTestFilesForProjectAsync(projectId);
     }
 
@@ -96,21 +104,32 @@ else
 
     private async Task TranslateAllTestFiles()
     {
-        IsTranslating = true;
-        
-        Progress = 0;
-        var ValueToIncrease = 100/testfiles.Count;
-
-        foreach (var test in testfiles)
+        try
         {
-            FileBeingTranslated = "Translating: " + test.Name + "...";
-            Progress += ValueToIncrease;
-            await serviceManager.TranslationService.TranslateTestfile(test);
-            
+            IsTranslating = true;
+        
+            Progress = 0;
+            var ValueToIncrease = 100/testfiles.Count;
+
+            foreach (var test in testfiles)
+            {
+                FileBeingTranslated = "Translating: " + test.Name + "...";
+                Progress += ValueToIncrease;
+                await serviceManager.TranslationService.TranslateTestfile(test);
+                
+                StateHasChanged();
+            }
+
+            IsTranslating = false;
             StateHasChanged();
         }
-
-        IsTranslating = false;
-        StateHasChanged();
+        catch (TranslationException e)
+        {
+            Snackbar.Add(e.Message, Severity.Warning);
+            
+            IsTranslating = false;
+            StateHasChanged();
+        }
+        
     }
 }

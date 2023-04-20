@@ -38,12 +38,24 @@ public class ProjectService : IProjectService
 
     public async Task<TestFileDTO> LoadTestFileByIdAsync(Guid testFileId)
     {
-        return await _repoManager.TestFileRepository.ReadTestFileByIdAsync(testFileId);
+        var testFile = await _repoManager.TestFileRepository.ReadTestFileByIdAsync(testFileId);
+
+        if(testFile.IsSome){
+            return testFile;
+        }
+
+        throw new TestFileDoesNotExistException("The chosen testfile does not exist, try synchronizing the project.");
     }
 
     public async Task<DocumentationDTO> LoadDocumentationByTestFilesIdAsync(Guid testFileId)
     {
-        return await _repoManager.DocumentationRepository.ReadDocumentationByTestFileIdAsync(testFileId);
+        var documentation = await _repoManager.DocumentationRepository.ReadDocumentationByTestFileIdAsync(testFileId);
+
+        if(documentation.IsSome){
+            return documentation;
+        }
+
+        return new DocumentationDTO(Guid.Empty, "", "", Guid.Empty, DateTime.UtcNow, DateTime.UtcNow);
     }
 
     public async Task<Response> DeleteProject(Guid projectId)
@@ -63,7 +75,12 @@ public class ProjectService : IProjectService
 
         projectDTO.TestFileToBeCreatedDTOs = GetAllTestFiles(repositoryContent);
 
-        return await _repoManager.ProjectRepository.CreateProjectAsync(projectDTO);
+        if(projectDTO.TestFileToBeCreatedDTOs.Any()){
+
+            return await _repoManager.ProjectRepository.CreateProjectAsync(projectDTO);
+        }
+
+        throw new GitHubRequestException("Retrieving the files from Github failed, please try again");
     }
 
     private List<CreateTestFileDTO> GetAllTestFiles(IReadOnlyList<RepositoryContent> repositoryContent)
@@ -78,6 +95,7 @@ public class ProjectService : IProjectService
                 Path = item.Path,
                 Content = item.Content,
             };
+            Console.WriteLine(testFile);
             testList.Add(testFile);
         }
         return testList;

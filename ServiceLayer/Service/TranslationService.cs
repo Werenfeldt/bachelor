@@ -14,8 +14,6 @@ public class TranslationService : ITranslationService
 
     public async Task<DocumentationDTO> TranslateTestfile(TestFileDTO testFile, string prompt)
     {
-        try
-        {
             var input = prompt + testFile.Content;
             var (translation, summary) = await OpenAIIntegration.Request(input);
 
@@ -36,7 +34,6 @@ public class TranslationService : ITranslationService
                 var updatedDoc = await _repoManager.DocumentationRepository.ReadDocumentationByTestFileIdAsync(testFile.Id);
 
                 return updatedDoc.Value;
-
             }
             else
             {
@@ -49,13 +46,11 @@ public class TranslationService : ITranslationService
 
                 return await CreateDocumentation(docDTO);
             }
-
-        }
-        catch (Exception chatGPTException)
-        {
-            throw chatGPTException;
-        }
     }
+        
+        
+        
+    
 
     public async Task<Response> UpdateDocumentation(UpdateDocumentationDTO documentation)
     {

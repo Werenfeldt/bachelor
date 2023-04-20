@@ -9,7 +9,8 @@ internal sealed class UserRepository : IUserRepository
     public async Task<Option<UserDTO>> ReadUserByEmailAndPasswordAsync(string email, string password, CancellationToken cancellationToken = default)
     {
         var user = await _dbContext.Users.FirstOrDefaultAsync(user => user.Email == email && user.Password==password);
-        return ConvertFunctions.UserMapToDTO(user);
+
+        return user != null ? ConvertFunctions.UserMapToDTO(user) : null;
     }
     
     public async Task<UserDTO> CreateUserAsync(CreateUserDTO user)

@@ -22,13 +22,6 @@ internal sealed class OpenAIIntegration : IOpenAIIntegration
             Model = Models.ChatGpt3_5Turbo,
         });
 
-        //TODO remember to delete
-        Console.WriteLine("______________________***************______________________");
-        Console.WriteLine("Translation of steps is successful: " + translation.Successful.ToString());
-        Console.WriteLine("____________________________________________________________");
-        Console.WriteLine(translation.Error);
-        Console.WriteLine("______________________***************______________________");
-
         if (translation.Successful)
         {
             var summary = await _openAiService.ChatCompletion.CreateCompletion(new ChatCompletionCreateRequest
@@ -41,17 +34,13 @@ internal sealed class OpenAIIntegration : IOpenAIIntegration
                 },
                 Model = Models.ChatGpt3_5Turbo,
             });
-            Console.WriteLine("______________________***************______________________");
-            Console.WriteLine("Translation of summary is successful:" + summary.Successful.ToString());
-            Console.WriteLine("____________________________________________________________");
-            Console.WriteLine(summary.Error);
-            Console.WriteLine("______________________***************______________________");
+
             if (summary.Successful)
             {
                 return (translation.Choices.First().Message.Content, summary.Choices.First().Message.Content);
             }
         }
 
-        return ("Something went wrong", "Something went wrong");
+        throw new TranslationException("Translation failed, please try again in a few minutes");
     }
 }
