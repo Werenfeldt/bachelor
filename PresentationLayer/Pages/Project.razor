@@ -17,47 +17,42 @@ else
 {
 
     <MudOverlay Visible="@IsTranslating" LightBackground="true">
-    <MudGrid>
-        <MudItem Class="d-flex align-center justify-center mud-width-full">
-            <MudText>@FileBeingTranslated</MudText>
-            <MudProgressCircular Color="Color.Secondary" Indeterminate="true" Size="Size.Small" />
-        </MudItem>
-        <MudItem Class="d-flex align-center justify-center mud-width-full">
-            <MudProgressCircular Color="Color.Secondary" Value="@Progress" Size="Size.Large" />
-        </MudItem>
-    </MudGrid>
-</MudOverlay>
+        <MudGrid>
+            <MudItem Class="d-flex align-center justify-center mud-width-full">
+                <MudText>@FileBeingTranslated</MudText>
+                <MudProgressCircular Color="Color.Secondary" Indeterminate="true" Size="Size.Small" />
+            </MudItem>
+            <MudItem Class="d-flex align-center justify-center mud-width-full">
+                <MudProgressCircular Color="Color.Secondary" Value="@Progress" Size="Size.Large" />
+            </MudItem>
+        </MudGrid>
+    </MudOverlay>
 
     <MudGrid Justify="Justify.Center">
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await TranslateAllTestFiles())">
-            Translate All Testfiles</MudButton>
+            Generate Documentation For All Testfiles</MudButton>
     </MudGrid>
-    <MudGrid Justify="Justify.FlexStart">
+    <MudGrid Justify="Justify.FlexStart" Class="mt-5">
         @foreach (var item in testfiles)
         {
-            <MudItem xs="2">
-                <MudButton OnClick="@(async() => await NavigateToEditor(@item.Id))" Variant="Variant.Outlined" Style="min-width: 150px; max-width: 150px; min-height: 150px; max-height: 150px;
-                      font-size: 16px; line-height: 1.2;">
-                    <MudContainer Style="overflow: hidden; white-space: normal;">@item.Name</MudContainer>
+            <MudItem xs="6">
+                <MudButton OnClick="@(async() => await NavigateToEditor(@item.Id))" Variant="Variant.Outlined" Style="min-width: 100%; max-width: 100%; min-height: 200px; max-height: 200px;">
+                        <MudStack Justify="Justify.FlexStart" Style="min-height: 200px; max-height: 200px"  >
+                        
+                                    <u>
+                                        <MudText Typo="Typo.h6" Class="mt-2" Style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1;  overflow: hidden;">
+                                            @item.Name
+                                        </MudText>
+                                    </u>
+                                    <MudText Style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5;  overflow: hidden;">
+                                            @item.Documentation.Summary
+                                    </MudText>
+
+                        </MudStack>
                 </MudButton>
             </MudItem>
-
-            /*<MudItem xs="2">
-            <MudButton OnClick="@(async() => await NavigateToEditor(@item.Id))">
-            <MudPaper Outlined="true" Style="min-width: 150px; max-width: 150px; min-height: 150px; max-height: 150px;">
-            <MudStack Style="min-height:150px;" Justify="Justify.Center" AlignItems="AlignItems.Center">
-            <MudStack Row="true" Style="max-height:30%;">
-            <MudText Typo="Typo.h6"
-            Style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;">
-            @item.Name
-            </MudText>
-            </MudStack>
-            </MudStack>
-            </MudPaper>
-            </MudButton>
-            </MudItem>*/
         }
-        </MudGrid>
+    </MudGrid>
 }
 
 @code {
@@ -66,7 +61,7 @@ else
     [Parameter]
     public Guid projectId { get; set; }
 
-    List<TestFileDTO>? testfiles { get; set; }
+    List<TestFileWithDocumentationDTO>? testfiles { get; set; }
 
     bool IsLoading { get; set; } = true;
 
@@ -92,7 +87,7 @@ else
         }
     }
 
-    private async Task<List<TestFileDTO>> GetTestFilesAsync()
+    private async Task<List<TestFileWithDocumentationDTO>> GetTestFilesAsync()
     {
 
         return await serviceManager.ProjectService.LoadTestFilesForProjectAsync(projectId);
@@ -124,21 +119,24 @@ else
             {
                 FileBeingTranslated = "Translating: " + test.Name + "...";
                 Progress += ValueToIncrease;
-                await serviceManager.TranslationService.TranslateTestfile(test);
+                await serviceManager.TranslationService.TranslateTestfile(test.Id);
 
                 StateHasChanged();
             }
 
-            IsTranslating = false;
-            StateHasChanged();
         }
         catch (TranslationException e)
         {
             Snackbar.Add(e.Message, Severity.Warning);
 
+        } 
+        finally
+        {
+
+            testfiles = await GetTestFilesAsync();
+
             IsTranslating = false;
             StateHasChanged();
         }
-
     }
 }

@@ -9,7 +9,7 @@ public interface IProjectService
     Task<List<ProjectDTO>> LoadProjectsAsync(Guid userId);
 
     Task<TestFileDTO> LoadTestFileByIdAsync(Guid testFileId);
-    Task<List<TestFileDTO>> LoadTestFilesForProjectAsync(Guid projectId);
+    Task<List<TestFileWithDocumentationDTO>> LoadTestFilesForProjectAsync(Guid projectId);
 
     Task<List<ProjectWithTestFilesDTO>> LoadSideBar(Guid userId);
 

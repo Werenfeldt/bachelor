@@ -2,6 +2,8 @@ namespace RepositoryLayer;
 
 public record TestFileDTO(Guid Id, string Name, string Path, string Content, Guid ProjectId, DateTime CreatedDate, DateTime? UpdatedDate);
 
+public record TestFileWithDocumentationDTO(Guid Id, string Name, DocumentationDTO Documentation);
+
 public record CreateTestFileDTO
 {
     [Required]

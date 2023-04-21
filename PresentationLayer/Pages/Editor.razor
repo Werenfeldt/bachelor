@@ -24,16 +24,16 @@ else
             <MudContainer Style="width:60%; min-height:700px; max-height:700px;" Class="pr-1 pl-0">
                 <MudPaper MaxHeight="100%" MaxWidth="100%"
                 Style="background-color: rgba(251, 235, 212, 1); min-width=100%; min-height:700px;">
-                    <MudStack Style="min-height:700px;" Justify="Justify.SpaceBetween">
+                    <MudStack Style="min-height:700px;" Justify="Justify.FlexStart">
                         <MudText Typo="Typo.h5">
-                            Content:
+                            Script:
                         </MudText>
-                        <MudContainer Style="max-height:600px;" Class="overflow-auto">
+                        <MudContainer Style="max-height:650px;" Class="overflow-auto mt-4">
                             <pre>
-                                                                            <code>
+                                <code>
                                     @testFile.Content
-                                                                            </code>
-                                                                        </pre>
+                                </code>
+                            </pre>
                         </MudContainer>
                     </MudStack>
                 </MudPaper>
@@ -184,7 +184,7 @@ else
         {
             SetTranslating(true);
 
-            documentation = await serviceManager.TranslationService.TranslateTestfile(testFile);
+            documentation = await serviceManager.TranslationService.TranslateTestfile(testFile.Id);
 
             SetDocumentation();
 
