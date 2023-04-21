@@ -42,7 +42,6 @@ internal sealed class ProjectRepository : IProjectRepository
     {
         var user = await _dbContext.Users.Include(user => user.Projects).ThenInclude(project => project.TestFiles).Where(user => user.Id == userId).FirstOrDefaultAsync();
 
-
         return user.Projects.Select(p => ConvertFunctions.ProjectWithTestFilesMapToDTO(p));
     }
 
@@ -62,8 +61,6 @@ internal sealed class ProjectRepository : IProjectRepository
     }
     public async Task<Response> DeleteProjectAsync(Guid projectId)
     {
-        //var entity = await _dbContext.Projects.Include(p => p.TestFiles).Include(p => p.TestFiles.Select(t => t.Documentation)).Where(p => p.Id == projectId).FirstOrDefaultAsync();
-
         var entity = await _dbContext.Projects.FindAsync(projectId);
         
         if (entity != null)

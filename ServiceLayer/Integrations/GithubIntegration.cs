@@ -13,41 +13,34 @@ internal sealed class GithubIntegration : IGithubIntegration
 
     public void SetCredentials(string tokenAuth)
     {
-        //TODO set up try catch
         var credentials = new InMemoryCredentialStore(new Credentials(tokenAuth));
         SetUpClient(credentials);
     }
 
     public void SetCredentials(string username, string password)
     {
-        //TODO set up try catch
         var credentials = new InMemoryCredentialStore(new Credentials(username, password));
         SetUpClient(credentials);
     }
-
     public async Task<IReadOnlyList<RepositoryContent>> Request(string url)
     {
         var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
         var repositoryOwner = splittedString[0];
         var repositoryName = splittedString[1];
 
-        RepositoryCollection repos = new RepositoryCollection();
-        repos.Add(repositoryOwner, repositoryName);
-
-        var request = new SearchCodeRequest()
-        {
-            Repos = repos,
-            FileName = ".cy"
-        };
-
-        var result = await gitHub.Search.SearchCode(request);
+        var repository = await gitHub.Repository.Get(repositoryOwner, repositoryName);
+        var defaultBranchName = repository.DefaultBranch;
+        var treeResponse = await gitHub.Git.Tree.GetRecursive(repositoryOwner, repositoryName, defaultBranchName);
 
         List<RepositoryContent> content = new List<RepositoryContent>();
 
-        foreach (var item in result.Items)
+        foreach (var item in treeResponse.Tree)
         {
-            var listOfContent = await gitHub.Repository.Content.GetAllContents(repositoryOwner, repositoryName, item.Path);
-            content.Add(listOfContent[0]);
+            if (item.Type == TreeType.Blob && item.Path.Contains(".cy")){
+                Console.WriteLine("item: " + item.Path);
+                var listOfContent = await gitHub.Repository.Content.GetAllContents(repositoryOwner, repositoryName, item.Path);
+                content.Add(listOfContent[0]);
+            }
         }
 
         return content;
