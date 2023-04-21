@@ -29,7 +29,9 @@ else
                                     <MudSelectItem Value="@item">@item.title</MudSelectItem>
                                 }
                         </MudSelect>
-                        <MudPaper Elevation="2" Rounded="Round.Lg" Class="mt-4" Outlined="true">
+                        @if(projectToDownload != null)
+                        {
+                            <MudPaper Elevation="2" Rounded="Round.Lg" Class="mt-4" Outlined="true">
                             <MudGrid>
                                 <MudItem xs="12" md="4">
                                     <MudCheckBox @bind-Checked="@includeScript" Label="Script"></MudCheckBox>
@@ -42,6 +44,8 @@ else
                                 </MudItem>
                             </MudGrid>
                         </MudPaper>
+                        }
+                        
                     </MudCardContent>
                     <MudCardActions Class="pl-4 pr-4 pt-0">
                         <MudButton FullWidth="true" Variant="Variant.Filled"
