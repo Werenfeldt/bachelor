@@ -5,10 +5,10 @@ internal sealed class ProjectConfiguration : IEntityTypeConfiguration<Project>
     public void Configure(EntityTypeBuilder<Project> builder)
     {
         builder.Property(s => s.CreatedDate)
-            .HasDefaultValueSql("GETDATE()");
+            .HasDefaultValueSql("date('now')");
 
         builder.Property(s => s.UpdatedDate)
-            .HasDefaultValueSql("GETDATE()");
+            .HasDefaultValueSql("date('now')");
 
         var guid3 = Guid.NewGuid();
         var guid4 = Guid.NewGuid();
