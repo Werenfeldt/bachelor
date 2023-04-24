@@ -13,8 +13,7 @@ public class ProjectRepositoryTests : ContextSetup
             UserId = new Guid("596bd00e-8699-4183-850f-14dc879bf9d8"),
             TestFileToBeCreatedDTOs = new List<CreateTestFileDTO>()
         };
-        string tokenAuth = "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";
-        var created = await _serviceManager.ProjectService.CreateProjectAsync(createProjectDTO, tokenAuth);
+        var created = await _serviceManager.ProjectService.CreateProjectAsync(createProjectDTO, _testRepoGitKey);
 
         Console.WriteLine(created.ToString());
 
