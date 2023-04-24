@@ -28,37 +28,14 @@
                         </MudField>
                         @if (repositoryIsPrivate)
                         {
-                            <MudField Label="Get access with:" Variant="Variant.Text" InnerPadding="false">
-                                <MudRadioGroup @bind-SelectedOption="accessWithAuthenticationToken">
-                                    <MudRadio Option="true" Color="Color.Primary" Dense="false">
-                                        Authentication Token</MudRadio>
-                                    <MudRadio Option="false" Color="Color.Primary" Dense="false">Username & Password
-                                    </MudRadio>
-                                </MudRadioGroup>
-                            </MudField>
-                            if (accessWithAuthenticationToken)
-                            {
-                                <MudTextField T="string" Label="Token" @ref="token" Required="true"
+                            <MudTextField T="string" Label="Token" @ref="token" Required="true"
                             RequiredError="Token is required!" />
-                            }
-                            else
-                            {
-                                <MudGrid>
-                                    <MudItem xs="12" sm="6">
-                                        <MudTextField T="string" Label="Username" @ref="username" Required="true"
-                            RequiredError="Username is required!" />
-                                    </MudItem>
-                                    <MudItem xs="12" sm="6">
-                                        <MudTextField T="string" Label="Password" @ref="password" InputType="InputType.Password" Required="true"
-                            RequiredError="Password is required!" />
-                                    </MudItem>
-                                </MudGrid>
-                            }
                         }
 
                     </MudCardContent>
                     <MudCardActions Class="pl-4 pr-4 pt-0">
-                        <MudButton FullWidth="true" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)">Create Project</MudButton>
+                        <MudButton FullWidth="true" ButtonType="ButtonType.Submit" Variant="Variant.Filled"
+                            Color="Color.Primary" Disabled="@(!success)">Create Project</MudButton>
                     </MudCardActions>
                 </MudCard>
             </MudItem>
@@ -87,8 +64,6 @@
     bool repositoryIsPrivate = false;
     bool accessWithAuthenticationToken = true;
     bool IsTranslating { get; set; } = false;
-    MudTextField<string> username;
-    MudTextField<string> password;
     MudTextField<string> token;
 
     private async Task OnValidSubmit()
@@ -102,9 +77,7 @@
         {
             if (repositoryIsPrivate)
             {
-                projectForNavigation = accessWithAuthenticationToken ? 
-                    await serviceManager.ProjectService.CreateProjectAsync(projectDTO, token.Text) : 
-                    await serviceManager.ProjectService.CreateProjectAsync(projectDTO, username.Text, password.Text);
+                projectForNavigation = await serviceManager.ProjectService.CreateProjectAsync(projectDTO, token.Text);
             }
             else
             {
