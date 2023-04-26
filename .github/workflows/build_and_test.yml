@@ -20,6 +20,6 @@ jobs:
 
     - name: Build and test
       run: |
-        dotnet restore
-        dotnet build
+        dotnet restore bachelor.sln
+        dotnet build bachelor.sln
         dotnet test ServiceLayer.Tests
