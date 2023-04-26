@@ -138,6 +138,16 @@ public class ProjectRepositoryTests : ContextSetup
         Assert.Equal(DateTime.UtcNow, result.UpdatedDate, precision: TimeSpan.FromSeconds(5));
     }
 
+    [Fact]
+    public async Task DeleteProject_given_id_returns_ResponsDeleted()
+    {
+        var user = await CreateTestUser();
+        var project = await CreateTestProject1(user.Id);
+        var response = await _serviceManager.ProjectService.DeleteProject(project.Id);
+
+        Assert.Equal(Response.Deleted, response);
+    }
+
 
 
 

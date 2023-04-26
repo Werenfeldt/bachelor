@@ -47,13 +47,6 @@ public class ExportService : IExportService
 
         var projectFiles = await _repoManager.TestFileRepository.ReadAllTestFilesByProjectIdAsync(project.Id);
 
-        Console.WriteLine("BIIII");
-
-        foreach (var item in FontFactory.RegisteredFonts)
-        {
-            Console.WriteLine(item);
-        }
-
         //Fonts
         Font sectionHeaderFont = new Font(Font.HELVETICA, 20, Font.UNDERLINE | Font.BOLD);
         Font sectionTitleFont = new Font(Font.HELVETICA, 12, Font.BOLD);

@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+env:
+  OpenAIServiceOptions:ApiKey: ${{ secrets.OpenAIServiceOptions }}
+  APIToken:GithubIntegrationToken: ${{ secrets.GithubIntegrationToken }}
+  APIToken:GithubTestToken: ${{ secrets.GithubTestToken }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,7 +24,11 @@ jobs:
         dotnet-version: 7.x
 
     - name: Build and test
+      env:
+        OpenAIServiceOptions:ApiKey: ${{ secrets.OpenAIServiceOptions }}
+        APIToken:GithubIntegrationToken: ${{ secrets.GithubIntegrationToken }}
+        APIToken:GithubTestToken: ${{ secrets.GithubTestToken }}
       run: |
         dotnet restore bachelor.sln
         dotnet build bachelor.sln
-        dotnet test ServiceLayer.Tests
+        dotnet test ServiceLayer.Tests --environment="Development"
