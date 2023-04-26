@@ -17,12 +17,32 @@ public abstract class ContextSetup
         var context = new BachelorDbContext(builder.Options);
         context.Database.EnsureCreated();
 
+
+
         var configBuilder = new ConfigurationBuilder();
         configBuilder.AddUserSecrets<ContextSetup>();
         var configuration = configBuilder.Build();
-        string key = configuration.GetValue<string>("OpenAIServiceOptions:ApiKey");
-        _defaultGitKey = configuration.GetValue<string>("APIToken:GithubIntegrationToken");
-        _testRepoGitKey = configuration.GetValue<string>("APIToken:GithubTestToken");
+        string key;
+        try
+        {
+            key = configuration.GetValue<string>("OpenAIServiceOptions:ApiKey");
+            _defaultGitKey = configuration.GetValue<string>("APIToken:GithubIntegrationToken");
+            _testRepoGitKey = configuration.GetValue<string>("APIToken:GithubTestToken");
+        }
+        catch (System.Exception)
+        {
+            try
+            {
+                key = Environment.GetEnvironmentVariable("OpenAIServiceOptions:ApiKey");
+                _defaultGitKey = Environment.GetEnvironmentVariable("APIToken:GithubIntegrationToken");
+                _testRepoGitKey = Environment.GetEnvironmentVariable("APIToken:GithubTestToken");
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
 
         var openAiService = new OpenAIService(new OpenAiOptions()
         {
