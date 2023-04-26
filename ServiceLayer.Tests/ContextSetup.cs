@@ -4,8 +4,8 @@ namespace ServiceLayer.Tests;
 public abstract class ContextSetup
 {
     protected readonly IServiceManager _serviceManager;
-    protected readonly string _defaultGitKey;
-    protected readonly string _testRepoGitKey;
+    protected readonly string? _defaultGitKey;
+    protected readonly string? _testRepoGitKey;
 
     public ContextSetup()
     {
@@ -22,27 +22,17 @@ public abstract class ContextSetup
         var configBuilder = new ConfigurationBuilder();
         configBuilder.AddUserSecrets<ContextSetup>();
         var configuration = configBuilder.Build();
-        string key;
-        try
+
+        string? key = Environment.GetEnvironmentVariable("OpenAIServiceOptions");
+        _defaultGitKey = Environment.GetEnvironmentVariable("GithubIntegrationToken");
+        _testRepoGitKey = Environment.GetEnvironmentVariable("GithubTestToken");
+
+        if (key == null || _defaultGitKey == null || _testRepoGitKey == null)
         {
             key = configuration.GetValue<string>("OpenAIServiceOptions:ApiKey");
             _defaultGitKey = configuration.GetValue<string>("APIToken:GithubIntegrationToken");
             _testRepoGitKey = configuration.GetValue<string>("APIToken:GithubTestToken");
         }
-        catch (System.Exception)
-        {
-            try
-            {
-                key = Environment.GetEnvironmentVariable("OpenAIServiceOptions");
-                _defaultGitKey = Environment.GetEnvironmentVariable("GithubIntegrationToken");
-                _testRepoGitKey = Environment.GetEnvironmentVariable("GithubTestToken");
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
-        }
-
 
         var openAiService = new OpenAIService(new OpenAiOptions()
         {
