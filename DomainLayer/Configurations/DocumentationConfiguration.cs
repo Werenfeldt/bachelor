@@ -5,11 +5,11 @@ internal sealed class DocumentationConfiguration : IEntityTypeConfiguration<Docu
     public void Configure(EntityTypeBuilder<Documentation> builder)
     {
         builder.Property(s => s.CreatedDate)
-            .HasDefaultValueSql("GETDATE()");
+            .HasDefaultValueSql("date('now')");
 
         builder.Property(s => s.UpdatedDate)
-            .HasDefaultValueSql("GETDATE()");
-        
+            .HasDefaultValueSql("date('now')");
+
         builder.HasOne(d => d.TestFile).WithOne(t => t.Documentation).HasForeignKey<Documentation>(d => d.TestFileId);
 
         builder.HasData(

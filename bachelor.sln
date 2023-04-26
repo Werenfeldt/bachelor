@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentationLayer", "Presen
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CA6E6A20-4399-45C4-80B9-0DD2C72AD93A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLayer.Tests", "ServiceLayer.Tests\ServiceLayer.Tests.csproj", "{CE0D777B-D1C2-4C5A-9D29-977F6A614CDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{CA6E6A20-4399-45C4-80B9-0DD2C72AD93A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA6E6A20-4399-45C4-80B9-0DD2C72AD93A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA6E6A20-4399-45C4-80B9-0DD2C72AD93A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE0D777B-D1C2-4C5A-9D29-977F6A614CDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE0D777B-D1C2-4C5A-9D29-977F6A614CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE0D777B-D1C2-4C5A-9D29-977F6A614CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE0D777B-D1C2-4C5A-9D29-977F6A614CDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
