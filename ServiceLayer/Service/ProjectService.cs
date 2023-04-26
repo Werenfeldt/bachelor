@@ -18,12 +18,6 @@ public class ProjectService : IProjectService
         return sendRequest(projectDTO);
     }
 
-    public Task<ProjectDTO> CreateProjectAsync(CreateProjectDTO projectDTO, string username, string password)
-    {
-        GithubIntegration.SetCredentials(username, password);
-        return sendRequest(projectDTO);
-    }
-
     public async Task<List<ProjectDTO>> LoadProjectsAsync(Guid userId)
     {
         var projects = await _repoManager.ProjectRepository.ReadAllProjectsByUserIdAsync(userId);
