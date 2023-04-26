@@ -115,7 +115,7 @@ public class ProjectRepositoryTests : ContextSetup
         var project = await CreateTestProject1(user.Id);
         var testfiles = await _serviceManager.ProjectService.LoadTestFilesForProjectAsync(project.Id);
 
-        var documentationAddedToDB = await _serviceManager.TranslationService.TranslateTestfile(testfiles[0]);
+        var documentationAddedToDB = await _serviceManager.TranslationService.TranslateTestfile(testfiles[0].Id);
 
         var result = await _serviceManager.ProjectService.LoadDocumentationByTestFilesIdAsync(testfiles[0].Id);
 

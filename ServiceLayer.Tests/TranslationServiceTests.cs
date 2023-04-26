@@ -9,7 +9,7 @@ public class TranslationServiceTests : ContextSetup
         var project = await CreateTestProject1(user.Id);
         var testfiles = await _serviceManager.ProjectService.LoadTestFilesForProjectAsync(project.Id);
 
-        var documentation = await _serviceManager.TranslationService.TranslateTestfile(testfiles[0]);
+        var documentation = await _serviceManager.TranslationService.TranslateTestfile(testfiles[0].Id);
 
         Assert.True(!String.IsNullOrEmpty(documentation.Summary));
         Assert.True(!String.IsNullOrEmpty(documentation.Translation));
@@ -22,7 +22,7 @@ public class TranslationServiceTests : ContextSetup
         var project = await CreateTestProject1(user.Id);
         var testfiles = await _serviceManager.ProjectService.LoadTestFilesForProjectAsync(project.Id);
 
-        var documentation = await _serviceManager.TranslationService.TranslateTestfile(testfiles[0]);
+        var documentation = await _serviceManager.TranslationService.TranslateTestfile(testfiles[0].Id);
 
         var response = await _serviceManager.TranslationService.UpdateDocumentation(new UpdateDocumentationDTO()
         {
