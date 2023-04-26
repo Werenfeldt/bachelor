@@ -32,6 +32,7 @@ public abstract class ContextSetup
             key = configuration.GetValue<string>("OpenAIServiceOptions:ApiKey");
             _defaultGitKey = configuration.GetValue<string>("APIToken:GithubIntegrationToken");
             _testRepoGitKey = configuration.GetValue<string>("APIToken:GithubTestToken");
+            Console.WriteLine("hej");
         }
 
         var openAiService = new OpenAIService(new OpenAiOptions()
