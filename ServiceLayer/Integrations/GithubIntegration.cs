@@ -32,7 +32,6 @@ internal sealed class GithubIntegration : IGithubIntegration
         {
             if (item.Type == TreeType.Blob && item.Path.Contains(".cy"))
             {
-                Console.WriteLine("item: " + item.Path);
                 var listOfContent = await gitHub.Repository.Content.GetAllContents(repositoryOwner, repositoryName, item.Path);
                 content.Add(listOfContent[0]);
             }

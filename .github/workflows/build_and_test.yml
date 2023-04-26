@@ -1,0 +1,34 @@
+name: Build and test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  OpenAIServiceOptions: ${{ secrets.OpenAIServiceOptions }}
+  GithubIntegrationToken: ${{ secrets.GithubIntegrationToken }}
+  GithubTestToken: ${{ secrets.GithubTestToken }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 7.x
+
+    - name: Build and test
+      env:
+        OpenAIServiceOptions: ${{ secrets.OpenAIServiceOptions }}
+        GithubIntegrationToken: ${{ secrets.GithubIntegrationToken }}
+        GithubTestToken: ${{ secrets.GithubTestToken }}
+      run: |
+        dotnet restore bachelor.sln
+        dotnet build bachelor.sln
+        dotnet test ServiceLayer.Tests --environment="Development"

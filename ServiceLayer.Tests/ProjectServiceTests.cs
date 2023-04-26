@@ -115,7 +115,7 @@ public class ProjectRepositoryTests : ContextSetup
         var project = await CreateTestProject1(user.Id);
         var testfiles = await _serviceManager.ProjectService.LoadTestFilesForProjectAsync(project.Id);
 
-        var documentationAddedToDB = await _serviceManager.TranslationService.TranslateTestfile(testfiles[0]);
+        var documentationAddedToDB = await _serviceManager.TranslationService.TranslateTestfile(testfiles[0].Id);
 
         var result = await _serviceManager.ProjectService.LoadDocumentationByTestFilesIdAsync(testfiles[0].Id);
 
@@ -136,6 +136,16 @@ public class ProjectRepositoryTests : ContextSetup
         Assert.Equal("", result.Translation);
         Assert.Equal(DateTime.UtcNow, result.CreatedDate, precision: TimeSpan.FromSeconds(5));
         Assert.Equal(DateTime.UtcNow, result.UpdatedDate, precision: TimeSpan.FromSeconds(5));
+    }
+
+    [Fact]
+    public async Task DeleteProject_given_id_returns_ResponsDeleted()
+    {
+        var user = await CreateTestUser();
+        var project = await CreateTestProject1(user.Id);
+        var response = await _serviceManager.ProjectService.DeleteProject(project.Id);
+
+        Assert.Equal(Response.Deleted, response);
     }
 
 

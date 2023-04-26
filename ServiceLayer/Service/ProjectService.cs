@@ -102,7 +102,6 @@ public class ProjectService : IProjectService
                 Path = item.Path,
                 Content = item.Content,
             };
-            Console.WriteLine(testFile);
             testList.Add(testFile);
         }
         return testList;
