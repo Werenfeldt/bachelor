@@ -16,12 +16,6 @@ internal sealed class GithubIntegration : IGithubIntegration
         var credentials = new InMemoryCredentialStore(new Credentials(tokenAuth));
         SetUpClient(credentials);
     }
-
-    public void SetCredentials(string username, string password)
-    {
-        var credentials = new InMemoryCredentialStore(new Credentials(username, password));
-        SetUpClient(credentials);
-    }
     public async Task<IReadOnlyList<RepositoryContent>> Request(string url)
     {
         var splittedString = StripPrefix(url.Trim(), "https://github.com/").Split('/');
@@ -36,7 +30,8 @@ internal sealed class GithubIntegration : IGithubIntegration
 
         foreach (var item in treeResponse.Tree)
         {
-            if (item.Type == TreeType.Blob && item.Path.Contains(".cy")){
+            if (item.Type == TreeType.Blob && item.Path.Contains(".cy"))
+            {
                 Console.WriteLine("item: " + item.Path);
                 var listOfContent = await gitHub.Repository.Content.GetAllContents(repositoryOwner, repositoryName, item.Path);
                 content.Add(listOfContent[0]);

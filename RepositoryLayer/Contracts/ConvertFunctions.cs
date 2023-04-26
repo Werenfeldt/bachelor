@@ -25,7 +25,9 @@ public static class ConvertFunctions
         return new Project(project.Title, project.GitUrl)
         {
             Description = project.Description,
-            TestFiles = GetTestFiles(project.TestFileToBeCreatedDTOs)
+            TestFiles = GetTestFiles(project.TestFileToBeCreatedDTOs),
+            CreatedDate = DateTime.UtcNow,
+            UpdatedDate = DateTime.UtcNow
         };
     }
 
@@ -34,7 +36,8 @@ public static class ConvertFunctions
         return new Project(project.Title, project.GitUrl)
         {
             Description = project.Description,
-            TestFiles = GetTestFiles(project.TestFileToBeUpdatedDTOs)
+            TestFiles = GetTestFiles(project.TestFileToBeUpdatedDTOs),
+            UpdatedDate = DateTime.UtcNow
         };
     }
 
@@ -46,12 +49,20 @@ public static class ConvertFunctions
 
     public static TestFile TestFileMapToEntity(CreateTestFileDTO testFile)
     {
-        return new TestFile(testFile.Name, testFile.Path, testFile.Content);
+        return new TestFile(testFile.Name, testFile.Path, testFile.Content)
+        {
+            CreatedDate = DateTime.UtcNow,
+            UpdatedDate = DateTime.UtcNow,
+        };
     }
 
     public static TestFile TestFileMapToEntity(UpdateTestFileDTO testFile)
     {
-        return new TestFile(testFile.Name, testFile.Path, testFile.Content) { Id = testFile.Id };
+        return new TestFile(testFile.Name, testFile.Path, testFile.Content)
+        {
+            Id = testFile.Id,
+            UpdatedDate = DateTime.UtcNow
+        };
     }
 
 
@@ -63,7 +74,10 @@ public static class ConvertFunctions
 
     public static User UserMapToEntity(CreateUserDTO user)
     {
-        return new User(user.Name, user.Email, user.Password);
+        return new User(user.Name, user.Email, user.Password)
+        {
+            CreatedDate = DateTime.UtcNow
+        };
     }
 
 
@@ -75,7 +89,11 @@ public static class ConvertFunctions
 
     public static Documentation DocumentationMapToDTO(CreateDocumentationDTO documentation)
     {
-        return new Documentation(documentation.Summary, documentation.Translation) { TestFileId = documentation.TestFileId };
+        return new Documentation(documentation.Summary, documentation.Translation)
+        {
+            TestFileId = documentation.TestFileId,
+            CreatedDate = DateTime.UtcNow
+        };
     }
 
     //-------------------------------------- Util ------------------------------------------//

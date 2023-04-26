@@ -18,12 +18,6 @@ public class ProjectService : IProjectService
         return sendRequest(projectDTO);
     }
 
-    public Task<ProjectDTO> CreateProjectAsync(CreateProjectDTO projectDTO, string username, string password)
-    {
-        GithubIntegration.SetCredentials(username, password);
-        return sendRequest(projectDTO);
-    }
-
     public async Task<List<ProjectDTO>> LoadProjectsAsync(Guid userId)
     {
         var projects = await _repoManager.ProjectRepository.ReadAllProjectsByUserIdAsync(userId);
@@ -50,7 +44,8 @@ public class ProjectService : IProjectService
     {
         var testFile = await _repoManager.TestFileRepository.ReadTestFileByIdAsync(testFileId);
 
-        if(testFile.IsSome){
+        if (testFile.IsSome)
+        {
             return testFile;
         }
 
@@ -61,7 +56,8 @@ public class ProjectService : IProjectService
     {
         var documentation = await _repoManager.DocumentationRepository.ReadDocumentationByTestFileIdAsync(testFileId);
 
-        if(documentation.IsSome){
+        if (documentation.IsSome)
+        {
             return documentation;
         }
 
@@ -85,7 +81,8 @@ public class ProjectService : IProjectService
 
         projectDTO.TestFileToBeCreatedDTOs = GetAllTestFiles(repositoryContent);
 
-        if(projectDTO.TestFileToBeCreatedDTOs.Any()){
+        if (projectDTO.TestFileToBeCreatedDTOs.Any())
+        {
 
             return await _repoManager.ProjectRepository.CreateProjectAsync(projectDTO);
         }

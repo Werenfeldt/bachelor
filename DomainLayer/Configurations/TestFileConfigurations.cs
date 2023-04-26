@@ -5,15 +5,15 @@ internal sealed class TestFileConfiguration : IEntityTypeConfiguration<TestFile>
     public void Configure(EntityTypeBuilder<TestFile> builder)
     {
         builder.Property(s => s.CreatedDate)
-            .HasDefaultValueSql("GETDATE()");
+            .HasDefaultValueSql("date('now')");
 
         builder.Property(s => s.UpdatedDate)
-            .HasDefaultValueSql("GETDATE()");
+            .HasDefaultValueSql("date('now')");
 
         builder.HasOne(t => t.Project).WithMany(p => p.TestFiles).HasForeignKey(t => t.ProjectId);
-        
+
         builder.HasOne(t => t.Documentation).WithOne(d => d.TestFile).HasForeignKey<Documentation>(d => d.TestFileId);
-        
+
         builder.HasData(
             new TestFile("TestFile 1", "somePath", "Jeg er et script content")
             {
