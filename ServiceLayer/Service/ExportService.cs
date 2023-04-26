@@ -87,6 +87,7 @@ public class ExportService : IExportService
                 scriptParagraph.Add(Chunk.Newline);
                 scriptParagraph.Add(new Phrase(file.Content, sectionCodeFont));
                 scriptParagraph.Add(Chunk.Newline);
+                scriptParagraph.Add(Chunk.Newline);
                 pdf.Add(scriptParagraph);
 
             }
@@ -100,6 +101,7 @@ public class ExportService : IExportService
                     summaryParagraph.Add(Chunk.Newline);
                     summaryParagraph.Add(new Phrase(documentation.Value.Summary, sectionBodyFont));
                     summaryParagraph.Add(Chunk.Newline);
+                    summaryParagraph.Add(Chunk.Newline);
                 }
                 pdf.Add(summaryParagraph);
             }
@@ -112,7 +114,6 @@ public class ExportService : IExportService
                     translationParagraph.Add(new Phrase("Translation: ", sectionTitleFont));
                     translationParagraph.Add(Chunk.Newline);
                     translationParagraph.Add(new Phrase(documentation.Value.Translation, sectionBodyFont));
-                    translationParagraph.Add(Chunk.Newline);
                 }
                 pdf.Add(translationParagraph);
             }

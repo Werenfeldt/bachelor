@@ -24,10 +24,20 @@ public class ProjectService : IProjectService
         return projects.ToList();
     }
 
-    public async Task<List<TestFileDTO>> LoadTestFilesForProjectAsync(Guid projectId)
+    public async Task<List<TestFileWithDocumentationDTO>> LoadTestFilesForProjectAsync(Guid projectId)
     {
         var testFiles = await _repoManager.TestFileRepository.ReadAllTestFilesByProjectIdAsync(projectId);
-        return testFiles.ToList();
+        
+        List<TestFileWithDocumentationDTO> listOfTestFilesWithPossibleDocumentation = new List<TestFileWithDocumentationDTO>();
+        foreach (var item in testFiles)
+        {
+            var documentation = await LoadDocumentationByTestFilesIdAsync(item.Id);
+
+            var dto = new TestFileWithDocumentationDTO(item.Id, item.Name, documentation);   
+
+            listOfTestFilesWithPossibleDocumentation.Add(dto);
+        }
+        return listOfTestFilesWithPossibleDocumentation.ToList();
     }
 
     public async Task<TestFileDTO> LoadTestFileByIdAsync(Guid testFileId)
