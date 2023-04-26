@@ -4,24 +4,24 @@
 
 
 <MudNavMenu Bordered="true" Color="Color.Primary" Rounded="true" Margin="Margin.Dense">
-    @if(IsLoading)
+    @if (IsLoading)
     {
         <MudGrid>
             <MudItem Class="d-flex align-center justify-center mud-width-full">
-                <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+                <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
             </MudItem>
         </MudGrid>
     }
-    else 
+    else
     {
         @foreach (var project in projects)
         {
-            <MudNavGroup Title="@project.Title" > 
-                    @foreach (var testfile in project.testfiles)
-                    {
-                        <MudNavLink Href="@("/editor/" + @testfile.Id.ToString())">@testfile.Name</MudNavLink>
-                    }
-            </MudNavGroup>   
+            <MudNavGroup Title="@project.Title">
+                @foreach (var testfile in project.testfiles)
+                {
+                    <MudNavLink Href="@("/editor/" + @testfile.Id.ToString())">@testfile.Name</MudNavLink>
+                }
+            </MudNavGroup>
         }
     }
 </MudNavMenu>
@@ -38,7 +38,7 @@
     {
 
         var user = await sessionStorage.GetItemAsync<UserDTO>("SessionUser");
-        
+
         projects = await serviceManager.ProjectService.LoadSideBar(user.Id);
 
         IsLoading = false;

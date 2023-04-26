@@ -5,15 +5,15 @@
 @inject NavigationManager NavManager;
 
 <MudText Typo="Typo.h3" Align="Align.Center" Class="mb-5">TestFiles for Projects: </MudText>
-@if(IsLoading)
+@if (IsLoading)
 {
     <MudGrid>
-        <MudItem Class="d-flex align-center justify-center mud-width-full">
-            <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
-        </MudItem>
-    </MudGrid>
+    <MudItem Class="d-flex align-center justify-center mud-width-full">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+    </MudItem>
+</MudGrid>
 }
-else 
+else
 {
 
     <MudOverlay Visible="@IsTranslating" LightBackground="true">
@@ -27,29 +27,32 @@ else
             </MudItem>
         </MudGrid>
     </MudOverlay>
-    
+
     <MudGrid Justify="Justify.Center">
-        <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@(async () => await TranslateAllTestFiles())">Translate All Testfiles</MudButton>
-        <MudButton Variant="Variant.Outlined" Color="Color.Secondary">Update Translations</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await TranslateAllTestFiles())">
+            Generate Documentation For All Testfiles</MudButton>
     </MudGrid>
-    <MudGrid Justify="Justify.FlexStart">
+    <MudGrid Justify="Justify.FlexStart" Class="mt-5">
         @foreach (var item in testfiles)
         {
-            <MudItem xs="2">
-                <MudButton OnClick="@(async() => await NavigateToEditor(@item.Id))">
-                    <MudPaper Outlined="true" Style="min-width: 150px; max-width: 150px; min-height: 150px; max-height: 150px;">
-                    <MudStack  Style="min-height:150px;" Justify="Justify.Center" AlignItems="AlignItems.Center">
-                            <MudStack Row="true" Style="max-height:30%;">
-                                    <MudText Typo="Typo.h6" Style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;  overflow: hidden;">
-                                        @item.Name 
+            <MudItem xs="6">
+                <MudButton OnClick="@(async() => await NavigateToEditor(@item.Id))" Variant="Variant.Outlined" Style="min-width: 100%; max-width: 100%; min-height: 200px; max-height: 200px;">
+                        <MudStack Justify="Justify.FlexStart" Style="min-height: 200px; max-height: 200px"  >
+                        
+                                    <u>
+                                        <MudText Typo="Typo.h6" Class="mt-2" Style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1;  overflow: hidden;">
+                                            @item.Name
+                                        </MudText>
+                                    </u>
+                                    <MudText Style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 5;  overflow: hidden;">
+                                            @item.Documentation.Summary
                                     </MudText>
-                            </MudStack>
-                    </MudStack>
-                    </MudPaper>
+
+                        </MudStack>
                 </MudButton>
             </MudItem>
         }
-    </MudGrid> 
+    </MudGrid>
 }
 
 @code {
@@ -58,7 +61,7 @@ else
     [Parameter]
     public Guid projectId { get; set; }
 
-    List<TestFileDTO>? testfiles { get; set; }
+    List<TestFileWithDocumentationDTO>? testfiles { get; set; }
 
     bool IsLoading { get; set; } = true;
 
@@ -73,7 +76,7 @@ else
         try
         {
             testfiles = await GetTestFilesAsync();
-            
+
             IsLoading = false;
 
             StateHasChanged();
@@ -84,13 +87,14 @@ else
         }
     }
 
-    private async Task<List<TestFileDTO>> GetTestFilesAsync()
+    private async Task<List<TestFileWithDocumentationDTO>> GetTestFilesAsync()
     {
 
         return await serviceManager.ProjectService.LoadTestFilesForProjectAsync(projectId);
     }
 
-    private async Task NavigateToEditor(Guid testFileId){
+    private async Task NavigateToEditor(Guid testFileId)
+    {
         try
         {
             NavManager.NavigateTo("/editor/" + testFileId.ToString());
@@ -99,7 +103,7 @@ else
         {
             Snackbar.Add(e.Message, Severity.Warning);
         }
-      StateHasChanged();
+        StateHasChanged();
     }
 
     private async Task TranslateAllTestFiles()
@@ -107,29 +111,32 @@ else
         try
         {
             IsTranslating = true;
-        
+
             Progress = 0;
-            var ValueToIncrease = 100/testfiles.Count;
+            var ValueToIncrease = 100 / testfiles.Count;
 
             foreach (var test in testfiles)
             {
                 FileBeingTranslated = "Translating: " + test.Name + "...";
                 Progress += ValueToIncrease;
-                await serviceManager.TranslationService.TranslateTestfile(test);
-                
+                await serviceManager.TranslationService.TranslateTestfile(test.Id);
+
                 StateHasChanged();
             }
 
-            IsTranslating = false;
-            StateHasChanged();
         }
         catch (TranslationException e)
         {
             Snackbar.Add(e.Message, Severity.Warning);
-            
+
+        } 
+        finally
+        {
+
+            testfiles = await GetTestFilesAsync();
+
             IsTranslating = false;
             StateHasChanged();
         }
-        
     }
 }

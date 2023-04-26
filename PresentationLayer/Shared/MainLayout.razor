@@ -18,15 +18,15 @@
             OnClick="@((e) => DrawerToggle())"></MudIconButton>
 
             <MudNavMenu Rounded="true" Color="Color.Dark">
-                <MudNavLink Href="/projects">My Projects</MudNavLink>
+                <MudButton Href="/projects" Color="Color.Inherit">My Projects</MudButton>
+            </MudNavMenu>
+
+            <MudNavMenu Dense="true" Rounded="true" Margin="Margin.Dense" Color="Color.Dark">
+                <MudButton Href="/createproject" Color="Color.Inherit">Add Project</MudButton>
             </MudNavMenu>
 
             <MudNavMenu Rounded="true" Color="Color.Dark">
-                <MudNavLink Href="/createproject">Add Project</MudNavLink>
-            </MudNavMenu>
-
-            <MudNavMenu Rounded="true" Color="Color.Dark">
-                <MudNavLink Href="/download">Download Documentation</MudNavLink>
+                <MudButton Href="/download" Color="Color.Inherit">Download Documentation</MudButton>
             </MudNavMenu>
 
             <MudSpacer />
@@ -45,7 +45,7 @@
         }
 
     </MudAppBar>
-    @if(loggedIn & _drawerOpen)
+    @if (loggedIn & _drawerOpen)
     {
         <MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Always">
             <NavMenu />
@@ -63,7 +63,7 @@
 
     bool loggedIn = false;
 
-    Guid userId {get; set;}
+    Guid userId { get; set; }
 
     void DrawerToggle()
     {
@@ -88,6 +88,6 @@
             {
                 Primary = "rgba(225, 150, 92, 1);",
                 Secondary = "rgba(178, 144, 181, 1);",
-},
-};
+            },
+        };
 }
