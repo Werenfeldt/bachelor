@@ -33,9 +33,9 @@ public abstract class ContextSetup
         {
             try
             {
-                key = Environment.GetEnvironmentVariable("OpenAIServiceOptions:ApiKey");
-                _defaultGitKey = Environment.GetEnvironmentVariable("APIToken:GithubIntegrationToken");
-                _testRepoGitKey = Environment.GetEnvironmentVariable("APIToken:GithubTestToken");
+                key = Environment.GetEnvironmentVariable("OpenAIServiceOptions");
+                _defaultGitKey = Environment.GetEnvironmentVariable("GithubIntegrationToken");
+                _testRepoGitKey = Environment.GetEnvironmentVariable("GithubTestToken");
             }
             catch (System.Exception)
             {

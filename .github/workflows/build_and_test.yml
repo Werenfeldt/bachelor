@@ -6,9 +6,9 @@ on:
       - main
 
 env:
-  OpenAIServiceOptions:ApiKey: ${{ secrets.OpenAIServiceOptions }}
-  APIToken:GithubIntegrationToken: ${{ secrets.GithubIntegrationToken }}
-  APIToken:GithubTestToken: ${{ secrets.GithubTestToken }}
+  OpenAIServiceOptions: ${{ secrets.OpenAIServiceOptions }}
+  GithubIntegrationToken: ${{ secrets.GithubIntegrationToken }}
+  GithubTestToken: ${{ secrets.GithubTestToken }}
 
 jobs:
   build:
@@ -25,9 +25,9 @@ jobs:
 
     - name: Build and test
       env:
-        OpenAIServiceOptions:ApiKey: ${{ secrets.OpenAIServiceOptions }}
-        APIToken:GithubIntegrationToken: ${{ secrets.GithubIntegrationToken }}
-        APIToken:GithubTestToken: ${{ secrets.GithubTestToken }}
+        OpenAIServiceOptions: ${{ secrets.OpenAIServiceOptions }}
+        GithubIntegrationToken: ${{ secrets.GithubIntegrationToken }}
+        GithubTestToken: ${{ secrets.GithubTestToken }}
       run: |
         dotnet restore bachelor.sln
         dotnet build bachelor.sln
